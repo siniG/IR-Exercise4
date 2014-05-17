@@ -1,0 +1,5 @@
+0. Turn current documents into single file  - Avi
+1. Properties loader   - Amit
+2. Html parser (Tika)  - Amit
+3. Dedup (duplicate words removal)  - Avi
+4. Indexer - build lucene document (document will include the following fields: id, content, headers - in the future) - Avi
