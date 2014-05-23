@@ -94,25 +94,25 @@ public class Main {
         {
             String parameterName = stringTokenizer.nextToken().toLowerCase();
 
-            if (parameterName.equals(ParametersEnum.DocsFile.name().toLowerCase()))
+            if (parameterName.toLowerCase().equals(ParametersEnum.DocsFile.name().toLowerCase()))
             {
                 String docsFileParameter = stringTokenizer.nextToken();
                 parametersHashtable.put(ParametersEnum.DocsFile, docsFileParameter);
                 System.out.println("Added parameter for documet file name: \"" + docsFileParameter + "\".");
             }
-            else if (parameterName.equals(ParametersEnum.OutputFile.name().toLowerCase()))
+            else if (parameterName.toLowerCase().equals(ParametersEnum.OutputFile.name().toLowerCase()))
             {
                 String outputFileParameter = stringTokenizer.nextToken();
                 parametersHashtable.put(ParametersEnum.OutputFile, outputFileParameter);
                 System.out.println("Added parameter for output file name: \"" + outputFileParameter + "\".");
             }
-            else if (parameterName.equals(ParametersEnum.K.name().toLowerCase()))
+            else if (parameterName.toLowerCase().equals(ParametersEnum.K.name().toLowerCase()))
             {
                 String kNumberOfClusters = stringTokenizer.nextToken();
-                parametersHashtable.put(ParametersEnum.OutputFile, kNumberOfClusters);
-                System.out.println("Added parameter for output file name: \"" + kNumberOfClusters + "\".");
+                parametersHashtable.put(ParametersEnum.K, kNumberOfClusters);
+                System.out.println("Added parameter for k number of clusters: \"" + kNumberOfClusters + "\".");
             }
-            else if (parameterName.equals(ParametersEnum.ClusteringAlgorithm.name().toLowerCase()))
+            else if (parameterName.toLowerCase().equals(ParametersEnum.ClusteringAlgorithm.name().toLowerCase()))
             {
                 String clusterAlgorithmName = stringTokenizer.nextToken().toLowerCase();
 
