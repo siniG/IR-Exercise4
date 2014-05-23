@@ -1,0 +1,4 @@
+docsFile=docs.txt
+outputFile=output.txt
+clusteringAlgorithm=basic
+k=7
