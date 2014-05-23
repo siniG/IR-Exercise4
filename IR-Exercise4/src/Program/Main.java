@@ -106,23 +106,29 @@ public class Main {
                 parametersHashtable.put(ParametersEnum.OutputFile, outputFileParameter);
                 System.out.println("Added parameter for output file name: \"" + outputFileParameter + "\".");
             }
-            else if (parameterName.equals(ParametersEnum.ClusterAlgorithm.name().toLowerCase()))
+            else if (parameterName.equals(ParametersEnum.K.name().toLowerCase()))
+            {
+                String kNumberOfClusters = stringTokenizer.nextToken();
+                parametersHashtable.put(ParametersEnum.OutputFile, kNumberOfClusters);
+                System.out.println("Added parameter for output file name: \"" + kNumberOfClusters + "\".");
+            }
+            else if (parameterName.equals(ParametersEnum.ClusteringAlgorithm.name().toLowerCase()))
             {
                 String clusterAlgorithmName = stringTokenizer.nextToken().toLowerCase();
 
                 if (clusterAlgorithmName.equals(ClusteringAlgorithmEnum.Basic.name().toLowerCase()))
                 {
-                    parametersHashtable.put(ParametersEnum.ClusterAlgorithm, ClusteringAlgorithmEnum.Basic.name());
+                    parametersHashtable.put(ParametersEnum.ClusteringAlgorithm, ClusteringAlgorithmEnum.Basic.name());
                     System.out.println("Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
                 }
                 else if (clusterAlgorithmName.equals(ClusteringAlgorithmEnum.BasicPlusPlus.name().toLowerCase()))
                 {
-                    parametersHashtable.put(ParametersEnum.ClusterAlgorithm, ClusteringAlgorithmEnum.BasicPlusPlus.name());
+                    parametersHashtable.put(ParametersEnum.ClusteringAlgorithm, ClusteringAlgorithmEnum.BasicPlusPlus.name());
                     System.out.println("Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
                 }
                 else if (clusterAlgorithmName.equals(ClusteringAlgorithmEnum.Improved.name().toLowerCase()))
                 {
-                    parametersHashtable.put(ParametersEnum.ClusterAlgorithm, ClusteringAlgorithmEnum.Improved.name());
+                    parametersHashtable.put(ParametersEnum.ClusteringAlgorithm, ClusteringAlgorithmEnum.Improved.name());
                     System.out.println("Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
                 }
                 else
