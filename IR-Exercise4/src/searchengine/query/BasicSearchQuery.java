@@ -15,6 +15,7 @@ import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.index.Terms;
 import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -22,7 +23,9 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.Version;
@@ -74,29 +77,45 @@ public class BasicSearchQuery {
 	return doc;
 	}
 	
-	public int getDocByForiegnId(int docId)
+    /**
+     * 
+     * @param docId - the document id with foreign key
+     * @return the lucene doc id matching the given foreign id. or null if no match
+     */
+	public Integer getLuceneDocIdByForeignId(int docId)
 	{
-		int retval = -1;
-	
-		String sQuery = "id: " + docId;
-		QueryParser queryParser = new QueryParser(Version.LUCENE_47, "id", this.analyzer);
+		Integer result = null;
 		
 		try {
-			Query query = queryParser.parse(sQuery);
-			TopDocs topDocs = this.searcher.search(query, 1);
+			//query for doc with given id
+			TermQuery query = new TermQuery(new Term("id", Integer.toString(docId)));
+			TopDocs topDocs = this.searcher.search(query, 10000);
+			
 			
 			if (topDocs.totalHits > 0) {
-				retval = topDocs.scoreDocs[0].doc;
+				int tempId;
+				for(ScoreDoc scoreDoc : topDocs.scoreDocs)
+				{
+					//get document and search for field id
+					Document doc = this.searcher.doc(scoreDoc.doc);
+					String idField = doc.get("id");
+					tempId = Integer.valueOf(idField);
+					
+					//if ids match then  return doc lucene id
+					if(tempId == docId)
+					{
+						result = scoreDoc.doc;
+						break;
+					}	
+				}
+				
 			}
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return retval;
+		return result;
     }
 
     public void Init() throws IOException {

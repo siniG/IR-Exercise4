@@ -19,12 +19,19 @@ public class SearchResult {
 
     private final float score;
     
-    private float cosineSimilarity;
+    private double cosineSimilarity;
 
     public SearchResult(int docId, float score) {
 	this.docId = docId;
 	this.score = score;
+	this.cosineSimilarity = 0;
     }
+    
+    public SearchResult(int docId, float score, double cosineSimilarity) {
+    	this.docId = docId;
+    	this.score = score;
+    	this.cosineSimilarity = cosineSimilarity;
+        }
 
     public int getDocId() {
 	return this.docId;
@@ -32,5 +39,10 @@ public class SearchResult {
 
     public float getScore() {
 	return this.score;
+    }
+    
+    public double getCosineSimilariy()
+    {
+    	return this.cosineSimilarity;
     }
 }

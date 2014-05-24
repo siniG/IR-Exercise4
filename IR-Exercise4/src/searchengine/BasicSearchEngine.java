@@ -81,20 +81,30 @@ public class BasicSearchEngine implements ISearchEngine {
     }
     
     @Override
-    public List<SearchResult> search(IRDoc irDoc, int retSize) {
+    public List<SearchResult> search(IRDoc irDoc, int retSize) throws Exception {
 	List<SearchResult> result = new LinkedList<SearchResult>();
 	BasicSearchQuery searcher = getSearcher();
 
 	if (searcher != null) {
 	    try {
+	    
+	    	//check to see if a document with given id is found in lucene
+	    Integer luceneDocId = this.searcher.getLuceneDocIdByForeignId(irDoc.getId());
+	    if(luceneDocId == null)
+	    {
+	    	throw new Exception("Cannot find lucene document with irDoc id=" + irDoc.getId());
+	    }
+	    
+	    //run query and calculate cosine similarity between query and results received
 		List<ScoreDoc> docs = searcher.query(irDoc, retSize);
 		String id;
+		double cosineSim;
 		for (ScoreDoc doc : docs) {
 		    Document tempDoc = searcher.getDoc(doc.doc);
 		    id = tempDoc.get("id");
+		    cosineSim = this.searcher.getCosineSimilarity(luceneDocId, doc.doc);
 		    
-		    
-			result.add(new SearchResult(Integer.valueOf(id), doc.score));
+			result.add(new SearchResult(Integer.valueOf(id), doc.score, cosineSim));
 		}
 
 	    } catch (IOException e) {
