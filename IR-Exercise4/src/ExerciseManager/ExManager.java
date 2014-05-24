@@ -1,7 +1,6 @@
 
 package ExerciseManager;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -19,6 +18,7 @@ import entities.SearchResult;
 
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
+import utilities.utils;
 
 public class ExManager implements IExManager {
 
@@ -76,21 +76,32 @@ public class ExManager implements IExManager {
 		return true;
 	}
 	
-	public void ProcessData() throws FileNotFoundException 
+	public void ProcessData() throws Exception 
 	{
 		this.matrix = new MappedMatrix(numOfDocs, numOfDocs);
 		
-		int docsToIterate = irDocs.size()/2;
 		System.out.println("Info: Start processing data");
-		for(int i = 0; i <= docsToIterate; i++)
+		for(int i = 0; i < irDocs.size(); i++)
 		{
+			//for every irDoc, run search query matching this document
 			List<SearchResult> results = this.searchEngine.search(irDocs.get(i), numOfDocs);
 			System.out.println("Info: not of results returned for doc " + irDocs.get(i).getId() + " from search=" + results.size());
-			
+			//calculate distance between result and query
+			CalculateAndStoreDistance(irDocs.get(i).getId(), results);
 		}
 		
 		
 		System.out.println("Info: Done processing data");
+	}
+
+	private void CalculateAndStoreDistance(int id, List<SearchResult> results) {
+		
+		double distance;
+		for(SearchResult result : results)
+		{
+			distance = utils.GetOppositeByTangent(result.getCosineSimilariy(), result.getScore());
+			this.matrix.insert(id, result.getDocId(), distance);
+		}
 	}
 	
 	
