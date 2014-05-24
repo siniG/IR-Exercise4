@@ -2,9 +2,12 @@ package searchengine;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -14,6 +17,7 @@ import searchengine.query.BasicSearchQuery;
 import searchengine.query.ImprovedSearchQuery;
 
 import entities.IRDoc;
+import entities.SearchResult;
 
 public class BasicSearchEngine implements ISearchEngine {
 
@@ -74,6 +78,31 @@ public class BasicSearchEngine implements ISearchEngine {
 	}
 
 	return documents.size() == indexedDocsCount;
+    }
+    
+    @Override
+    public List<SearchResult> search(IRDoc irDoc, int retSize) {
+	List<SearchResult> result = new LinkedList<SearchResult>();
+	BasicSearchQuery searcher = getSearcher();
+
+	if (searcher != null) {
+	    try {
+		List<ScoreDoc> docs = searcher.query(irDoc, retSize);
+		String id;
+		for (ScoreDoc doc : docs) {
+		    Document tempDoc = searcher.getDoc(doc.doc);
+		    id = tempDoc.get("id");
+		    
+		    
+			result.add(new SearchResult(Integer.valueOf(id), doc.score));
+		}
+
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	}
+
+	return result;
     }
     
     protected synchronized BasicSearchQuery getSearcher() {
