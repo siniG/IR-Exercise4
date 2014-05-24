@@ -80,7 +80,7 @@ public class BasicQueryEngine {
     }
 
     @SuppressWarnings("unchecked")
-    public List<ScoreDoc> query(IRDoc doc) throws IOException {
+    public List<ScoreDoc> search(IRDoc doc) throws IOException {
 	List<ScoreDoc> docs = Collections.EMPTY_LIST;
 
 	try {

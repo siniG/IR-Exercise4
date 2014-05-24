@@ -20,7 +20,10 @@ public class ImprovedQueryEngine extends BasicQueryEngine {
 
     @Override
     protected void initAnalyzer() {
-	
+	/*
+	 * CharArraySet set = new CharArraySet(Version.LUCENE_47, stopwords, true); this.analyzer = new
+	 * StandardAnalyzer(Version.LUCENE_47, set);
+	 */
 	Analyzer analyzer = new Analyzer() {
 	    @Override
 	    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
