@@ -76,7 +76,7 @@ public class ExManager implements IExManager {
 		return true;
 	}
 	
-	public void ProcessData() throws FileNotFoundException
+	public void ProcessData() throws FileNotFoundException 
 	{
 		this.matrix = new MappedMatrix(numOfDocs, numOfDocs);
 		
