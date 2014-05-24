@@ -20,7 +20,7 @@ import entities.SearchResult;
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
 
-public class ExManager {
+public class ExManager implements IExManager {
 
 	ISearchEngine searchEngine;
 	Hashtable<ParametersEnum, String> params;
