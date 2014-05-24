@@ -107,7 +107,7 @@ public class DocumentsLoader implements IDocumentsLoader
                 try
                 {
                     Scanner fileScanner = new Scanner(fileToLoad);
-                    String entireFileContent = fileScanner.next();
+                    String entireFileContent = fileScanner.useDelimiter("\\Z").next();
                     if (entireFileContent.length() == 0)
                     {
                         System.out.println("No content found for file: " + fileScanner.toString());
