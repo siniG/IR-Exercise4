@@ -1,4 +1,4 @@
-package clusteringengine;
+package searchengine;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,21 +8,22 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import clusteringengine.indexer.ImprovedIndexer;
-import clusteringengine.indexer.BasicIndexer;
-import clusteringengine.query.BasicQueryEngine;
-import clusteringengine.query.ImprovedQueryEngine;
+import searchengine.indexer.BasicIndexer;
+import searchengine.indexer.ImprovedIndexer;
+import searchengine.query.BasicSearchQuery;
+import searchengine.query.ImprovedSearchQuery;
+
 import entities.IRDoc;
 
-public class BasicClusteringEngine implements IClusterEngine {
+public class BasicSearchEngine implements ISearchEngine {
 
 	protected boolean indexChanged;
     protected BasicIndexer indexer;
     protected Directory luceneDir;
-    protected ImprovedQueryEngine searcher;
+    protected ImprovedSearchQuery searcher;
     protected List<String> stopwords;
     
-	public BasicClusteringEngine(String engineDir)
+	public BasicSearchEngine(String engineDir)
 		throws IOException
 	{
 		this.luceneDir = FSDirectory.open(new File(engineDir));
@@ -75,14 +76,14 @@ public class BasicClusteringEngine implements IClusterEngine {
 	return documents.size() == indexedDocsCount;
     }
     
-    protected synchronized BasicQueryEngine getSearcher() {
+    protected synchronized BasicSearchQuery getSearcher() {
 	if (this.searcher == null || this.indexChanged) {
 	    try {
 		if (this.searcher != null) {
 		    this.searcher.close();
 		}
 
-		this.searcher = new ImprovedQueryEngine(this.luceneDir);
+		this.searcher = new ImprovedSearchQuery(this.luceneDir);
 		this.searcher.setStopWords(this.stopwords);
 		this.searcher.Init();
 	    } catch (IOException e) {

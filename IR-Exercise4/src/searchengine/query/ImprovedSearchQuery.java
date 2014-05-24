@@ -1,4 +1,4 @@
-package clusteringengine.query;
+package searchengine.query;
 
 import java.io.Reader;
 
@@ -13,8 +13,8 @@ import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 
-public class ImprovedQueryEngine extends BasicQueryEngine {
-    public ImprovedQueryEngine(Directory luceneDir) {
+public class ImprovedSearchQuery extends BasicSearchQuery {
+    public ImprovedSearchQuery(Directory luceneDir) {
 	super(luceneDir);
     }
 
@@ -27,7 +27,7 @@ public class ImprovedQueryEngine extends BasicQueryEngine {
 		Tokenizer source = new StandardTokenizer(Version.LUCENE_47, reader);
 		TokenStream token = new LowerCaseFilter(Version.LUCENE_47, source);
 		token = new StopFilter(Version.LUCENE_47, token, new CharArraySet(Version.LUCENE_47,
-				ImprovedQueryEngine.this.stopwords, true));
+				ImprovedSearchQuery.this.stopwords, true));
 		return new TokenStreamComponents(source, new PorterStemFilter(token));
 	    }
 	};

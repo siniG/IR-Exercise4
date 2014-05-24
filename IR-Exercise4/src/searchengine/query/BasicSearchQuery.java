@@ -1,4 +1,4 @@
-package clusteringengine.query;
+package searchengine.query;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -25,7 +25,7 @@ import org.apache.lucene.util.Version;
 
 import entities.IRDoc;
 
-public class BasicQueryEngine {
+public class BasicSearchQuery {
 
     protected List<String> stopwords = Arrays.asList("a", "an", "and", "are", "as", "at", "be", "but", "by", "for",
 	    "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "such", "that", "the", "their", "then",
@@ -36,7 +36,7 @@ public class BasicQueryEngine {
     private IndexReader reader;
     protected Analyzer analyzer;
 
-    public BasicQueryEngine(Directory luceneDir) {
+    public BasicSearchQuery(Directory luceneDir) {
 	this.luceneDir = luceneDir;
     }
 

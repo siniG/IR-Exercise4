@@ -1,4 +1,4 @@
-package clusteringengine.indexer;
+package searchengine.index;
 
 import java.io.IOException;
 import java.io.StringReader;

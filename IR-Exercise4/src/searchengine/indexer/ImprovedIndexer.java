@@ -1,4 +1,4 @@
-package clusteringengine.indexer;
+package searchengine.indexer;
 
 
 import java.io.Reader;
