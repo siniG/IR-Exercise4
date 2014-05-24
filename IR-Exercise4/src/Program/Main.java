@@ -10,26 +10,6 @@ public class Main {
 
 	public static void main(String[] args)
 	{
-
-        Hashtable<Integer, Integer> m = new Hashtable<Integer, Integer>();
-        int i = -1;
-        try
-        {
-            for (i = 0; i < 32000000; i++)
-            {
-                m.put(i, i);
-                System.out.println("working... i = " + i);
-            }
-
-            System.out.println("Finished! i = " + i);
-        }
-        catch (OutOfMemoryError e)
-        {
-            System.out.println("Failed! i = " + i);
-            System.out.println(e);
-        }
-
-
         // check the parameter file is given to the program.
         if (args.length == 0)
         {
