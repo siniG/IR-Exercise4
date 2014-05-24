@@ -1,5 +1,7 @@
 package Program;
 
+import java.util.Iterator;
+
 public interface IDocumentsLoader
 {
     boolean LoadDocuments();
@@ -8,5 +10,5 @@ public interface IDocumentsLoader
     int GetDocumentCluster(int documentId);
     String GetDocument(int documentId);
     int GetDocumentsCount();
-
+    Iterator<Integer> GetDocumentIterator();
 }

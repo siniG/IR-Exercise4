@@ -2,6 +2,7 @@ package Program;
 
 import java.io.*;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 /**
@@ -132,5 +133,9 @@ public class DocumentsLoader implements IDocumentsLoader
 
     public int GetDocumentsCount() {
         return documentIdByDocumentName.size();
+    }
+
+    public Iterator<Integer> GetDocumentIterator() {
+        return null;
     }
 }
