@@ -3,6 +3,9 @@ package Program;
 import java.io.*;
 import java.util.*;
 
+import com.sun.xml.internal.fastinfoset.util.CharArray;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 /**
  * handles all document loading and id handling.
  */
@@ -106,11 +109,12 @@ public class DocumentsLoader implements IDocumentsLoader
 
                 try
                 {
-                    Scanner fileScanner = new Scanner(fileToLoad);
-                    String entireFileContent = fileScanner.useDelimiter("\\Z").next();
-                    if (entireFileContent.length() == 0)
+                    String entireFileContent = FileUtils.readFileToString(fileToLoad);
+/*                    Scanner fileScanner = new Scanner(fileToLoad);
+                    String entireFileContent = fileScanner.next();
+*/                    if (entireFileContent.length() == 0)
                     {
-                        System.out.println("No content found for file: " + fileScanner.toString());
+                        System.out.println("No content found for file: " + fileToLoad.getName());
                     }
                     else
                     {
@@ -118,17 +122,27 @@ public class DocumentsLoader implements IDocumentsLoader
                         rawDocumentByDocumentId.put(currentFileDocumentId, entireFileContent);
                     }
                 }
-                catch (FileNotFoundException e)
+                catch (Exception e)
                 {
                     System.out.println("Unable to load file: " + fileToLoad.toString());
                 }
             }
         }
 
-        if (rawDocumentByDocumentId.size() == documentNameByDocumentId.size())
+        if (rawDocumentByDocumentId.size() == documentNameByDocumentId.size() &&
+            rawDocumentByDocumentId.size() == documentIdByDocumentName.size() &&
+            rawDocumentByDocumentId.size() == documentClusterIdByDocumentId.size())
         {
             // this means we successfully loaded all the documents we received in the docs file parameter.
             result = true;
+        }
+        else
+        {
+            System.out.println("Not all internal dictionaries loaded successfully. see which size does not match:");
+            System.out.println("raw documents by document id    = " + rawDocumentByDocumentId.size());
+            System.out.println("document name by document id    = " + documentNameByDocumentId.size());
+            System.out.println("document id by document name    = " + documentIdByDocumentName.size());
+            System.out.println("document cluster by document id = " + documentClusterIdByDocumentId.size());
         }
         return result;
     }
@@ -146,10 +160,9 @@ public class DocumentsLoader implements IDocumentsLoader
         {
             // get the document id
             String documentIdAsString = stringTokenizer.nextToken();
-            int documentIdAsInteger = Integer.parseInt(documentIdAsString);
-            if (documentIdAsInteger < 0)
+            if (!StringUtils.isNumeric(documentIdAsString))
             {
-                System.out.println("Document id cannot be negative, ignoring line: " + line);
+                System.out.println("Document id is not a number, ignoring line: " + line);
             }
             else
             {
@@ -163,18 +176,17 @@ public class DocumentsLoader implements IDocumentsLoader
                 else
                 {
                     // get the gold stadard cluster id
-                    String goldStadardClusterIdAsString = stringTokenizer.nextToken();
-                    int goldStandardClusterIdAsInteger = Integer.parseInt(goldStadardClusterIdAsString);
-                    if (goldStandardClusterIdAsInteger < 0)
+                    String goldStandardClusterIdAsString = stringTokenizer.nextToken();
+                    if (!StringUtils.isNumeric(goldStandardClusterIdAsString))
                     {
-                        System.out.println("Cluster id cannot be negative, ignoring line: " + line);
+                        System.out.println("Cluster id is not a number, ignoring line: " + line);
                     }
                     else
                     {
                         // all parameters of the document are valid, insert data into distionaries.
-                        documentClusterIdByDocumentId.put(documentIdAsInteger, goldStandardClusterIdAsInteger);
-                        documentIdByDocumentName.put(documentName, documentIdAsInteger);
-                        documentNameByDocumentId.put(documentIdAsInteger, documentName);
+                        documentClusterIdByDocumentId.put(Integer.parseInt(documentIdAsString), Integer.parseInt(goldStandardClusterIdAsString));
+                        documentIdByDocumentName.put(documentName, Integer.parseInt(documentIdAsString));
+                        documentNameByDocumentId.put(Integer.parseInt(documentIdAsString), documentName);
                     }
                 }
             }
