@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 /**
  * handles all document loading and id handling.
  */
-public class DocumentsLoader implements IDocumentLoader
+public class DocumentsLoader implements IDocumentsLoader
 {
     private String documentsFile;
     private Hashtable<Integer, String> documentNameByDocumentId;
@@ -23,7 +23,7 @@ public class DocumentsLoader implements IDocumentLoader
         this.documentClusterIdByDocumentId = new Hashtable<Integer, Integer>();
     }
 
-    public boolean LoadDocuments(String documentsFile)
+    public boolean LoadDocuments()
     {
         boolean result = false;
 
@@ -112,14 +112,25 @@ public class DocumentsLoader implements IDocumentLoader
     }
 
     public int GetDocumentName(int documentId) {
-        return 0;
+        int result = Integer.MIN_VALUE;
+
+        return result;
     }
 
     public int GetDocumentCluster(int documentId) {
-        return 0;
+        int result = Integer.MIN_VALUE;
+
+
+        return result;
     }
 
     public String GetDocument(int documentId) {
-        return null;
+        String result = null;
+
+        return result;
+    }
+
+    public int GetDocumentsCount() {
+        return documentIdByDocumentName.size();
     }
 }
