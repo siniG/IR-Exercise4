@@ -3,12 +3,33 @@ package Program;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
 
 	public static void main(String[] args)
 	{
+
+        Hashtable<Integer, Integer> m = new Hashtable<Integer, Integer>();
+        int i = -1;
+        try
+        {
+            for (i = 0; i < 32000000; i++)
+            {
+                m.put(i, i);
+                System.out.println("working... i = " + i);
+            }
+
+            System.out.println("Finished! i = " + i);
+        }
+        catch (OutOfMemoryError e)
+        {
+            System.out.println("Failed! i = " + i);
+            System.out.println(e);
+        }
+
+
         // check the parameter file is given to the program.
         if (args.length == 0)
         {
@@ -18,6 +39,7 @@ public class Main {
         {
             // create a dictionary to hold all parameters
             Hashtable<ParametersEnum, String> parameters = new Hashtable<ParametersEnum, String>();
+
 
             // try to load the parameters file
             if (LoadParametersFile(args[0], parameters))
@@ -49,13 +71,13 @@ public class Main {
     {
         System.out.println("Loading Parameters file: \"" + parametersFilePath + "\".");
         boolean result = false;
-        FileReader parameterFileReader = null;
-        BufferedReader parameterFileBufferedReader = null;
+        FileReader parameterFileReader;
+        BufferedReader parameterFileBufferedReader;
         try
         {
             parameterFileReader = new FileReader(parametersFilePath);
             parameterFileBufferedReader = new BufferedReader(parameterFileReader);
-            String line = "";
+            String line;
 
             // load all parameters from the parameter file.
             while ((line = parameterFileBufferedReader.readLine()) != null)
@@ -121,7 +143,8 @@ public class Main {
                     parametersHashtable.put(ParametersEnum.ClusteringAlgorithm, ClusteringAlgorithmEnum.Basic.name());
                     System.out.println("Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
                 }
-                else if (clusterAlgorithmName.equals(ClusteringAlgorithmEnum.BasicPlusPlus.name().toLowerCase()))
+                else if (clusterAlgorithmName.equals(ClusteringAlgorithmEnum.BasicPlusPlus.name().toLowerCase()) ||
+                         clusterAlgorithmName.equals("basic++"))
                 {
                     parametersHashtable.put(ParametersEnum.ClusteringAlgorithm, ClusteringAlgorithmEnum.BasicPlusPlus.name());
                     System.out.println("Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
