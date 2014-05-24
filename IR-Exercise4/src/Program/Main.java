@@ -1,7 +1,11 @@
 package Program;
 
+import ExerciseManager.ExManager;
+import ExerciseManager.IExManager;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -26,15 +30,16 @@ public class Main {
             {
                 System.out.println("Parameters loaded successfully, executing clustering process.");
 
-                // load documents, for each document:
-                    // strip html tags
-                    // add to corpus
-
-                // calculate doc distances (all to all).
-
-                // execute clustering algorithm on documents/distances
-
-                // save results
+                try
+                {
+                    IExManager exerciseManager = new ExManager(parameters);
+                    exerciseManager.LoadData();
+                    exerciseManager.ProcessData();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception during execution of exercise");
+                }
             }
             else
             {
