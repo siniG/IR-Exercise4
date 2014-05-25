@@ -17,6 +17,14 @@ public class CoordinateMatrix implements IMatrix {
 	
 	public Coordinate get(int row, int column)
 	{
+		int temp;
+		if(row > column)
+		{
+			temp = column;
+			column = row;
+			row = temp;
+		}
+		
 		double x = this.matrix.get(column*2, row);
 		double y = this.matrix.get(column*2 + 1, row);
 		
@@ -28,6 +36,14 @@ public class CoordinateMatrix implements IMatrix {
 	
 	public boolean set(int row, int column, Coordinate c)
 	{
+		int temp;
+		if(row > column)
+		{
+			temp = column;
+			column = row;
+			row = temp;
+		}
+		
 		if(c == null)
 		{
 			this.matrix.set(column * 2, row, Double.NaN);
