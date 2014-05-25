@@ -3,7 +3,8 @@ package utilities;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+//import java.nio.charset.StandardCharsets;
+//import org.apache.commons.lang3.CharEncoding;
 
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -22,8 +23,10 @@ public class HtmlStripper implements IHtmlStripper{
         ContentHandler contenthandler = new BodyContentHandler();
         Metadata metadata = new Metadata();
         Parser parser = new AutoDetectParser();
-        InputStream stream = new ByteArrayInputStream(html.getBytes(StandardCharsets.UTF_8));
-        try {
+
+        try
+        {
+            InputStream stream = new ByteArrayInputStream(html.getBytes(org.apache.commons.lang3.CharEncoding.UTF_8));
 			parser.parse(stream, contenthandler, metadata, new ParseContext());
 			result = contenthandler.toString();
 		} catch (IOException e) {
