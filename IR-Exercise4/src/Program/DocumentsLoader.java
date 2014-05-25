@@ -204,16 +204,21 @@ public class DocumentsLoader implements IDocumentsLoader
     public int GetDocumentId(String documentName) {
         int result = Integer.MIN_VALUE;
 
-        if (documentNameByDocumentId.containsKey(documentName))
+        if (documentIdByDocumentName.containsKey(documentName))
         {
-
+            result = documentIdByDocumentName.get(documentName);
         }
 
         return result;
     }
 
-    public int GetDocumentName(int documentId) {
-        int result = Integer.MIN_VALUE;
+    public String GetDocumentName(int documentId) {
+        String result = null;
+
+        if (documentNameByDocumentId.containsKey(documentId))
+        {
+            result = documentNameByDocumentId.get(documentId);
+        }
 
         return result;
     }
@@ -221,6 +226,10 @@ public class DocumentsLoader implements IDocumentsLoader
     public int GetDocumentCluster(int documentId) {
         int result = Integer.MIN_VALUE;
 
+        if (documentClusterIdByDocumentId.containsKey(documentId))
+        {
+            result = documentClusterIdByDocumentId.get(documentId);
+        }
 
         return result;
     }
@@ -228,14 +237,21 @@ public class DocumentsLoader implements IDocumentsLoader
     public String GetDocument(int documentId) {
         String result = null;
 
+        if (rawDocumentByDocumentId.containsKey(documentId))
+        {
+            result = rawDocumentByDocumentId.get(documentId);
+        }
+
         return result;
     }
 
-    public int GetDocumentsCount() {
+    public int GetDocumentsCount()
+    {
         return documentIdByDocumentName.size();
     }
 
-    public Iterator<Integer> GetDocumentIterator() {
-        return null;
+    public Iterator<Integer> GetDocumentIterator()
+    {
+        return rawDocumentByDocumentId.keySet().iterator();
     }
 }
