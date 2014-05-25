@@ -9,13 +9,12 @@ import java.util.List;
 import Program.DocumentsLoader;
 import Program.IDocumentsLoader;
 import Program.ParametersEnum;
-
 import entities.BasicIRDoc;
+import entities.Coordinate;
+import entities.CoordinateMatrix;
 import entities.IMatrix;
 import entities.IRDoc;
-import entities.MappedMatrix;
 import entities.SearchResult;
-
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
 import utilities.utils;
@@ -78,7 +77,8 @@ public class ExManager implements IExManager {
 	
 	public void ProcessData() throws Exception 
 	{
-		this.matrix = new MappedMatrix(numOfDocs, numOfDocs);
+		this.matrix = new CoordinateMatrix(numOfDocs, numOfDocs);
+		this.matrix.init();
 		
 		System.out.println("Info: Start processing data");
 		for(int i = 0; i < irDocs.size(); i++)
@@ -96,11 +96,11 @@ public class ExManager implements IExManager {
 
 	private void CalculateAndStoreDistance(int id, List<SearchResult> results) {
 		
-		double distance;
+		Coordinate coordinateOnGraph;
 		for(SearchResult result : results)
 		{
-			distance = utils.GetOppositeByTangent(result.getCosineSimilariy(), result.getScore());
-			this.matrix.insert(id, result.getDocId(), distance);
+			coordinateOnGraph = utils.GetOppositeByTangent(result.getCosineSimilariy(), result.getScore());
+			this.matrix.set(id, result.getDocId(), coordinateOnGraph);
 		}
 	}
 	

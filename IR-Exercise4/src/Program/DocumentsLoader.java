@@ -3,7 +3,6 @@ package Program;
 import java.io.*;
 import java.util.*;
 
-import com.sun.xml.internal.fastinfoset.util.CharArray;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 /**

@@ -4,7 +4,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.TextField;
-
 import utilities.HtmlStripper;
 import utilities.IHtmlStripper;
 

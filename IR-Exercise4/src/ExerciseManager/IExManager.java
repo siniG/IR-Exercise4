@@ -1,6 +1,5 @@
 package ExerciseManager;
 
-import java.io.FileNotFoundException;
 
 public interface IExManager {
 

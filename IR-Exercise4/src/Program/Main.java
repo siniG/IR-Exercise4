@@ -7,13 +7,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Hashtable;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) throws IOException
+	{		
         // check the parameter file is given to the program.
         if (args.length == 0)
         {
