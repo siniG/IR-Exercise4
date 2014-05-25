@@ -99,8 +99,11 @@ public class ExManager implements IExManager {
 		Coordinate coordinateOnGraph;
 		for(SearchResult result : results)
 		{
-			coordinateOnGraph = utils.GetOppositeByTangent(result.getCosineSimilariy(), result.getScore());
-			this.matrix.set(id, result.getDocId(), coordinateOnGraph);
+			if((coordinateOnGraph = this.matrix.get(id, result.getDocId())) == null)
+			{
+				coordinateOnGraph = utils.GetOppositeByTangent(result.getCosineSimilariy(), result.getScore());
+				this.matrix.set(id, result.getDocId(), coordinateOnGraph);
+			}
 		}
 	}
 	
