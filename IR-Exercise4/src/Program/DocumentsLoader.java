@@ -3,6 +3,7 @@ package Program;
 import java.io.*;
 import java.util.*;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 /**
@@ -142,6 +143,10 @@ public class DocumentsLoader implements IDocumentsLoader
             System.out.println("document name by document id    = " + documentNameByDocumentId.size());
             System.out.println("document id by document name    = " + documentIdByDocumentName.size());
             System.out.println("document cluster by document id = " + documentClusterIdByDocumentId.size());
+
+            Set<Integer> documentIdsMinusRawDocumentIds = Sets.difference(documentNameByDocumentId.keySet(), rawDocumentByDocumentId.keySet());
+            System.out.println("different ids between all raw documents and documents file data: " + documentIdsMinusRawDocumentIds.toString());
+
         }
         return result;
     }
@@ -182,7 +187,7 @@ public class DocumentsLoader implements IDocumentsLoader
                     }
                     else
                     {
-                        // all parameters of the document are valid, insert data into distionaries.
+                        // all parameters of the document are valid, insert data into dictionaries.
                         documentClusterIdByDocumentId.put(Integer.parseInt(documentIdAsString), Integer.parseInt(goldStandardClusterIdAsString));
                         documentIdByDocumentName.put(documentName, Integer.parseInt(documentIdAsString));
                         documentNameByDocumentId.put(Integer.parseInt(documentIdAsString), documentName);
