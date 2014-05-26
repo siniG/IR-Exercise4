@@ -32,12 +32,15 @@ public class Main {
                 try
                 {
                     IExManager exerciseManager = new ExManager(parameters);
-                    exerciseManager.LoadData();
-                    exerciseManager.ProcessData();
+                    if(exerciseManager.LoadData())
+                    {
+                    	exerciseManager.ProcessData();
+                    }
+                    	
                 }
                 catch (Exception e)
                 {
-                    System.out.println("Exception during execution of exercise");
+                    System.out.println("Exception during execution of exercise. ex=" + e.getMessage() + " stack=" + e.getStackTrace());
                 }
             }
             else

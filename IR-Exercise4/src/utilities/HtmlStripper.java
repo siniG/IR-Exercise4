@@ -6,12 +6,14 @@ import java.io.InputStream;
 //import java.nio.charset.StandardCharsets;
 //import org.apache.commons.lang3.CharEncoding;
 
+
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
+import org.apache.tika.sax.WriteOutContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -20,7 +22,7 @@ public class HtmlStripper implements IHtmlStripper{
 	{
 		String result = "";
 		
-        ContentHandler contenthandler = new BodyContentHandler();
+        ContentHandler contenthandler = new BodyContentHandler(10000000);
         Metadata metadata = new Metadata();
         Parser parser = new AutoDetectParser();
 

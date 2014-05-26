@@ -61,13 +61,13 @@ public class CoordinateMatrix implements IMatrix {
 	public void init()
 	{
 		matrix.resetMatrix();
-		
+		/*
 		for(int i = 0; i < this.width; i++)
 		{
 			for(int j = 0; j < this.height; j++)
 			{
 				matrix.set(i, j, Double.NaN);
 			}
-		}
+		}*/
 	}
 }

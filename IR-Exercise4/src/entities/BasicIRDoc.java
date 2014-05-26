@@ -2,13 +2,27 @@ package entities;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldType;
+import org.apache.lucene.document.IntField;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.TextField;
+
 import utilities.HtmlStripper;
 import utilities.IHtmlStripper;
 
 
 public class BasicIRDoc implements IRDoc {
+	
+	public static final FieldType TYPE_STORED = new FieldType();
+
+    static {
+        TYPE_STORED.setIndexed(true);
+        TYPE_STORED.setTokenized(true);
+        TYPE_STORED.setStored(true);
+        TYPE_STORED.setStoreTermVectors(true);
+        TYPE_STORED.setStoreTermVectorPositions(true);
+        TYPE_STORED.freeze();
+    }
 	
     public static IRDoc create(int docId, String content) {
     	
@@ -44,14 +58,12 @@ public class BasicIRDoc implements IRDoc {
 	Document newDoc = new Document();
 	
 	Field f;
-	
-	this.content = stripper.GetHtmlBody(this.rawContent);
-	
-	f = new TextField("content", this.content, Field.Store.YES);
-	f.setBoost(this.boost);
+
+	this.content = stripper.GetHtmlBody(this.rawContent).replaceAll("\\s+", " ").replaceAll("\n", " ");
+	f = new Field("content", this.content, TYPE_STORED);	
 	newDoc.add(f);
 
-	f = new LongField("id", this.id, Field.Store.YES);
+	f = new IntField("docid", this.id, Field.Store.YES);
 	newDoc.add(f);
 
 	return newDoc;

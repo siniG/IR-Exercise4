@@ -38,7 +38,7 @@ public class BasicSearchEngine implements ISearchEngine {
 
 	if (this.indexer == null) {
 	    BasicIndexer indexer = new ImprovedIndexer(this.luceneDir);
-	    indexer.setStopWords(this.stopwords);
+	    //indexer.setStopWords(this.stopwords);
 
 	    if (indexer.OpenIndexWriter()) {
 		this.indexer = indexer;
@@ -100,7 +100,7 @@ public class BasicSearchEngine implements ISearchEngine {
 		double cosineSim;
 		for (ScoreDoc doc : docs) {
 		    Document tempDoc = searcher.getDoc(doc.doc);
-		    id = tempDoc.get("id");
+		    id = tempDoc.get("docid");
 		    cosineSim = this.searcher.getCosineSimilarity(luceneDocId, doc.doc);
 		    
 			result.add(new SearchResult(Integer.valueOf(id), doc.score, cosineSim));
@@ -122,7 +122,7 @@ public class BasicSearchEngine implements ISearchEngine {
 		}
 
 		this.searcher = new ImprovedSearchQuery(this.luceneDir);
-		this.searcher.setStopWords(this.stopwords);
+		//this.searcher.setStopWords(this.stopwords);
 		this.searcher.Init();
 	    } catch (IOException e) {
 		this.searcher = null;
@@ -138,6 +138,6 @@ public class BasicSearchEngine implements ISearchEngine {
     
     @Override
     public void setStopwords(List<String> stopwords) {
-	this.stopwords = stopwords;
+	//this.stopwords = stopwords;
     }
 }
