@@ -28,7 +28,7 @@ public class CoordinateMatrix implements IMatrix {
 		double x = this.matrix.get(column*2, row);
 		double y = this.matrix.get(column*2 + 1, row);
 		
-		Coordinate c = (Double.isNaN(x) || Double.isNaN(y)) ? null : new Coordinate(x, y); 	
+		Coordinate c = (Double.isNaN(x) || Double.isNaN(y) || x == 0.0 || y == 0.0) ? null : new Coordinate(x, y); 	
 		
 		return c;
 		

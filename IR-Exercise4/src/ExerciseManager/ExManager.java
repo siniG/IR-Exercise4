@@ -90,7 +90,6 @@ public class ExManager implements IExManager {
 			CalculateAndStoreDistance(irDocs.get(i).getId(), results);
 		}
 		
-		
 		System.out.println("Info: Done processing data");
 	}
 
@@ -98,13 +97,14 @@ public class ExManager implements IExManager {
 		
 		Coordinate coordinateOnGraph;
 		//TODO: get cosine similarity from matrix, and if doesn't exist only then calculate based on lucene!!!!
-		double distance;
-
+		double cosineSimilarity;
 		for(SearchResult result : results)
 		{
+			
 			if((coordinateOnGraph = this.matrix.get(id, result.getDocId())) == null)
 			{
-				coordinateOnGraph = utils.GetOppositeByTangent(result.getCosineSimilariy(), result.getScore());
+				cosineSimilarity = this.searchEngine.getCosineSimilarity(id, result.getDocId());
+				coordinateOnGraph = utils.GetOppositeByTangent(cosineSimilarity, result.getScore());
 				this.matrix.set(id, result.getDocId(), coordinateOnGraph);
 			}
 		}

@@ -97,13 +97,13 @@ public class BasicSearchEngine implements ISearchEngine {
 	    //run query and calculate cosine similarity between query and results received
 		List<ScoreDoc> docs = searcher.query(irDoc, retSize);
 		String id;
-		double cosineSim;
+		//double cosineSim;
 		for (ScoreDoc doc : docs) {
 		    Document tempDoc = searcher.getDoc(doc.doc);
 		    id = tempDoc.get("docid");
-		    cosineSim = this.searcher.getCosineSimilarity(luceneDocId, doc.doc);
+		    //cosineSim = this.searcher.getCosineSimilarity(luceneDocId, doc.doc);
 		    
-			result.add(new SearchResult(Integer.valueOf(id), doc.score, cosineSim));
+			result.add(new SearchResult(Integer.valueOf(id), doc.score));
 		}
 
 	    } catch (IOException e) {
@@ -114,7 +114,7 @@ public class BasicSearchEngine implements ISearchEngine {
 	return result;
     }
     
-    public Double GetCosineSimilarity(int docId1, int docId2)
+    public Double getCosineSimilarity(int docId1, int docId2)
     {
     	Double result = null;
     	Integer luceneDocId1 = this.searcher.getLuceneDocIdByForeignId(docId1);
