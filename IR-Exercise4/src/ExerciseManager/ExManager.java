@@ -97,6 +97,9 @@ public class ExManager implements IExManager {
 	private void CalculateAndStoreDistance(int id, List<SearchResult> results) {
 		
 		Coordinate coordinateOnGraph;
+		//TODO: get cosine similarity from matrix, and if doesn't exist only then calculate based on lucene!!!!
+		double distance;
+
 		for(SearchResult result : results)
 		{
 			if((coordinateOnGraph = this.matrix.get(id, result.getDocId())) == null)
@@ -106,6 +109,4 @@ public class ExManager implements IExManager {
 			}
 		}
 	}
-	
-	
 }

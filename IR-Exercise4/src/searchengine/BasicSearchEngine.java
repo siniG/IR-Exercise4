@@ -114,6 +114,23 @@ public class BasicSearchEngine implements ISearchEngine {
 	return result;
     }
     
+    public Double GetCosineSimilarity(int docId1, int docId2)
+    {
+    	Double result = null;
+    	Integer luceneDocId1 = this.searcher.getLuceneDocIdByForeignId(docId1);
+    	Integer luceneDocId2 = this.searcher.getLuceneDocIdByForeignId(docId2);
+    	
+    	if(luceneDocId1 == null || luceneDocId2 == null)
+    	{
+    		System.out.println("Error: could not find documents in lucene with following ids: " + docId1 + ", " + docId2 );
+    		return result;
+    	}
+    	
+    	this.searcher.getCosineSimilarity(docId1, docId2);
+    	
+    	return result;
+    }
+    
     protected synchronized BasicSearchQuery getSearcher() {
 	if (this.searcher == null || this.indexChanged) {
 	    try {
