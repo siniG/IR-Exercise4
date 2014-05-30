@@ -104,17 +104,23 @@ public class DocumentsLoader implements IDocumentsLoader
 
         for (File fileToLoad : allFiles)
         {
+            // inner loop is here since some of the file names are the same, and we need to perform a match using the
+            // full file path (directory structure and file name.
             for (Map.Entry<String, Integer> entry : documentIdByDocumentName.entrySet())
             {
+                // we need to compare on ly the length of the key from the docs file and the current full file path.
                 int currentKeyLength = entry.getKey().length();
                 int keyLength = fileToLoad.getAbsolutePath().length() - currentKeyLength;
+
+                // only check file that actually might exist
                 if (keyLength > 0)
                 {
+                    // some file name fixing for non-unix operating systems.
                     String fileNameSuffix = fileToLoad.getAbsolutePath().substring(keyLength);
                     fileNameSuffix = fileNameSuffix.replace('\\', '/');
                     if (entry.getKey().endsWith(fileNameSuffix))
                     {
-                        // this file should be loaded since it represents a document
+                        // this file should be loaded since it represents a document from the documents file.
                         int currentFileDocumentId = entry.getValue();
                         try
                         {
@@ -128,6 +134,9 @@ public class DocumentsLoader implements IDocumentsLoader
                                 // file should be loaded since it is a document, and it has content.
                                 rawDocumentByDocumentId.put(currentFileDocumentId, entireFileContent);
                             }
+
+                            // no need to continue the inner loop in search of other documents with same name and path.
+                            break;
                         }
                         catch (Exception e)
                         {
@@ -138,11 +147,13 @@ public class DocumentsLoader implements IDocumentsLoader
             }
         }
 
+        // check we loaded all the dictionaries.
         if (rawDocumentByDocumentId.size() == documentNameByDocumentId.size() &&
             rawDocumentByDocumentId.size() == documentIdByDocumentName.size() &&
             rawDocumentByDocumentId.size() == documentClusterIdByDocumentId.size())
         {
             // this means we successfully loaded all the documents we received in the docs file parameter.
+            System.out.println("All documents loaded successfully. we have " + rawDocumentByDocumentId.size() + " documents.");
             result = true;
         }
         else
