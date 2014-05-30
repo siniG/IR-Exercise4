@@ -1,11 +1,13 @@
 package Program;
 
-import java.io.*;
-import java.util.*;
-
 import com.google.common.collect.Sets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.*;
 /**
  * handles all document loading and id handling.
  */
@@ -102,29 +104,36 @@ public class DocumentsLoader implements IDocumentsLoader
 
         for (File fileToLoad : allFiles)
         {
-            if (documentIdByDocumentName.containsKey(fileToLoad.getName()))
+            for (Map.Entry<String, Integer> entry : documentIdByDocumentName.entrySet())
             {
-                // this file should be loaded since it represents a document
-                int currentFileDocumentId = documentIdByDocumentName.get(fileToLoad.getName());
-
-                try
+                int currentKeyLength = entry.getKey().length();
+                int keyLength = fileToLoad.getAbsolutePath().length() - currentKeyLength;
+                if (keyLength > 0)
                 {
-                    String entireFileContent = FileUtils.readFileToString(fileToLoad);
-/*                    Scanner fileScanner = new Scanner(fileToLoad);
-                    String entireFileContent = fileScanner.next();
-*/                    if (entireFileContent.length() == 0)
+                    String fileNameSuffix = fileToLoad.getAbsolutePath().substring(keyLength);
+                    fileNameSuffix = fileNameSuffix.replace('\\', '/');
+                    if (entry.getKey().endsWith(fileNameSuffix))
                     {
-                        System.out.println("No content found for file: " + fileToLoad.getName());
+                        // this file should be loaded since it represents a document
+                        int currentFileDocumentId = entry.getValue();
+                        try
+                        {
+                            String entireFileContent = FileUtils.readFileToString(fileToLoad);
+                            if (entireFileContent.length() == 0)
+                            {
+                                System.out.println("No content found for file: " + fileToLoad.getName());
+                            }
+                            else
+                            {
+                                // file should be loaded since it is a document, and it has content.
+                                rawDocumentByDocumentId.put(currentFileDocumentId, entireFileContent);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Unable to load file: " + fileToLoad.toString());
+                        }
                     }
-                    else
-                    {
-                        // file should be loaded since it is a document, and it has content.
-                        rawDocumentByDocumentId.put(currentFileDocumentId, entireFileContent);
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.out.println("Unable to load file: " + fileToLoad.toString());
                 }
             }
         }
