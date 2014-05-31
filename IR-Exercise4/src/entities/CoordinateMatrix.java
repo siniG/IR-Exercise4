@@ -8,14 +8,14 @@ public class CoordinateMatrix implements IMatrix {
 	private int width, height;
 	public CoordinateMatrix(int rows, int columns) throws IOException
 	{
-		this.width = columns * 2;
+		this.width = columns;
 		this.height = rows;
-		matrix = new LargeDoubleMatrix("coordinate_matrix", columns * 2, rows);
+		matrix = new LargeDoubleMatrix("coordinate_matrix", columns, rows);
 		
 		
 	}
 	
-	public Coordinate get(int row, int column)
+	public Double get(int row, int column)
 	{
 		int temp;
 		if(row > column)
@@ -25,20 +25,19 @@ public class CoordinateMatrix implements IMatrix {
 			row = temp;
 		}
 		
-		double x = this.matrix.get(column*2, row);
-		double y = this.matrix.get(column*2 + 1, row);
+		Double distance = this.matrix.get(column, row);
 
         // check if value exists, only return a calculated value.
         // 0.0 means the documents are the same.
-		Coordinate c = ((Double.isNaN(x)) ||
-                        (Double.isNaN(y)) ||
-                        (x == 0.0 && y == 0.0)) ? null : new Coordinate(x, y);
+		distance =  ((distance == null) ||
+					(Double.isNaN(distance)) ||
+					(distance == 0.0)) ? null : distance;
 		
-		return c;
+		return distance;
 		
 	}
 	
-	public boolean set(int row, int column, Coordinate c)
+	public boolean set(int row, int column, Double distance)
 	{
 		// only calculate half matrix
 		if(row > column)
@@ -49,15 +48,13 @@ public class CoordinateMatrix implements IMatrix {
 			row = temp;
 		}
 		
-		if(c == null)
+		if(distance == null)
 		{
-			this.matrix.set(column * 2, row, Double.NaN);
-			this.matrix.set(column * 2 + 1, row, Double.NaN);
+			this.matrix.set(column, row, Double.NaN);
 		}
 		else
 		{
-			this.matrix.set(column * 2, row, c.getXCoordinate());
-			this.matrix.set(column * 2 + 1, row, c.getYCoordinate());
+			this.matrix.set(column, row, distance);
 		}
 		
 		return true;
