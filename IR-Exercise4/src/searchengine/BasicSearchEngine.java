@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
@@ -29,6 +30,11 @@ public class BasicSearchEngine implements ISearchEngine {
 	public BasicSearchEngine(String engineDir)
 		throws IOException
 	{
+		File file = new File(engineDir);
+		if(file.isDirectory() && file.exists())
+		{
+			FileUtils.deleteDirectory(file);
+		}
 		this.luceneDir = FSDirectory.open(new File(engineDir));
 		this.indexChanged = false;
 		this.stopwords = null;
@@ -126,7 +132,7 @@ public class BasicSearchEngine implements ISearchEngine {
     		return result;
     	}
     	
-    	this.searcher.getCosineSimilarity(docId1, docId2);
+    	result = this.searcher.getCosineSimilarity(luceneDocId1, luceneDocId2);
     	
     	return result;
     }

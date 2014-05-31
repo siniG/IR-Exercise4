@@ -2,11 +2,11 @@ package entities;
 
 import java.io.IOException;
 
-public class CoordinateMatrix implements IMatrix {
+public class DistanceMatrix implements IMatrix {
 
 	private LargeDoubleMatrix matrix;
 	private int width, height;
-	public CoordinateMatrix(int rows, int columns) throws IOException
+	public DistanceMatrix(int rows, int columns) throws IOException
 	{
 		this.width = columns;
 		this.height = rows;
