@@ -97,4 +97,6 @@ public class VectorMatrix implements IMatrix {
     {
         return this.matrix.width();
     }
+    
+    
 }
