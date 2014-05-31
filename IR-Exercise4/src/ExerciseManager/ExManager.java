@@ -81,7 +81,7 @@ public class ExManager implements IExManager {
 	
 	public void ProcessData() throws Exception 
 	{
-		this.matrix = new CoordinateMatrix(numOfDocs, numOfDocs);
+		this.matrix = new CoordinateMatrix(numOfDocs+1, numOfDocs+1);
 		this.matrix.init();
 		
 		System.out.println("INFO: Start processing data");
@@ -101,15 +101,16 @@ public class ExManager implements IExManager {
 		
 		Coordinate coordinateOnGraph;
 		//TODO: get cosine similarity from matrix, and if doesn't exist only then calculate based on lucene!!!!
+		Double distance;
 		double cosineSimilarity;
 		for(SearchResult result : results)
 		{
 			
-			if((coordinateOnGraph = this.matrix.get(id, result.getDocId())) == null)
+			if((distance = this.matrix.get(id, result.getDocId())) == null)
 			{
 				cosineSimilarity = this.searchEngine.getCosineSimilarity(id, result.getDocId());
 				coordinateOnGraph = utils.GetOppositeByTangent(cosineSimilarity, result.getScore());
-				this.matrix.set(id, result.getDocId(), coordinateOnGraph);
+				this.matrix.set(id, result.getDocId(), distance);
 			}
 		}
 	}
