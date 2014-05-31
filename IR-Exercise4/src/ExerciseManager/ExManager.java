@@ -73,8 +73,9 @@ public class ExManager implements IExManager {
 		if (!this.searchEngine.index(irDocs))
         {
             System.out.println("ERROR: Search engine could index all documents, Quitting.");
+            return false;
         }
-		
+
 		return true;
 	}
 	
@@ -92,7 +93,7 @@ public class ExManager implements IExManager {
 			//calculate distance between result and query
 			CalculateAndStoreDistance(irDocs.get(i).getId(), results);
 		}
-		
+
 		System.out.println("INFO: Done processing data");
 	}
 
