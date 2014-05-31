@@ -10,8 +10,7 @@ import Program.DocumentsLoader;
 import Program.IDocumentsLoader;
 import Program.ParametersEnum;
 import entities.BasicIRDoc;
-import entities.Coordinate;
-import entities.CoordinateMatrix;
+import entities.VectorMatrix;
 import entities.IMatrix;
 import entities.IRDoc;
 import entities.SearchResult;
@@ -81,10 +80,11 @@ public class ExManager implements IExManager {
 	
 	public void ProcessData() throws Exception 
 	{
-		this.matrix = new CoordinateMatrix(numOfDocs+1, numOfDocs+1);
+		this.matrix = new VectorMatrix(numOfDocs+1, numOfDocs+1);
 		this.matrix.init();
 		
 		System.out.println("INFO: Start processing data");
+		
 		for(int i = 0; i < irDocs.size(); i++)
 		{
 			//for every irDoc, run search query matching this document
@@ -99,17 +99,15 @@ public class ExManager implements IExManager {
 
 	private void CalculateAndStoreDistance(int id, List<SearchResult> results) {
 		
-		Coordinate coordinateOnGraph;
 		//TODO: get cosine similarity from matrix, and if doesn't exist only then calculate based on lucene!!!!
 		Double distance;
-		double cosineSimilarity;
+		Double cosineSimilarity;
 		for(SearchResult result : results)
-		{
-			
+		{	
 			if((distance = this.matrix.get(id, result.getDocId())) == null)
 			{
 				cosineSimilarity = this.searchEngine.getCosineSimilarity(id, result.getDocId());
-				coordinateOnGraph = utils.GetOppositeByTangent(cosineSimilarity, result.getScore());
+				distance = utils.CalculateHypotenuseFromOrigin(cosineSimilarity, result.getScore());
 				this.matrix.set(id, result.getDocId(), distance);
 			}
 		}

@@ -14,15 +14,14 @@ import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 
@@ -116,6 +115,7 @@ public class BasicSearchQuery {
 		initAnalyzer();
 		this.reader = DirectoryReader.open(this.luceneDir);
 		this.searcher = new IndexSearcher(this.reader);
+		this.searcher.setSimilarity(new DefaultSimilarity());
 		this.cosineSimilarity = new CosineDocumentSimilarity(this.reader);
 	}
 

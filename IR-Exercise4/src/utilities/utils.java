@@ -1,21 +1,22 @@
 package utilities;
 
-import java.lang.Math;
-
-import entities.Coordinate;
-
 public class utils {
 
-	public static Coordinate GetOppositeByTangent(double radAngle, double xCoordinate)
+	public static double CalculateHypotenuseFromOrigin(double cosineAngle, double adjacentDistance)
 	{
 		
-		double result = 0.0;
-		double tan = Math.tan(radAngle);
+		double result;
 		
-		result = tan * xCoordinate;
-		Coordinate c = new Coordinate(xCoordinate, result);
+		if(cosineAngle == 0.0 || Double.isNaN(cosineAngle)|| Double.isNaN(adjacentDistance))
+		{
+			result = Double.NaN;
+		}
+		else
+		{
+			result = adjacentDistance / cosineAngle;
+		}
 		
-		return c;
+		return result;
 	}
 	
 	
