@@ -94,7 +94,7 @@ public class ExManager implements IExManager {
 			CalculateAndStoreDistance(irDocs.get(i).getId(), results);
 		}
 
-		System.out.println("INFO: Done processing data");
+        System.out.println("INFO: Done processing data");
 	}
 
 	private void CalculateAndStoreDistance(int id, List<SearchResult> results) {

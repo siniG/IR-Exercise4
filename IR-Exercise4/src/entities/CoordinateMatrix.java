@@ -64,4 +64,14 @@ public class CoordinateMatrix implements IMatrix {
 	{
 		matrix.resetMatrix();
 	}
+
+    public int getRowsNumber()
+    {
+        return this.matrix.height();
+    }
+
+    public int getColumnsNumber()
+    {
+        return this.matrix.width();
+    }
 }
