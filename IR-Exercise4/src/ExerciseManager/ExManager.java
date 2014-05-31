@@ -35,7 +35,8 @@ public class ExManager implements IExManager {
 		matrix = null;
 	}
 	
-	public boolean LoadData() {
+	public boolean LoadData()
+    {
 		docLoader = new DocumentsLoader(this.params.get(ParametersEnum.DocsFile));
 		
 		if(!docLoader.LoadDocuments())
@@ -64,8 +65,7 @@ public class ExManager implements IExManager {
 			//create ir-doc (strips html)
 			IRDoc doc = BasicIRDoc.create(id, rawDoc);
 			irDocs.add(doc);
-			
-			}
+		}
 		
 		//insert docs to search engine
 		System.out.println("Info: completed iterating over docs. total docs=" + irDocs.size());

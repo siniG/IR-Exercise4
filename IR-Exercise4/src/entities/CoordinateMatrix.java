@@ -27,8 +27,12 @@ public class CoordinateMatrix implements IMatrix {
 		
 		double x = this.matrix.get(column*2, row);
 		double y = this.matrix.get(column*2 + 1, row);
-		
-		Coordinate c = (Double.isNaN(x) || Double.isNaN(y) || x == 0.0 || y == 0.0) ? null : new Coordinate(x, y); 	
+
+        // check if value exists, only return a calculated value.
+        // 0.0 means the documents are the same.
+		Coordinate c = ((Double.isNaN(x)) ||
+                        (Double.isNaN(y)) ||
+                        (x == 0.0 && y == 0.0)) ? null : new Coordinate(x, y);
 		
 		return c;
 		
@@ -36,9 +40,10 @@ public class CoordinateMatrix implements IMatrix {
 	
 	public boolean set(int row, int column, Coordinate c)
 	{
-		int temp;
+		// only calculate half matrix
 		if(row > column)
 		{
+            int temp;
 			temp = column;
 			column = row;
 			row = temp;
@@ -61,13 +66,5 @@ public class CoordinateMatrix implements IMatrix {
 	public void init()
 	{
 		matrix.resetMatrix();
-		/*
-		for(int i = 0; i < this.width; i++)
-		{
-			for(int j = 0; j < this.height; j++)
-			{
-				matrix.set(i, j, Double.NaN);
-			}
-		}*/
 	}
 }
