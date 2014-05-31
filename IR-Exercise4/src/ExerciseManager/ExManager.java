@@ -80,7 +80,7 @@ public class ExManager implements IExManager {
 	
 	public void ProcessData() throws Exception 
 	{
-		this.matrix = new CoordinateMatrix(numOfDocs, numOfDocs);
+		this.matrix = new CoordinateMatrix(numOfDocs+1, numOfDocs+1);
 		this.matrix.init();
 		
 		System.out.println("INFO: Start processing data");
