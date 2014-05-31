@@ -17,7 +17,7 @@ public class Cluster<T>
         members = new ArrayList<T>();
     }
 
-    public Centroid GetCentroid()
+    public ICentroid GetCentroid()
     {
         return centroid;
     }

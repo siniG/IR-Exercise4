@@ -1,7 +1,6 @@
 package ClusteringAlgorithms.KMeans;
 
-import ClusteringAlgorithms.Cluster;
-import ClusteringAlgorithms.IClusteringAlgorithm;
+import ClusteringAlgorithms.*;
 import entities.IMatrix;
 
 import java.util.ArrayList;
@@ -9,11 +8,11 @@ import java.util.List;
 
 public class KMeans implements IClusteringAlgorithm
 {
-    private IMatrix matrix;
+    private IMatrix distanceMatrix;
 
-    public KMeans(IMatrix matrix)
+    public KMeans(IMatrix distanceMatrix)
     {
-        this.matrix = matrix;
+        this.distanceMatrix = distanceMatrix;
     }
 
     /**
@@ -22,18 +21,25 @@ public class KMeans implements IClusteringAlgorithm
      * @param maxIterations
      * @return
      */
-    public List<Cluster> GetClusters(int numberOfClusters, int maxIterations)
+    public List<ICluster> GetClusters(int numberOfClusters, int maxIterations)
         {
         // initialize clustering
-        ArrayList<Cluster> result = new ArrayList<Cluster>(numberOfClusters);
+        List<ICluster> result = new ArrayList<ICluster>(numberOfClusters);
 
         if (numberOfClusters < 2)
         {
             System.out.println("ERROR: minimum number of clusters is 2.");
         }
+        else if (distanceMatrix.getRowsNumber() != distanceMatrix.getColumnsNumber())
+        {
+            System.out.println("ERROR: matrix is not a perfect square. rows and columns number are different.");
+        }
         else
         {
             boolean clusterChangesOccured = false;
+
+            // initialize first centroids
+            List<ICentroid> centroids = GetInitialCentroids(numberOfClusters);
 
             // loop until done
             while ((maxIterations > 0) &&
@@ -45,9 +51,22 @@ public class KMeans implements IClusteringAlgorithm
                 // compute mean of each cluster
 
                 // update clustering based on new means
+                UpdateClusters(result, centroids);
             }
 
         }
         return result;
+    }
+
+    private List<ICentroid> GetInitialCentroids(int numberOfCentroids)
+    {
+        List<ICentroid> result = new ArrayList<ICentroid>(numberOfCentroids);
+
+        return result;
+    }
+
+    private void UpdateClusters(List<ICluster> clusters, List<ICentroid> centroids)
+    {
+
     }
 }
