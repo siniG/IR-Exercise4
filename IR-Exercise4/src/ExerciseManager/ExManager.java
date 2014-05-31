@@ -83,17 +83,17 @@ public class ExManager implements IExManager {
 		this.matrix = new CoordinateMatrix(numOfDocs, numOfDocs);
 		this.matrix.init();
 		
-		System.out.println("Info: Start processing data");
+		System.out.println("INFO: Start processing data");
 		for(int i = 0; i < irDocs.size(); i++)
 		{
 			//for every irDoc, run search query matching this document
 			List<SearchResult> results = this.searchEngine.search(irDocs.get(i), numOfDocs);
-			System.out.println("Info: not of results returned for doc " + irDocs.get(i).getId() + " from search=" + results.size());
+			System.out.println("INFO: not of results returned for doc " + irDocs.get(i).getId() + " from search=" + results.size());
 			//calculate distance between result and query
 			CalculateAndStoreDistance(irDocs.get(i).getId(), results);
 		}
 		
-		System.out.println("Info: Done processing data");
+		System.out.println("INFO: Done processing data");
 	}
 
 	private void CalculateAndStoreDistance(int id, List<SearchResult> results) {
