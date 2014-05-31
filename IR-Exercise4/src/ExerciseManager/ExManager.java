@@ -10,7 +10,7 @@ import Program.DocumentsLoader;
 import Program.IDocumentsLoader;
 import Program.ParametersEnum;
 import entities.BasicIRDoc;
-import entities.DistanceMatrix;
+import entities.VectorMatrix;
 import entities.IMatrix;
 import entities.IRDoc;
 import entities.SearchResult;
@@ -80,7 +80,7 @@ public class ExManager implements IExManager {
 	
 	public void ProcessData() throws Exception 
 	{
-		this.matrix = new DistanceMatrix(numOfDocs+1, numOfDocs+1);
+		this.matrix = new VectorMatrix(numOfDocs+1, numOfDocs+1);
 		this.matrix.init();
 		
 		System.out.println("INFO: Start processing data");

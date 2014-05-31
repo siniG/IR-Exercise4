@@ -1,18 +1,42 @@
 package entities;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
-public class DistanceMatrix implements IMatrix {
+import org.apache.commons.lang3.ArrayUtils;
+
+public class VectorMatrix implements IMatrix {
 
 	private LargeDoubleMatrix matrix;
 	private int width, height;
-	public DistanceMatrix(int rows, int columns) throws IOException
+	public VectorMatrix(int rows, int columns) throws IOException
 	{
 		this.width = columns;
 		this.height = rows;
 		matrix = new LargeDoubleMatrix("coordinate_matrix", columns, rows);
 		
 		
+	}
+	
+	public double[] getRow(int row)
+	{
+		if(row > this.height)
+			return null;
+		
+		double[] vector = new double[this.width];
+		
+		Double value;
+		for(int i = 0; i < this.width; i++)
+		{
+			value = ((value = this.get(row, i)) == null) ? 0.0 : value;
+			
+			vector[i] = value;
+		}
+		
+		
+		return vector;
 	}
 	
 	public Double get(int row, int column)
