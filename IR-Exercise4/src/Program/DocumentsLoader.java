@@ -46,13 +46,13 @@ public class DocumentsLoader implements IDocumentsLoader
                 ProcessLineFromDocumentsFile(line);
             }
 
-            System.out.println("Loaded documents file " + documentsFile + " successfully, " + documentNameByDocumentId.size() + " documents listed in the file.");
-            System.out.println("Starting to load all the documents themselves, this might take some time...");
+            System.out.println("INFO: Loaded documents file " + documentsFile + " successfully, " + documentNameByDocumentId.size() + " documents listed in the file.");
+            System.out.println("INFO: Starting to load all the documents themselves, this might take some time...");
 
             // try loading all the actual document data from the disk.
             if (!LoadDocumentsContentFromFiles())
             {
-                System.out.println("Not all document were successfully loaded, check your input.");
+                System.out.println("ERROR: Not all document were successfully loaded, check your input.");
             }
             else
             {
@@ -127,7 +127,7 @@ public class DocumentsLoader implements IDocumentsLoader
                             String entireFileContent = FileUtils.readFileToString(fileToLoad);
                             if (entireFileContent.length() == 0)
                             {
-                                System.out.println("No content found for file: " + fileToLoad.getName());
+                                System.out.println("ERROR: No content found for file: " + fileToLoad.getName());
                             }
                             else
                             {
@@ -140,7 +140,7 @@ public class DocumentsLoader implements IDocumentsLoader
                         }
                         catch (Exception e)
                         {
-                            System.out.println("Unable to load file: " + fileToLoad.toString());
+                            System.out.println("ERROR: Unable to load file: " + fileToLoad.toString());
                         }
                     }
                 }
@@ -153,19 +153,19 @@ public class DocumentsLoader implements IDocumentsLoader
             rawDocumentByDocumentId.size() == documentClusterIdByDocumentId.size())
         {
             // this means we successfully loaded all the documents we received in the docs file parameter.
-            System.out.println("All documents loaded successfully. we have " + rawDocumentByDocumentId.size() + " documents.");
+            System.out.println("INFO: All documents loaded successfully. we have " + rawDocumentByDocumentId.size() + " documents.");
             result = true;
         }
         else
         {
-            System.out.println("Not all internal dictionaries loaded successfully. see which size does not match:");
-            System.out.println("raw documents by document id    = " + rawDocumentByDocumentId.size());
-            System.out.println("document name by document id    = " + documentNameByDocumentId.size());
-            System.out.println("document id by document name    = " + documentIdByDocumentName.size());
-            System.out.println("document cluster by document id = " + documentClusterIdByDocumentId.size());
+            System.out.println("ERROR: Not all internal dictionaries loaded successfully. see which size does not match:");
+            System.out.println("    raw documents by document id    = " + rawDocumentByDocumentId.size());
+            System.out.println("    document name by document id    = " + documentNameByDocumentId.size());
+            System.out.println("    document id by document name    = " + documentIdByDocumentName.size());
+            System.out.println("    document cluster by document id = " + documentClusterIdByDocumentId.size());
 
             Set<Integer> documentIdsMinusRawDocumentIds = Sets.difference(documentNameByDocumentId.keySet(), rawDocumentByDocumentId.keySet());
-            System.out.println("different ids between all raw documents and documents file data: " + documentIdsMinusRawDocumentIds.toString());
+            System.out.println("    different ids between all raw documents and documents file data: " + documentIdsMinusRawDocumentIds.toString());
 
         }
         return result;
@@ -186,7 +186,7 @@ public class DocumentsLoader implements IDocumentsLoader
             String documentIdAsString = stringTokenizer.nextToken();
             if (!StringUtils.isNumeric(documentIdAsString))
             {
-                System.out.println("Document id is not a number, ignoring line: " + line);
+                System.out.println("WARN: Document id is not a number, ignoring line: " + line);
             }
             else
             {
@@ -195,7 +195,7 @@ public class DocumentsLoader implements IDocumentsLoader
 
                 if (documentName.length() <= 0)
                 {
-                    System.out.println("Document name is illegal, ignoring line: " + line);
+                    System.out.println("WARN: Document name is illegal, ignoring line: " + line);
                 }
                 else
                 {
@@ -203,7 +203,7 @@ public class DocumentsLoader implements IDocumentsLoader
                     String goldStandardClusterIdAsString = stringTokenizer.nextToken();
                     if (!StringUtils.isNumeric(goldStandardClusterIdAsString))
                     {
-                        System.out.println("Cluster id is not a number, ignoring line: " + line);
+                        System.out.println("WARN: Cluster id is not a number, ignoring line: " + line);
                     }
                     else
                     {
@@ -217,7 +217,7 @@ public class DocumentsLoader implements IDocumentsLoader
         }
         else
         {
-            System.out.println("Unable to process following line from documents file (wrong line structure): " + line);
+            System.out.println("WARN: Unable to process following line from documents file (wrong line structure): " + line);
         }
     }
 

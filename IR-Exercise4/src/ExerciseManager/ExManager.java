@@ -41,7 +41,7 @@ public class ExManager implements IExManager {
 		
 		if(!docLoader.LoadDocuments())
 		{
-			System.out.println("Error loading documents from doc loader");
+			System.out.println("ERROR: document loader couldn't load all documents.");
 			return false;
 		}
 		
@@ -49,14 +49,14 @@ public class ExManager implements IExManager {
 		numOfDocs = docLoader.GetDocumentsCount();
 		
 		//iterate over documents
-		System.out.println("Info: starting to iterate over docs");
+		System.out.println("INFO: starting to iterate over docs");
 		while(docIter.hasNext())
 		{
 			Integer id = docIter.next();
 			
 			if(id == null)
 			{
-				System.out.println("Doc id received as null!");
+				System.out.println("WARN: Doc id received as null! skipping document.");
 				continue;
 			}
 			//get document by id
@@ -68,9 +68,12 @@ public class ExManager implements IExManager {
 		}
 		
 		//insert docs to search engine
-		System.out.println("Info: completed iterating over docs. total docs=" + irDocs.size());
-		System.out.println("Info: start indexing docs");
-		this.searchEngine.index(irDocs);
+		System.out.println("INFO: completed iterating over docs. total docs=" + irDocs.size());
+		System.out.println("INFO: start indexing docs");
+		if (!this.searchEngine.index(irDocs))
+        {
+            System.out.println("ERROR: Search engine could index all documents, Quitting.");
+        }
 		
 		return true;
 	}

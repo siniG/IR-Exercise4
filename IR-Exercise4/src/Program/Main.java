@@ -16,7 +16,7 @@ public class Main {
         // check the parameter file is given to the program.
         if (args.length == 0)
         {
-            System.out.println("Argument 1 is missing. first and only argument should be parameters file.");
+            System.out.println("ERROR: Argument 1 is missing. first and only argument should be parameters file.");
         }
         else
         {
@@ -27,7 +27,7 @@ public class Main {
             // try to load the parameters file
             if (LoadParametersFile(args[0], parameters))
             {
-                System.out.println("Parameters loaded successfully, executing clustering process.");
+                System.out.println("INFO: Parameters loaded successfully, executing clustering process.");
 
                 try
                 {
@@ -40,12 +40,12 @@ public class Main {
                 }
                 catch (Exception e)
                 {
-                    System.out.println("Exception during execution of exercise. ex=" + e.getMessage() + " stack=" + e.getStackTrace());
+                    System.out.println("ERROR: Exception during execution of exercise. ex=" + e.getMessage() + " stack=" + e.getStackTrace());
                 }
             }
             else
             {
-                System.out.println("Unable to load parameter file: \"" + args[0] + "\". Quitting.");
+                System.out.println("ERROR: Unable to load parameter file: \"" + args[0] + "\". Quitting.");
             }
         }
 	}
@@ -56,7 +56,7 @@ public class Main {
      */
     private static boolean LoadParametersFile (String parametersFilePath, Hashtable<ParametersEnum, String> parametersHashtable)
     {
-        System.out.println("Loading Parameters file: \"" + parametersFilePath + "\".");
+        System.out.println("INFO: Loading Parameters file: \"" + parametersFilePath + "\".");
         boolean result = false;
         FileReader parameterFileReader;
         BufferedReader parameterFileBufferedReader;
@@ -80,12 +80,12 @@ public class Main {
             }
             else
             {
-                System.out.println("Some parameters are missing in the parameters file: \"" + parametersFilePath + "\". Quitting.");
+                System.out.println("ERROR: Some parameters are missing in the parameters file: \"" + parametersFilePath + "\". Quitting.");
             }
 
         } catch (Exception e)
         {
-            System.out.println("Unable to read file: \"" + parametersFilePath + "\". Quitting.");
+            System.out.println("ERROR: Unable to read file: \"" + parametersFilePath + "\". Quitting.");
             System.out.println(e);
         }
         return result;
@@ -96,7 +96,7 @@ public class Main {
      */
     private static void ProcessParameterLine(String line, Hashtable<ParametersEnum, String> parametersHashtable)
     {
-        System.out.println("Handling parameter line: \"" + line + "\".");
+        System.out.println("INFO: Handling parameter line: \"" + line + "\".");
 
         StringTokenizer stringTokenizer = new StringTokenizer(line, "=");
         if (stringTokenizer.countTokens() == 2)
@@ -107,19 +107,19 @@ public class Main {
             {
                 String docsFileParameter = stringTokenizer.nextToken();
                 parametersHashtable.put(ParametersEnum.DocsFile, docsFileParameter);
-                System.out.println("Added parameter for documet file name: \"" + docsFileParameter + "\".");
+                System.out.println("INFO: Added parameter for documet file name: \"" + docsFileParameter + "\".");
             }
             else if (parameterName.toLowerCase().equals(ParametersEnum.OutputFile.name().toLowerCase()))
             {
                 String outputFileParameter = stringTokenizer.nextToken();
                 parametersHashtable.put(ParametersEnum.OutputFile, outputFileParameter);
-                System.out.println("Added parameter for output file name: \"" + outputFileParameter + "\".");
+                System.out.println("INFO: Added parameter for output file name: \"" + outputFileParameter + "\".");
             }
             else if (parameterName.toLowerCase().equals(ParametersEnum.K.name().toLowerCase()))
             {
                 String kNumberOfClusters = stringTokenizer.nextToken();
                 parametersHashtable.put(ParametersEnum.K, kNumberOfClusters);
-                System.out.println("Added parameter for k number of clusters: \"" + kNumberOfClusters + "\".");
+                System.out.println("INFO: Added parameter for k number of clusters: \"" + kNumberOfClusters + "\".");
             }
             else if (parameterName.toLowerCase().equals(ParametersEnum.ClusteringAlgorithm.name().toLowerCase()))
             {
@@ -128,32 +128,32 @@ public class Main {
                 if (clusterAlgorithmName.equals(ClusteringAlgorithmEnum.Basic.name().toLowerCase()))
                 {
                     parametersHashtable.put(ParametersEnum.ClusteringAlgorithm, ClusteringAlgorithmEnum.Basic.name());
-                    System.out.println("Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
+                    System.out.println("INFO: Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
                 }
                 else if (clusterAlgorithmName.equals(ClusteringAlgorithmEnum.BasicPlusPlus.name().toLowerCase()) ||
                          clusterAlgorithmName.equals("basic++"))
                 {
                     parametersHashtable.put(ParametersEnum.ClusteringAlgorithm, ClusteringAlgorithmEnum.BasicPlusPlus.name());
-                    System.out.println("Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
+                    System.out.println("INFO: Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
                 }
                 else if (clusterAlgorithmName.equals(ClusteringAlgorithmEnum.Improved.name().toLowerCase()))
                 {
                     parametersHashtable.put(ParametersEnum.ClusteringAlgorithm, ClusteringAlgorithmEnum.Improved.name());
-                    System.out.println("Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
+                    System.out.println("INFO: Added parameter for clustering algorithm type: \"" + clusterAlgorithmName + "\".");
                 }
                 else
                 {
-                    System.out.println("The retrieval algorithm name: \"" + clusterAlgorithmName + "\" from the parameter file is unknown. Ignoring.");
+                    System.out.println("ERROR: The retrieval algorithm name: \"" + clusterAlgorithmName + "\" from the parameter file is unknown. Ignoring.");
                 }
             }
             else
             {
-                System.out.println("Unknown parameter in parameter file: \"" + parameterName + "\". Ignoring.");
+                System.out.println("WARN: Unknown parameter in parameter file: \"" + parameterName + "\". Ignoring.");
             }
         }
         else
         {
-            System.out.println("Wrong line structure. Each parameter line should contain the equal sign (\"=\").");
+            System.out.println("WARN: Wrong line structure. Each parameter line should contain the equal sign (\"=\").");
         }
     }
 }

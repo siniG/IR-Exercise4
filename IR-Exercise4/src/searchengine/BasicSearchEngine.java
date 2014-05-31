@@ -91,7 +91,7 @@ public class BasicSearchEngine implements ISearchEngine {
 	    Integer luceneDocId = this.searcher.getLuceneDocIdByForeignId(irDoc.getId());
 	    if(luceneDocId == null)
 	    {
-	    	throw new Exception("Cannot find lucene document with irDoc id=" + irDoc.getId());
+	    	throw new Exception("ERROR: Cannot find lucene document with irDoc id=" + irDoc.getId());
 	    }
 	    
 	    //run query and calculate cosine similarity between query and results received
@@ -122,7 +122,7 @@ public class BasicSearchEngine implements ISearchEngine {
     	
     	if(luceneDocId1 == null || luceneDocId2 == null)
     	{
-    		System.out.println("Error: could not find documents in lucene with following ids: " + docId1 + ", " + docId2 );
+    		System.out.println("ERROR: could not find documents in lucene with following ids: " + docId1 + ", " + docId2 );
     		return result;
     	}
     	
