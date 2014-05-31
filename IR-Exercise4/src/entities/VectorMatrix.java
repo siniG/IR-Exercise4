@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 public class VectorMatrix implements IMatrix {
 
 	private LargeDoubleMatrix matrix;
@@ -41,13 +39,14 @@ public class VectorMatrix implements IMatrix {
 	
 	public Double get(int row, int column)
 	{
-		int temp;
-		if(row > column)
+		
+		/*if(row > column)
 		{
+			int temp;
 			temp = column;
 			column = row;
 			row = temp;
-		}
+		}*/
 		
 		Double distance = this.matrix.get(column, row);
 
@@ -64,13 +63,13 @@ public class VectorMatrix implements IMatrix {
 	public boolean set(int row, int column, Double distance)
 	{
 		// only calculate half matrix
-		if(row > column)
+		/*if(row > column)
 		{
             int temp;
 			temp = column;
 			column = row;
 			row = temp;
-		}
+		}*/
 		
 		if(distance == null)
 		{

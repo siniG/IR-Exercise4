@@ -90,16 +90,26 @@ public class ExManager implements IExManager {
 			//for every irDoc, run search query matching this document
 			List<SearchResult> results = this.searchEngine.search(irDocs.get(i), numOfDocs);
 			System.out.println("INFO: not of results returned for doc " + irDocs.get(i).getId() + " from search=" + results.size());
+			
+			storeVector(irDocs.get(i).getId(), results);
+			
+			
 			//calculate distance between result and query
-			CalculateAndStoreDistance(irDocs.get(i).getId(), results);
+			//CalculateAndStoreDistance(irDocs.get(i).getId(), results);
 		}
 
         System.out.println("INFO: Done processing data");
 	}
 
-	private void CalculateAndStoreDistance(int id, List<SearchResult> results) {
+	private void storeVector(int id, List<SearchResult> results) {
+		for(int i = 0; i < results.size(); i++)
+		{
+			this.matrix.set(id, results.get(i).getDocId(), (double)results.get(i).getScore());
+		}
 		
-		//TODO: get cosine similarity from matrix, and if doesn't exist only then calculate based on lucene!!!!
+	}
+
+	/*private void CalculateAndStoreDistance(int id, List<SearchResult> results) {
 		Double distance;
 		Double cosineSimilarity;
 		for(SearchResult result : results)
@@ -111,5 +121,5 @@ public class ExManager implements IExManager {
 				this.matrix.set(id, result.getDocId(), distance);
 			}
 		}
-	}
+	}*/
 }
