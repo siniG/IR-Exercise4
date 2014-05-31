@@ -1,5 +1,6 @@
 package ClusteringAlgorithms.KMeans;
 
+import ClusteringAlgorithms.Cluster;
 import ClusteringAlgorithms.ICentroid;
 import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by amit on 31/05/2014.
  */
-public abstract class KMeansAbstract implements IClusteringAlgorithm
+public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 {
     protected IMatrix distanceMatrix;
 
@@ -21,10 +22,10 @@ public abstract class KMeansAbstract implements IClusteringAlgorithm
      * @param maxIterations
      * @return
      */
-    public List<ICluster> GetClusters(int numberOfClusters, int maxIterations)
+    public List<ICluster<T>> GetClusters(int numberOfClusters, int maxIterations)
     {
         // initialize clustering
-        List<ICluster> result = new ArrayList<ICluster>(numberOfClusters);
+        List<ICluster<T>> result = new ArrayList<ICluster<T>>(numberOfClusters);
 
         if (numberOfClusters < 2)
         {
@@ -36,6 +37,12 @@ public abstract class KMeansAbstract implements IClusteringAlgorithm
 
             // initialize first centroids
             List<ICentroid> centroids = GetInitialCentroids(numberOfClusters);
+            for (int k = 0; k < numberOfClusters ; k++)
+            {
+                ICentroid initialCentroidForCluster = centroids.get(k);
+                ICluster<T> initialClusterWithCentroid = new Cluster<T>(initialCentroidForCluster);
+                result.set(k, initialClusterWithCentroid);
+            }
 
             // loop until done
             while ((maxIterations > 0) &&
@@ -49,12 +56,14 @@ public abstract class KMeansAbstract implements IClusteringAlgorithm
                 // update clustering based on new means
                 UpdateClusters(result, centroids);
             }
-
         }
         return result;
     }
 
     protected abstract List<ICentroid> GetInitialCentroids(int numberOfCentroids);
 
-    protected abstract void UpdateClusters(List<ICluster> clusters, List<ICentroid> centroids);
+    protected void UpdateClusters(List<ICluster<T>> clusters, List<ICentroid> centroids)
+    {
+
+    }
 }

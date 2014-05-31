@@ -6,7 +6,7 @@ import entities.IMatrix;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KMeans extends KMeansAbstract implements IClusteringAlgorithm
+public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
 {
     public KMeans(IMatrix distanceMatrix)
     {
@@ -29,10 +29,5 @@ public class KMeans extends KMeansAbstract implements IClusteringAlgorithm
         }
 
         return result;
-    }
-
-    protected void UpdateClusters(List<ICluster> clusters, List<ICentroid> centroids)
-    {
-
     }
 }
