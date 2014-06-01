@@ -6,7 +6,9 @@ import entities.IMatrix;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KMeans extends KMeansAbstract implements IClusteringAlgorithm
+import utilities.utils;
+
+public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
 {
     public KMeans(IMatrix distanceMatrix)
     {
@@ -24,15 +26,10 @@ public class KMeans extends KMeansAbstract implements IClusteringAlgorithm
 
         for (int i = 1; i < numberOfCentroids + 1; i++)
         {
-            ICentroid newCentroid = new Centroid(distanceMatrix.getRow(i));
+            ICentroid newCentroid = new Centroid(utils.floatArrayToDoubleArry(distanceMatrix.getRow(i)));
             result.add(newCentroid);
         }
 
         return result;
-    }
-
-    protected void UpdateClusters(List<ICluster> clusters, List<ICentroid> centroids)
-    {
-
     }
 }

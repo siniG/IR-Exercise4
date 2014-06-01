@@ -6,12 +6,12 @@ import java.util.List;
 /**
  * Created by amit on 31/05/2014.
  */
-public class Cluster<T>
+public class Cluster<T> implements ICluster<T>
 {
-    private Centroid centroid;
+    private ICentroid centroid;
     private List<T> members;
 
-    public Cluster(Centroid centroid)
+    public Cluster(ICentroid centroid)
     {
         this.centroid = centroid;
         members = new ArrayList<T>();
