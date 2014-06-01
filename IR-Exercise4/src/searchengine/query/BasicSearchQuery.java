@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -13,16 +15,24 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.DocsEnum;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.MultiFields;
+import org.apache.lucene.index.Terms;
+import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.DocIdSetIterator;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.Version;
 
 import entities.IRDoc;
@@ -115,6 +125,7 @@ public class BasicSearchQuery {
 		initAnalyzer();
 		this.reader = DirectoryReader.open(this.luceneDir);
 		this.searcher = new IndexSearcher(this.reader);
+		BooleanQuery.setMaxClauseCount(5000);
 		this.searcher.setSimilarity(new DefaultSimilarity());
 		this.cosineSimilarity = new CosineDocumentSimilarity(this.reader);
 	}
@@ -133,8 +144,10 @@ public class BasicSearchQuery {
 		try {
 			QueryParser queryParser = new QueryParser(Version.LUCENE_47,
 					"content", this.analyzer);
+			
 			String escapeQueryStr = QueryParser.escape(doc.getContent());
 			Query query = queryParser.parse(escapeQueryStr);
+			
 			TopDocs topDocs = this.searcher.search(query, retSize);
 
 			if (topDocs.totalHits > 0) {
@@ -161,6 +174,20 @@ public class BasicSearchQuery {
 			e.printStackTrace();
 		}
 		return cosSim;
+	}
+	
+	public TfIdfMatrix getTfIdfMatrix()
+	{
+		TfIdfMatrix matrix = new TfIdfMatrix(this.reader);
+		try {
+			matrix.init();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			matrix = null;
+		}
+		
+		return matrix;
 	}
 
 	public void TestAnalyzer() {

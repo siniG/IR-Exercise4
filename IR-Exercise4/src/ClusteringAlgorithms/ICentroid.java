@@ -5,5 +5,5 @@ package ClusteringAlgorithms;
  */
 public interface ICentroid
 {
-    double []GetCoordinates();
+    float[] GetCoordinates();
 }

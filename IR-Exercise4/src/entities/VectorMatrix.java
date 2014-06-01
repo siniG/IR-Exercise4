@@ -1,9 +1,6 @@
 package entities;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 public class VectorMatrix implements IMatrix {
 
@@ -18,26 +15,27 @@ public class VectorMatrix implements IMatrix {
 		
 	}
 	
-	public double[] getRow(int row)
+	public float[] getRow(int row)
 	{
 		if(row > this.height)
 			return null;
 		
-		double[] vector = new double[this.width];
+		float[] vector = new float[this.width];
 		
-		Double value;
+		Float value;
+		
 		for(int i = 0; i < this.width; i++)
 		{
-			value = ((value = this.get(row, i)) == null) ? 0.0 : value;
+			value = ((value = this.get(row, i)) == null) ? 0 : value;
 			
-			vector[i] = value;
+			vector[i] = value; 
 		}
 		
 		
 		return vector;
 	}
 	
-	public Double get(int row, int column)
+	public Float get(int row, int column)
 	{
 		
 		/*if(row > column)
@@ -56,11 +54,11 @@ public class VectorMatrix implements IMatrix {
 					(Double.isNaN(distance)) ||
 					(distance == 0.0)) ? null : distance;
 		
-		return distance;
+		return distance.floatValue();
 		
 	}
 	
-	public boolean set(int row, int column, Double distance)
+	public boolean set(int row, int column, Float distance)
 	{
 		// only calculate half matrix
 		/*if(row > column)
@@ -73,7 +71,7 @@ public class VectorMatrix implements IMatrix {
 		
 		if(distance == null)
 		{
-			this.matrix.set(column, row, Double.NaN);
+			this.matrix.set(column, row, Float.NaN);
 		}
 		else
 		{

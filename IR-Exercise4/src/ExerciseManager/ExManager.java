@@ -3,6 +3,7 @@ package ExerciseManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import entities.IRDoc;
 import entities.SearchResult;
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
+import searchengine.query.TfIdfMatrix;
 import utilities.utils;
 
 public class ExManager implements IExManager {
@@ -80,34 +82,42 @@ public class ExManager implements IExManager {
 	
 	public void ProcessData() throws Exception 
 	{
-		this.matrix = new VectorMatrix(numOfDocs+1, numOfDocs+1);
-		this.matrix.init();
+		//this.matrix = new VectorMatrixTest(numOfDocs+1, numOfDocs+1);
+		//this.matrix.init();
 		
 		System.out.println("INFO: Start processing data");
 		
+		Date dateStart = new Date();
+		TfIdfMatrix tfIdfMatrix = this.searchEngine.getTfIdfMatrix();
+		Date dateEnd = new Date();
+		
+		System.out.println("processing time took: " + (dateEnd.getTime() - dateStart.getTime()) + " milliseconds");
+		/*
 		for(int i = 0; i < irDocs.size(); i++)
 		{
 			//for every irDoc, run search query matching this document
 			List<SearchResult> results = this.searchEngine.search(irDocs.get(i), numOfDocs);
+			
 			System.out.println("INFO: not of results returned for doc " + irDocs.get(i).getId() + " from search=" + results.size());
 			
 			storeVector(irDocs.get(i).getId(), results);
 			
-			
 			//calculate distance between result and query
 			//CalculateAndStoreDistance(irDocs.get(i).getId(), results);
 		}
-
+        */
+		
         System.out.println("INFO: Done processing data");
 	}
 
+	/*
 	private void storeVector(int id, List<SearchResult> results) {
 		for(int i = 0; i < results.size(); i++)
 		{
 			this.matrix.set(id, results.get(i).getDocId(), (double)results.get(i).getScore());
 		}
 		
-	}
+	}*/
 
 	/*private void CalculateAndStoreDistance(int id, List<SearchResult> results) {
 		Double distance;

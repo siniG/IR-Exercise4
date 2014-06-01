@@ -5,19 +5,19 @@ package ClusteringAlgorithms;
  */
 public class Centroid implements ICentroid
 {
-    private double coordinates[];
+    private float coordinates[];
 
-    public Centroid(double[] coordinates)
+    public Centroid(float[] coordinates)
     {
         this.coordinates = coordinates;
     }
 
     public Centroid(int numberOfDimensions)
     {
-        coordinates = new double[numberOfDimensions];
+        coordinates = new float[numberOfDimensions];
     }
 
-    public double []GetCoordinates()
+    public float[] GetCoordinates()
     {
         return coordinates;
     }

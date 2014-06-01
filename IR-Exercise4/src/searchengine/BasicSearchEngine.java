@@ -15,6 +15,7 @@ import searchengine.indexer.BasicIndexer;
 import searchengine.indexer.ImprovedIndexer;
 import searchengine.query.BasicSearchQuery;
 import searchengine.query.ImprovedSearchQuery;
+import searchengine.query.TfIdfMatrix;
 
 import entities.IRDoc;
 import entities.SearchResult;
@@ -93,13 +94,6 @@ public class BasicSearchEngine implements ISearchEngine {
 	if (searcher != null) {
 	    try {
 	    
-	    	//check to see if a document with given id is found in lucene
-	    Integer luceneDocId = this.searcher.getLuceneDocIdByForeignId(irDoc.getId());
-	    if(luceneDocId == null)
-	    {
-	    	throw new Exception("ERROR: Cannot find lucene document with irDoc id=" + irDoc.getId());
-	    }
-	    
 	    //run query and calculate cosine similarity between query and results received
 		List<ScoreDoc> docs = searcher.query(irDoc, retSize);
 		String id;
@@ -157,6 +151,14 @@ public class BasicSearchEngine implements ISearchEngine {
 	}
 
 	return this.searcher;
+    }
+    
+    public TfIdfMatrix getTfIdfMatrix()
+    {
+    	if(this.searcher == null)
+    		this.getSearcher();
+    	
+    	return this.searcher.getTfIdfMatrix();
     }
     
     @Override
