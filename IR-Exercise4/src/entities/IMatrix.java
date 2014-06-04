@@ -1,6 +1,6 @@
 package entities;
 
-public interface IMatrix {
+public interface IMatrix{
 
 	public boolean set(int row, int col, Float c);
 	public Float get(int row, int col);

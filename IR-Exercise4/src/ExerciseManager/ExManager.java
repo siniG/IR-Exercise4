@@ -1,24 +1,21 @@
 
 package ExerciseManager;
 
+import Program.DocumentsLoader;
+import Program.IDocumentsLoader;
+import Program.ParametersEnum;
+import entities.BasicIRDoc;
+import entities.IMatrix;
+import entities.IRDoc;
+import searchengine.BasicSearchEngine;
+import searchengine.ISearchEngine;
+import searchengine.query.TfIdfMatrix;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
-
-import Program.DocumentsLoader;
-import Program.IDocumentsLoader;
-import Program.ParametersEnum;
-import entities.BasicIRDoc;
-import entities.VectorMatrix;
-import entities.IMatrix;
-import entities.IRDoc;
-import entities.SearchResult;
-import searchengine.BasicSearchEngine;
-import searchengine.ISearchEngine;
-import searchengine.query.TfIdfMatrix;
-import utilities.utils;
 
 public class ExManager implements IExManager {
 
@@ -106,7 +103,10 @@ public class ExManager implements IExManager {
 			//CalculateAndStoreDistance(irDocs.get(i).getId(), results);
 		}
         */
-		
+
+
+
+
         System.out.println("INFO: Done processing data");
 	}
 

@@ -33,4 +33,26 @@ public class Centroid implements ICentroid
     {
         return coordinates;
     }
+
+    public final boolean equals (ICentroid other)
+    {
+        boolean result = true;
+
+        if (this.GetCoordinates().length != other.GetCoordinates().length)
+        {
+            result = false;
+        }
+        else
+        {
+            for (int i = 0; i < this.GetCoordinates().length; i++)
+            {
+                if (this.GetCoordinates()[i] != other.GetCoordinates()[i])
+                {
+                    result = false;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 }

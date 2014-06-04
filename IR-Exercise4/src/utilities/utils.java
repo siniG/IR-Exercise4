@@ -33,6 +33,4 @@ public class utils {
 		
 		return dArray;
 	}
-	
-	
 }

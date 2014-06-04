@@ -7,4 +7,5 @@ public interface ICentroid
 {
     double[] GetCoordinates();
     double GetDistance(double[] otherVector);
+    boolean equals(ICentroid other);
 }
