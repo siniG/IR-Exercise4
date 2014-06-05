@@ -1,8 +1,6 @@
 package ClusteringAlgorithms.KMeans;
 
-import ClusteringAlgorithms.Centroid;
-import ClusteringAlgorithms.ICentroid;
-import ClusteringAlgorithms.IClusteringAlgorithm;
+import ClusteringAlgorithms.*;
 import entities.IMatrix;
 import utilities.utils;
 
@@ -29,8 +27,8 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
         for (int i = 0; i < numberOfClusters; i++)
         {
             ICentroid newCentroid = new Centroid(utils.floatArrayToDoubleArry(distanceMatrix.getRow(i + 1)));
-
-            clusters.add(newCentroid);
+            ICluster<Integer> newCluster = new Cluster<Integer>(newCentroid);
+            clusters.add(newCluster);
             result.add(newCentroid);
         }
         return result;
