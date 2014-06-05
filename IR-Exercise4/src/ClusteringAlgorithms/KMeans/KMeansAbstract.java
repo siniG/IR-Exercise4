@@ -16,14 +16,19 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
     protected IMatrix distanceMatrix;
     protected List<ICluster<Integer>> clusters;
     protected int numberOfClusters;
+    protected int maxNumberOfIterations;
+
+    protected KMeansAbstract(int maxNumberOfIterations)
+    {
+        this.maxNumberOfIterations = maxNumberOfIterations;
+    }
 
     /**
      * calculates which document belongs to which cluster, according to the number of given clusters.
      * @param numberOfClusters
-     * @param maxIterations
      * @return
      */
-    public List<ICluster<Integer>> GetClusters(int numberOfClusters, int maxIterations)
+    public List<ICluster<Integer>> GetClusters(int numberOfClusters)
     {
         // initialize clustering
         if (numberOfClusters < 2)
@@ -40,7 +45,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
             boolean centroidsUpdated = true;
 
             while ( centroidsUpdated &&
-                    (maxIterations > 0))
+                    (maxNumberOfIterations > 0))
             {
                 // assign all objects to their closest cluster centroid
                 AssignObjectsToClusters();
@@ -55,7 +60,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
                 centroids = recalculatedCentroids;
 
                 // decrease number of remaining iterations
-                maxIterations--;
+                maxNumberOfIterations--;
             }
         }
         return clusters;

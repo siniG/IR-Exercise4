@@ -51,7 +51,7 @@ public class TfIdfMatrix implements IMatrix {
 	
 	public float[] getRow(int row)
 	{
-		if (this._tfidfMatrix.length >= row)
+		if (this._tfidfMatrix.length <= row)
 		{
 			throw new IndexOutOfBoundsException();
 		}

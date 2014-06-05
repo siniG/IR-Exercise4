@@ -11,8 +11,9 @@ import java.util.List;
 
 public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
 {
-    public KMeans(int numberOfClusters, IMatrix distanceMatrix)
+    public KMeans(int numberOfClusters, IMatrix distanceMatrix, int maxNumberOfIterations)
     {
+        super(maxNumberOfIterations);
         this.distanceMatrix = distanceMatrix;
         this.numberOfClusters = numberOfClusters;
     }
@@ -29,7 +30,7 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
         {
             ICentroid newCentroid = new Centroid(utils.floatArrayToDoubleArry(distanceMatrix.getRow(i + 1)));
 
-            clusters.set(i, newCentroid);
+            clusters.add(newCentroid);
             result.add(newCentroid);
         }
         return result;

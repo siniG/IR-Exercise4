@@ -1,6 +1,9 @@
 
 package ExerciseManager;
 
+import ClusteringAlgorithms.ICluster;
+import ClusteringAlgorithms.IClusteringAlgorithm;
+import ClusteringAlgorithms.KMeans.KMeans;
 import Program.DocumentsLoader;
 import Program.IDocumentsLoader;
 import Program.ParametersEnum;
@@ -88,7 +91,13 @@ public class ExManager implements IExManager {
 		TfIdfMatrix tfIdfMatrix = this.searchEngine.getTfIdfMatrix();
 		Date dateEnd = new Date();
 		
-		System.out.println("processing time took: " + (dateEnd.getTime() - dateStart.getTime()) + " milliseconds");
+		System.out.println("INFO: tf-idf processing time took: " + (dateEnd.getTime() - dateStart.getTime()) + " milliseconds");
+
+        String numberOfClusterStr = params.get(ParametersEnum.K);
+        int numberOfClusters = Integer.parseInt(numberOfClusterStr);
+
+        IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix, 100);
+        List<ICluster<Integer>> kmeansClusters = kmeans.GetClusters(numberOfClusters);
 		/*
 		for(int i = 0; i < irDocs.size(); i++)
 		{
