@@ -1,5 +1,6 @@
 package ClusteringAlgorithms.KMeans;
 
+import ClusteringAlgorithms.Cluster;
 import ClusteringAlgorithms.ICentroid;
 import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
@@ -10,7 +11,7 @@ import java.util.List;
 
 /**
  * Created by amit on 31/05/2014.
- */
+u */
 public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 {
     protected IMatrix distanceMatrix;
@@ -47,14 +48,16 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
             while ( centroidsUpdated &&
                     (maxNumberOfIterations > 0))
             {
+                System.out.println("INFO: iterations left = " + maxNumberOfIterations);
                 // assign all objects to their closest cluster centroid
-                AssignObjectsToClusters();
+                AssignObjectsToClusters(centroids);
 
                 // recalculate the centroid of each cluster
                 List<ICentroid> recalculatedCentroids = RecalculateCentroids();
 
                 // check if the centroids have changed, and act accordingly
                 centroidsUpdated = CentroidsUpdated(centroids, recalculatedCentroids);
+                System.out.println("INFO: centroids updated = " + centroidsUpdated);
 
                 // move the newly calculated centroids to be the actual centroids
                 centroids = recalculatedCentroids;
@@ -68,9 +71,45 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 
     protected abstract List<ICentroid> InitializeCentroids();
 
-    private void AssignObjectsToClusters()
+    private void AssignObjectsToClusters(List<ICentroid> centroids)
     {
-        
+        // clear the clusters.
+        for (int i = 0; i < numberOfClusters; i++)
+        {
+            clusters.get(i).Clear();
+        }
+
+        // re-populate the clusters. assign each document to the closest centroid available.
+        for (int documentId = 0; documentId < distanceMatrix.getRowsNumber(); documentId++)
+        {
+            // find closest centroid
+            int closestCentroid = GetClosestCentroid(documentId, centroids);
+
+            // assign object to the cluster of the centroid
+            clusters.get(closestCentroid).AddMember(documentId);
+            System.out.println("DEBUG: assigned document id " + documentId + " to cluster " + closestCentroid);
+        }
+    }
+
+    private int GetClosestCentroid(int documentId, List<ICentroid> centroids)
+    {
+        int result = 0;
+
+        float[] documentVector = distanceMatrix.getRow(documentId);
+
+        double closestCentroidDistance = centroids.get(result).GetDistance(documentVector);
+
+        for (int i = 1; i < numberOfClusters; i++)
+        {
+            double tempDistance = centroids.get(i).GetDistance(documentVector);
+            if (tempDistance < closestCentroidDistance)
+            {
+                closestCentroidDistance = tempDistance;
+                result = i;
+            }
+        }
+
+        return result;
     }
 
     private List<ICentroid> RecalculateCentroids()

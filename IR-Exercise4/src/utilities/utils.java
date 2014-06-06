@@ -19,7 +19,7 @@ public class utils {
 		return result;
 	}
 	
-	public static double[] floatArrayToDoubleArry(float[] array)
+	public static double[] floatArrayToDoubleArray(float[] array)
 	{
 		if(array == null)
 			return null;

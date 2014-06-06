@@ -6,4 +6,5 @@ package ClusteringAlgorithms;
 public interface ICluster<T> {
     ICentroid GetCentroid();
     boolean AddMember(T newMember);
+    void Clear();
 }

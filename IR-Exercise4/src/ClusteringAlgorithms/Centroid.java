@@ -1,6 +1,7 @@
 package ClusteringAlgorithms;
 
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
+import utilities.utils;
 
 /**
  * Created by amit on 31/05/2014.
@@ -20,13 +21,13 @@ public class Centroid implements ICentroid
         coordinates = new double[numberOfDimensions];
     }
 
-    public double GetDistance(double[] otherVector)
+    public double GetDistance(float[] otherVector)
     {
         if (this.coordinates.length != otherVector.length)
         {
             return Double.NaN;
         }
-        return euclideanDistance.compute(GetCoordinates(), otherVector);
+        return euclideanDistance.compute(GetCoordinates(), utils.floatArrayToDoubleArray(otherVector));
     }
 
     public double[] GetCoordinates()
