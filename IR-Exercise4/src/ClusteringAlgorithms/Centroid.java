@@ -1,6 +1,5 @@
 package ClusteringAlgorithms;
 
-import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import utilities.utils;
 
 /**
@@ -9,7 +8,6 @@ import utilities.utils;
 public class Centroid implements ICentroid
 {
     private double coordinates[];
-    private EuclideanDistance euclideanDistance = new EuclideanDistance();
 
     public Centroid(double[] coordinates)
     {
@@ -27,7 +25,6 @@ public class Centroid implements ICentroid
         {
             return Double.NaN;
         }
-        //return euclideanDistance.compute(GetCoordinates(), utils.floatArrayToDoubleArray(otherVector));
         return utils.cosineSimilarity(GetCoordinates(), utils.floatArrayToDoubleArray(otherVector));
     }
 

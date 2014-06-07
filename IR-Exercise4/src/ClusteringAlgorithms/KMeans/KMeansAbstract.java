@@ -1,6 +1,5 @@
 package ClusteringAlgorithms.KMeans;
 
-import ClusteringAlgorithms.Cluster;
 import ClusteringAlgorithms.ICentroid;
 import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
@@ -15,7 +14,7 @@ import java.util.List;
 u */
 public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 {
-    protected IDocVector distanceMatrix;
+    protected IDocVector documentsVectorData;
     protected List<ICluster<Integer>> clusters;
     protected int numberOfClusters;
     protected int maxNumberOfIterations;
@@ -50,7 +49,8 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
             while ( centroidsUpdated &&
                     (iterationNumber <= maxNumberOfIterations))
             {
-                System.out.println("INFO: iterations left = " + (maxNumberOfIterations - iterationNumber));
+                System.out.println("INFO: executing iteration " + iterationNumber);
+
                 // assign all objects to their closest cluster centroid
                 AssignObjectsToClusters(centroids, iterationNumber);
 
@@ -81,12 +81,13 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
             clusters.get(i).Clear();
         }
 
-        Enumeration<Integer> documentIdsEnumerator = distanceMatrix.getDocIdEnumerator();
+        Enumeration<Integer> documentIdsEnumerator = documentsVectorData.getDocIdEnumerator();
 
         // re-populate the clusters. assign each document to the closest centroid available.
         while (documentIdsEnumerator.hasMoreElements())
         {
             int documentId = documentIdsEnumerator.nextElement();
+
             // find closest centroid
             int closestCentroid = GetClosestCentroid(documentId, centroids);
 
@@ -106,13 +107,13 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
     {
         int result = 0;
 
-        float[] documentVector = distanceMatrix.getTfIdfVector(documentId);
+        float[] documentVector = documentsVectorData.getTfIdfVector(documentId);
 
-        double closestCentroidDistance = centroids.get(result).GetDistance(documentVector);
+        double closestCentroidDistance = 1 - centroids.get(result).GetDistance(documentVector);
 
         for (int i = 1; i < numberOfClusters; i++)
         {
-            double tempDistance = centroids.get(i).GetDistance(documentVector);
+            double tempDistance = 1 - centroids.get(i).GetDistance(documentVector);
             if (tempDistance < closestCentroidDistance)
             {
                 closestCentroidDistance = tempDistance;

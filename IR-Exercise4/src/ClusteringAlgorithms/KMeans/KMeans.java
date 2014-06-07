@@ -12,7 +12,7 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
     public KMeans(int numberOfClusters, IDocVector distanceMatrix, int maxNumberOfIterations)
     {
         super(maxNumberOfIterations);
-        this.distanceMatrix = distanceMatrix;
+        this.documentsVectorData = distanceMatrix;
         this.numberOfClusters = numberOfClusters;
     }
 
@@ -26,11 +26,11 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
 
         for (int i = 0; i < numberOfClusters; i++)
         {
-            int indexOfDocumentId = distanceMatrix.getNumberOfDocs() / numberOfClusters * i;
-            int documentId = distanceMatrix.getDocIdAtIndex(indexOfDocumentId);
-            double [] randomCentroidCoordinates = utils.floatArrayToDoubleArray(distanceMatrix.getTfIdfVector(documentId));
+            int indexOfDocumentId = documentsVectorData.getNumberOfDocs() / numberOfClusters * i;
+            int documentId = documentsVectorData.getDocIdAtIndex(indexOfDocumentId);
+            double [] randomCentroidCoordinates = utils.floatArrayToDoubleArray(documentsVectorData.getTfIdfVector(documentId));
             ICentroid newCentroid = new Centroid(randomCentroidCoordinates);
-            ICluster<Integer> newCluster = new Cluster<Integer>(newCentroid, distanceMatrix);
+            ICluster<Integer> newCluster = new Cluster<Integer>(newCentroid, documentsVectorData);
 
             // add some initial documents in the cluster.
             newCluster.AddMember(documentId);
