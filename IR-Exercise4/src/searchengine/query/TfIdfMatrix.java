@@ -62,6 +62,10 @@ public class TfIdfMatrix implements IDocVector {
 	{
 		return Collections.enumeration(this._DocList);
 	}
+	public Iterator<Integer> getDocIdIterator()
+	{
+		return this._DocList.iterator();
+	}
 	
 	public void init() throws Exception
 	{
