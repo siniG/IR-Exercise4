@@ -4,7 +4,7 @@ import ClusteringAlgorithms.Cluster;
 import ClusteringAlgorithms.ICentroid;
 import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
-import entities.IMatrix;
+import entities.IDocVector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 u */
 public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 {
-    protected IMatrix distanceMatrix;
+    protected IDocVector distanceMatrix;
     protected List<ICluster<Integer>> clusters;
     protected int numberOfClusters;
     protected int maxNumberOfIterations;

@@ -1,6 +1,6 @@
 package ClusteringAlgorithms;
 
-import entities.IMatrix;
+import entities.IDocVector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,9 @@ public class Cluster<T> implements ICluster<T>
 {
     private ICentroid centroid;
     private List<T> members;
-    private IMatrix tfIdfMatrix;
+    private IDocVector tfIdfMatrix;
 
-    public Cluster(ICentroid centroid, IMatrix tfIdfMatrix)
+    public Cluster(ICentroid centroid, IDocVector tfIdfMatrix)
     {
         this.centroid = centroid;
         members = new ArrayList<T>();
@@ -40,7 +40,7 @@ public class Cluster<T> implements ICluster<T>
             if (members.isEmpty())
             {
                 System.out.println("ERROR: unable to calculate centroid. there are no members.");
-                centroid = new Centroid(tfIdfMatrix.getColumnsNumber());
+                centroid = new Centroid(tfIdfMatrix.getNumberOfTerms());
             }
             else
             {

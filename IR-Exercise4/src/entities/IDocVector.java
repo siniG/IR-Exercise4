@@ -3,7 +3,7 @@ package entities;
 import java.util.Enumeration;
 
 
-public interface IMatrix{
+public interface IDocVector{
 	public float[] getTfIdfVector(int docId);
 	public int getNumberOfTerms();
 	public int getNumberOfDocs();

@@ -1,7 +1,7 @@
 package ClusteringAlgorithms.KMeans;
 
 import ClusteringAlgorithms.*;
-import entities.IMatrix;
+import entities.IDocVector;
 import utilities.utils;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
 {
-    public KMeans(int numberOfClusters, IMatrix distanceMatrix, int maxNumberOfIterations)
+    public KMeans(int numberOfClusters, IDocVector distanceMatrix, int maxNumberOfIterations)
     {
         super(maxNumberOfIterations);
         this.distanceMatrix = distanceMatrix;
@@ -27,7 +27,7 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
         for (int i = 0; i < numberOfClusters; i++)
         {
 
-            int documentId = distanceMatrix.getRowsNumber() / numberOfClusters * i;
+            int documentId = distanceMatrix.getNumberOfDocs() / numberOfClusters * i;
             double [] randomCentroidCoordinates = utils.floatArrayToDoubleArray(distanceMatrix.getTfIdfVector(documentId));
             ICentroid newCentroid = new Centroid(randomCentroidCoordinates);
             ICluster<Integer> newCluster = new Cluster<Integer>(newCentroid, distanceMatrix);

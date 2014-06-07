@@ -8,7 +8,7 @@ import Program.DocumentsLoader;
 import Program.IDocumentsLoader;
 import Program.ParametersEnum;
 import entities.BasicIRDoc;
-import entities.IMatrix;
+import entities.IDocVector;
 import entities.IRDoc;
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
@@ -25,7 +25,7 @@ public class ExManager implements IExManager {
 	ISearchEngine searchEngine;
 	Hashtable<ParametersEnum, String> params;
 	List<IRDoc> irDocs;
-	IMatrix matrix;
+	IDocVector matrix;
 	int numOfDocs;
 	IDocumentsLoader docLoader;
 	public ExManager(Hashtable<ParametersEnum, String> parameters) throws IOException

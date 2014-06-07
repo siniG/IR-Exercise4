@@ -21,9 +21,9 @@ import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.util.ArrayUtil;
 import org.apache.lucene.util.BytesRef;
 
-import entities.IMatrix;
+import entities.IDocVector;
 
-public class TfIdfMatrix implements IMatrix {
+public class TfIdfMatrix implements IDocVector {
 	
 	private IndexReader reader;
 	private final Map<String, Integer> termIdMap;
