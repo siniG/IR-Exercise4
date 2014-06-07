@@ -57,11 +57,6 @@ public class Cluster<T> implements ICluster<T>
         // initialize the vector
         float[] result = new float[tfIdfMatrix.getNumberOfTerms()];
 
-        for (int i = 0; i < result.length; i++)
-        {
-            result[i] = 0;
-        }
-
         // calculate the sum of all values from all members.
         for (int i = 0; i < members.size(); i++)
         {
