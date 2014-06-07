@@ -44,13 +44,14 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
             List<ICentroid> centroids = InitializeCentroids();
 
             boolean centroidsUpdated = true;
+            int iterationNumber = 1;
 
             while ( centroidsUpdated &&
-                    (maxNumberOfIterations > 0))
+                    (iterationNumber <= maxNumberOfIterations))
             {
                 System.out.println("INFO: iterations left = " + maxNumberOfIterations);
                 // assign all objects to their closest cluster centroid
-                AssignObjectsToClusters(centroids);
+                AssignObjectsToClusters(centroids, iterationNumber);
 
                 // recalculate the centroid of each cluster
                 List<ICentroid> recalculatedCentroids = RecalculateCentroids();
@@ -62,8 +63,8 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
                 // move the newly calculated centroids to be the actual centroids
                 centroids = recalculatedCentroids;
 
-                // decrease number of remaining iterations
-                maxNumberOfIterations--;
+                // update number of remaining iterations
+                iterationNumber++;
             }
         }
         return clusters;
@@ -71,7 +72,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 
     protected abstract List<ICentroid> InitializeCentroids();
 
-    private void AssignObjectsToClusters(List<ICentroid> centroids)
+    private void AssignObjectsToClusters(List<ICentroid> centroids, int iteration)
     {
         // clear the clusters.
         for (int i = 0; i < numberOfClusters; i++)
@@ -87,7 +88,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 
             // assign object to the cluster of the centroid
             clusters.get(closestCentroid).AddMember(documentId);
-            System.out.println("DEBUG: assigned document id " + documentId + " to cluster " + closestCentroid);
+            System.out.println("DEBUG: iteration " + iteration + ", assigned document id " + documentId + " to cluster " + closestCentroid);
         }
     }
 
