@@ -49,7 +49,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
             while ( centroidsUpdated &&
                     (iterationNumber <= maxNumberOfIterations))
             {
-                System.out.println("INFO: iterations left = " + maxNumberOfIterations);
+                System.out.println("INFO: iterations left = " + (maxNumberOfIterations - iterationNumber));
                 // assign all objects to their closest cluster centroid
                 AssignObjectsToClusters(centroids, iterationNumber);
 
@@ -88,7 +88,13 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 
             // assign object to the cluster of the centroid
             clusters.get(closestCentroid).AddMember(documentId);
-            System.out.println("DEBUG: iteration " + iteration + ", assigned document id " + documentId + " to cluster " + closestCentroid);
+            //System.out.println("DEBUG: iteration " + iteration + ", assigned document id " + documentId + " to cluster " + closestCentroid);
+        }
+
+        System.out.println("INFO: finished assignment iteration " + iteration + ".");
+        for (int i = 0; i < numberOfClusters; i++)
+        {
+            System.out.println("DEBUG: cluster id " + i + " contains " + clusters.get(i).Size() + " members.");
         }
     }
 

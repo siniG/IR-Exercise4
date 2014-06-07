@@ -21,6 +21,18 @@ public class Cluster<T> implements ICluster<T>
         this.tfIdfMatrix = tfIdfMatrix;
     }
 
+    public int Size()
+    {
+        int result = 0;
+
+        if (members != null)
+        {
+            result = members.size();
+        }
+
+        return result;
+    }
+
     public ICentroid GetCentroid()
     {
         if (this.centroid == null)
@@ -28,6 +40,7 @@ public class Cluster<T> implements ICluster<T>
             if (members.isEmpty())
             {
                 System.out.println("ERROR: unable to calculate centroid. there are no members.");
+                centroid = new Centroid(tfIdfMatrix.getColumnsNumber());
             }
             else
             {
