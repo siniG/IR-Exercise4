@@ -26,7 +26,7 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
 
         for (int i = 0; i < numberOfClusters; i++)
         {
-            ICentroid newCentroid = new Centroid(utils.floatArrayToDoubleArray(distanceMatrix.getRow(i)));
+            ICentroid newCentroid = new Centroid(utils.floatArrayToDoubleArray(distanceMatrix.getTfIdfVector(i)));
             ICluster<Integer> newCluster = new Cluster<Integer>(newCentroid, distanceMatrix);
             clusters.add(newCluster);
             result.add(newCentroid);

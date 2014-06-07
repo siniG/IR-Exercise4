@@ -1,11 +1,12 @@
 package entities;
 
-public interface IMatrix{
+import java.util.Enumeration;
 
-	public boolean set(int row, int col, Float c);
-	public Float get(int row, int col);
-	public float[] getRow(int row);
-	public int getColumnsNumber();
-	public int getRowsNumber();
+
+public interface IMatrix{
+	public float[] getTfIdfVector(int docId);
+	public int getNumberOfTerms();
+	public int getNumberOfDocs();
+	public Enumeration<Integer> getDocIdEnumerator();
 	public void init() throws Exception;
 }

@@ -1,7 +1,7 @@
 package entities;
 
 import java.io.IOException;
-
+/*
 public class VectorMatrix implements IMatrix {
 
 	private LargeDoubleMatrix matrix;
@@ -36,16 +36,7 @@ public class VectorMatrix implements IMatrix {
 	}
 	
 	public Float get(int row, int column)
-	{
-		
-		/*if(row > column)
-		{
-			int temp;
-			temp = column;
-			column = row;
-			row = temp;
-		}*/
-		
+	{	
 		Double distance = this.matrix.get(column, row);
 
         // check if value exists, only return a calculated value.
@@ -59,16 +50,7 @@ public class VectorMatrix implements IMatrix {
 	}
 	
 	public boolean set(int row, int column, Float distance)
-	{
-		// only calculate half matrix
-		/*if(row > column)
-		{
-            int temp;
-			temp = column;
-			column = row;
-			row = temp;
-		}*/
-		
+	{	
 		if(distance == null)
 		{
 			this.matrix.set(column, row, Float.NaN);
@@ -95,6 +77,4 @@ public class VectorMatrix implements IMatrix {
     {
         return this.matrix.width();
     }
-    
-    
-}
+}*/

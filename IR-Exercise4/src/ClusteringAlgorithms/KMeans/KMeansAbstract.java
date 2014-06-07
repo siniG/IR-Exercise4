@@ -81,7 +81,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
         }
 
         // re-populate the clusters. assign each document to the closest centroid available.
-        for (int documentId = 0; documentId < distanceMatrix.getRowsNumber(); documentId++)
+        for (int documentId = 0; documentId < distanceMatrix.getNumberOfDocs(); documentId++)
         {
             // find closest centroid
             int closestCentroid = GetClosestCentroid(documentId, centroids);
@@ -96,7 +96,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
     {
         int result = 0;
 
-        float[] documentVector = distanceMatrix.getRow(documentId);
+        float[] documentVector = distanceMatrix.getTfIdfVector(documentId);
 
         double closestCentroidDistance = centroids.get(result).GetDistance(documentVector);
 

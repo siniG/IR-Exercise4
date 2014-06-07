@@ -1,5 +1,12 @@
 package utilities;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.math3.linear.RealVector;
+
 public class utils {
 
 	public static double CalculateHypotenuseFromOrigin(double cosineAngle, double adjacentDistance)

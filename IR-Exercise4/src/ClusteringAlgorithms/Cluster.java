@@ -42,7 +42,7 @@ public class Cluster<T> implements ICluster<T>
     private double[] GetAverageVectorCoordinates()
     {
         // initialize the vector
-        double[] result = new double[tfIdfMatrix.getColumnsNumber()];
+        double[] result = new double[tfIdfMatrix.getNumberOfTerms()];
 
         for (int i = 0; i < result.length; i++)
         {
@@ -54,7 +54,7 @@ public class Cluster<T> implements ICluster<T>
         {
             Integer currentDocumentId = (Integer)members.get(i);
 
-            float[] currentDocumentVector = this.tfIdfMatrix.getRow(currentDocumentId);
+            float[] currentDocumentVector = this.tfIdfMatrix.getTfIdfVector(currentDocumentId);
 
             for (int j = 0; j < result.length; j++)
             {
