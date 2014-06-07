@@ -2,6 +2,7 @@ package ClusteringAlgorithms.KMeans;
 
 import ClusteringAlgorithms.ICentroid;
 import entities.IDocVector;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,6 @@ public class KmeansPlusPlus extends KMeansAbstract<Integer>
 
     protected List<ICentroid> InitializeCentroids()
     {
-        List<ICentroid> result  = new ArrayList<ICentroid>();
-
-
-
-        return result;
+        throw new NotImplementedException();
     }
 }
