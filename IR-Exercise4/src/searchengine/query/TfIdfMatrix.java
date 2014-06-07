@@ -29,14 +29,14 @@ public class TfIdfMatrix implements IDocVector {
 	private final Map<String, Integer> termIdMap;
 	private float[][] _tfidfMatrix;
 	private Map<Integer, Integer>  _DocIdToLuceneDocId;
-	private Enumeration<Integer> _DocEnumerator;
+	private List<Integer> _DocList;
 	public TfIdfMatrix(IndexReader reader)
 	{
 		this.reader = reader;
 		termIdMap = new HashMap<String, Integer>();
 		_tfidfMatrix = null;
 		_DocIdToLuceneDocId = null;
-		_DocEnumerator = null;
+		_DocList = null;
 	}
 	
 	public float[] getTfIdfVector(int docId)
@@ -60,12 +60,20 @@ public class TfIdfMatrix implements IDocVector {
 	
 	public Enumeration<Integer> getDocIdEnumerator()
 	{
-		return this._DocEnumerator;
+		return Collections.enumeration(this._DocList);
 	}
 	
 	public void init() throws Exception
 	{
 		this._tfidfMatrix = getTfIdfMatrix();
+	}
+	
+	public int getDocIdAtIndex(int index)
+	{
+		if(index >= this._DocList.size())
+			throw new IndexOutOfBoundsException();
+		
+		return this._DocList.get(index);
 	}
 	
 	private float[][] getTfIdfMatrix() throws Exception{
@@ -95,7 +103,7 @@ public class TfIdfMatrix implements IDocVector {
         int termId;
         float idf, tfidf, tf; 
         _DocIdToLuceneDocId = new HashMap<Integer, Integer>();
-        List<Integer> docList = new LinkedList<Integer>();
+        _DocList = new LinkedList<Integer>();
 
         for (int luceneDocID = 0; luceneDocID  < reader.maxDoc(); luceneDocID++) 
         {
@@ -106,9 +114,9 @@ public class TfIdfMatrix implements IDocVector {
             
 			Document doc = reader.document(luceneDocID);
 			String sDocId = doc.get("docid");
-			int nDocId = Integer.getInteger(sDocId);
+			Integer nDocId = Integer.parseInt(sDocId);
             this._DocIdToLuceneDocId.put(nDocId, luceneDocID);
-            docList.add(nDocId);
+            _DocList.add(nDocId);
             
             if(vector != null)
             {
@@ -139,8 +147,6 @@ public class TfIdfMatrix implements IDocVector {
             	System.out.println("vector is null. doc id=" + nDocId);
             }
 		}
-        
-        this._DocEnumerator = Collections.enumeration(docList);
         
         return tfidfMatrix;
 	}

@@ -9,4 +9,5 @@ public interface IDocVector{
 	public int getNumberOfDocs();
 	public Enumeration<Integer> getDocIdEnumerator();
 	public void init() throws Exception;
+	public int getDocIdAtIndex(int index);
 }
