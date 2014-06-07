@@ -27,7 +27,8 @@ public class Centroid implements ICentroid
         {
             return Double.NaN;
         }
-        return euclideanDistance.compute(GetCoordinates(), utils.floatArrayToDoubleArray(otherVector));
+        //return euclideanDistance.compute(GetCoordinates(), utils.floatArrayToDoubleArray(otherVector));
+        return utils.cosineSimilarity(GetCoordinates(), utils.floatArrayToDoubleArray(otherVector));
     }
 
     public double[] GetCoordinates()
