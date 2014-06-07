@@ -7,6 +7,7 @@ import ClusteringAlgorithms.IClusteringAlgorithm;
 import entities.IDocVector;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -80,9 +81,12 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
             clusters.get(i).Clear();
         }
 
+        Enumeration<Integer> documentIdsEnumerator = distanceMatrix.getDocIdEnumerator();
+
         // re-populate the clusters. assign each document to the closest centroid available.
-        for (int documentId = 0; documentId < distanceMatrix.getNumberOfDocs(); documentId++)
+        while (documentIdsEnumerator.hasMoreElements())
         {
+            int documentId = documentIdsEnumerator.nextElement();
             // find closest centroid
             int closestCentroid = GetClosestCentroid(documentId, centroids);
 

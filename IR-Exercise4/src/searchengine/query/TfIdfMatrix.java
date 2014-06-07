@@ -106,7 +106,7 @@ public class TfIdfMatrix implements IDocVector {
             
 			Document doc = reader.document(luceneDocID);
 			String sDocId = doc.get("docid");
-			int nDocId = Integer.getInteger(sDocId);
+			int nDocId = Integer.parseInt(sDocId);
             this._DocIdToLuceneDocId.put(nDocId, luceneDocID);
             docList.add(nDocId);
             
