@@ -8,15 +8,24 @@ import utilities.utils;
 public class Centroid implements ICentroid
 {
     private float coordinates[];
+    private ICluster cluster;
 
-    public Centroid(float[] coordinates)
+    /**
+     * represents the minimum change between coordinates to consider them different.
+     */
+    private final double finesse = 0.0000003;
+
+
+    public Centroid(float[] coordinates, ICluster cluster)
     {
         this.coordinates = coordinates;
+        this.cluster = cluster;
     }
 
-    public Centroid(int numberOfDimensions)
+    public Centroid(int numberOfDimensions, ICluster cluster)
     {
         coordinates = new float[numberOfDimensions];
+        this.cluster = cluster;
     }
 
     public double GetDistance(float[] otherVector)
@@ -33,6 +42,11 @@ public class Centroid implements ICentroid
         return coordinates;
     }
 
+    public ICluster<Integer> GetCluster()
+    {
+        return this.cluster;
+    }
+
     public final boolean equals (ICentroid other)
     {
         boolean result = true;
@@ -45,7 +59,7 @@ public class Centroid implements ICentroid
         {
             for (int i = 0; i < this.GetCoordinates().length; i++)
             {
-                if (this.GetCoordinates()[i] != other.GetCoordinates()[i])
+                if (Math.abs(this.GetCoordinates()[i] - other.GetCoordinates()[i]) > finesse)
                 {
                     result = false;
                     break;

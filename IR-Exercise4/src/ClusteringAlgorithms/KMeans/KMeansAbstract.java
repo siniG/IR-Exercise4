@@ -6,8 +6,12 @@ import ClusteringAlgorithms.IClusteringAlgorithm;
 import entities.IDocVector;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by amit on 31/05/2014.
@@ -76,7 +80,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 
     protected abstract List<ICentroid> InitializeCentroids();
 
-    private void AssignObjectsToClusters(List<ICentroid> centroids, int iteration)
+    private void AssignObjectsToClusters(final List<ICentroid> centroids, int iteration)
     {
         // clear the clusters.
         for (int i = 0; i < numberOfClusters; i++)
@@ -86,17 +90,45 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 
         Enumeration<Integer> documentIdsEnumerator = documentsVectorData.getDocIdEnumerator();
 
-        // re-populate the clusters. assign each document to the closest centroid available.
+        Collection<Integer> elems = new ArrayList<Integer>();
         while (documentIdsEnumerator.hasMoreElements())
         {
-            int documentId = documentIdsEnumerator.nextElement();
+            elems.add(documentIdsEnumerator.nextElement());
+        }
 
-            // find closest centroid
-            int closestCentroid = GetClosestCentroid(documentId, centroids);
+        /********************************/
+        // multi threading baby! yeah!
+        ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        try
+        {
+            for (final Integer documentId : elems)
+            {
+                exec.submit(new Runnable()
+                {
+                    public void run()
+                    {
+                        // find closest centroid
+                        ICentroid closestCentroid = GetClosestCentroid(documentId, centroids);
 
-            // assign object to the cluster of the centroid
-            clusters.get(closestCentroid).AddMember(documentId);
-            //System.out.println("DEBUG: iteration " + iteration + ", assigned document id " + documentId + " to cluster " + closestCentroid);
+                        // assign object to the cluster of the centroid
+                        closestCentroid.GetCluster().AddMember(documentId);
+                    }
+                });
+            }
+        }
+        finally
+        {
+            exec.shutdown();
+        }
+
+        // wait for all threads to finish calculations and assignments
+        try
+        {
+            exec.awaitTermination(Integer.MAX_VALUE, TimeUnit.DAYS);
+        }
+        catch (Exception ex)
+        {
+            System.out.println("ERROR: problem while waiting for iteration " + iteration + " to complete assignment.");
         }
 
         System.out.println("INFO: finished assignment iteration " + iteration + ".");
@@ -106,13 +138,14 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
         }
     }
 
-    private int GetClosestCentroid(int documentId, List<ICentroid> centroids)
+    private ICentroid GetClosestCentroid(int documentId, List<ICentroid> centroids)
     {
-        int result = 0;
+        //randomly select the first centroid as the closest
+        ICentroid result = centroids.get(0);
 
         float[] documentVector = documentsVectorData.getTfIdfVector(documentId);
 
-        double closestCentroidDistance = 1 - centroids.get(result).GetDistance(documentVector);
+        double closestCentroidDistance = 1 - result.GetDistance(documentVector);
 
         for (int i = 1; i < numberOfClusters; i++)
         {
@@ -120,14 +153,14 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
             if (tempDistance < closestCentroidDistance)
             {
                 closestCentroidDistance = tempDistance;
-                result = i;
+                result = centroids.get(i);
             }
         }
 
         return result;
     }
 
-    private List<ICentroid> RecalculateCentroids()
+    private synchronized List<ICentroid> RecalculateCentroids()
     {
         List<ICentroid> result = new ArrayList<ICentroid>();
 
@@ -140,7 +173,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
         return result;
     }
 
-    private boolean CentroidsUpdated(List<ICentroid> centroidsBeforeCalculation, List<ICentroid> centroidsAfterCalculation)
+    private synchronized boolean CentroidsUpdated(List<ICentroid> centroidsBeforeCalculation, List<ICentroid> centroidsAfterCalculation)
     {
         boolean result = false;
 

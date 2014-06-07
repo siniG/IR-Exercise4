@@ -14,9 +14,8 @@ public class Cluster<T> implements ICluster<T>
     private List<T> members;
     private IDocVector tfIdfMatrix;
 
-    public Cluster(ICentroid centroid, IDocVector tfIdfMatrix)
+    public Cluster(IDocVector tfIdfMatrix)
     {
-        this.centroid = centroid;
         members = new ArrayList<T>();
         this.tfIdfMatrix = tfIdfMatrix;
     }
@@ -40,12 +39,12 @@ public class Cluster<T> implements ICluster<T>
             if (members.isEmpty())
             {
                 System.out.println("ERROR: unable to calculate centroid. there are no members.");
-                centroid = new Centroid(tfIdfMatrix.getNumberOfTerms());
+                centroid = new Centroid(tfIdfMatrix.getNumberOfTerms(), this);
             }
             else
             {
                 float [] averageVectorCoordinates = GetAverageVectorCoordinates();
-                centroid = new Centroid(averageVectorCoordinates);
+                centroid = new Centroid(averageVectorCoordinates, this);
             }
         }
 
@@ -79,7 +78,7 @@ public class Cluster<T> implements ICluster<T>
         return result;
     }
 
-    public boolean AddMember(T memberId)
+    public synchronized boolean AddMember(T memberId)
     {
         if (members.contains(memberId))
         {

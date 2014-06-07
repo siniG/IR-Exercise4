@@ -2,7 +2,6 @@ package ClusteringAlgorithms.KMeans;
 
 import ClusteringAlgorithms.*;
 import entities.IDocVector;
-import utilities.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +26,12 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
             int indexOfDocumentId = documentsVectorData.getNumberOfDocs() / numberOfClusters * i;
             int documentId = documentsVectorData.getDocIdAtIndex(indexOfDocumentId);
             float [] randomCentroidCoordinates = documentsVectorData.getTfIdfVector(documentId);
-            ICentroid newCentroid = new Centroid(randomCentroidCoordinates);
-            ICluster<Integer> newCluster = new Cluster<Integer>(newCentroid, documentsVectorData);
 
+            ICluster<Integer> newCluster = new Cluster<Integer>(documentsVectorData);
             // add some initial documents in the cluster.
             newCluster.AddMember(documentId);
+
+            ICentroid newCentroid = new Centroid(randomCentroidCoordinates, newCluster);
 
             // update the clusters structure
             clusters.add(newCluster);

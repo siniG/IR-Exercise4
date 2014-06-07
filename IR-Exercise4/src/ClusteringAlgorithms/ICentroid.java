@@ -8,4 +8,5 @@ public interface ICentroid
     float[] GetCoordinates();
     double GetDistance(float[] otherVector);
     boolean equals(ICentroid other);
+    ICluster<Integer> GetCluster();
 }
