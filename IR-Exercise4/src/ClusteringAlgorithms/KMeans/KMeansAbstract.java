@@ -19,9 +19,21 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
     protected int numberOfClusters;
     protected int maxNumberOfIterations;
 
-    protected KMeansAbstract(int maxNumberOfIterations)
+    protected KMeansAbstract(int numberOfClusters, IDocVector documentsData, int maxNumberOfIterations)
     {
         this.maxNumberOfIterations = maxNumberOfIterations;
+        this.documentsVectorData = documentsData;
+        this.numberOfClusters = numberOfClusters;
+
+        // initialize clustering
+        if (numberOfClusters < 2)
+        {
+            System.out.println("ERROR: minimum number of clusters is 2.");
+        }
+        else
+        {
+            clusters = new ArrayList<ICluster<Integer>>(numberOfClusters);
+        }
     }
 
     /**
@@ -31,43 +43,34 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
      */
     public List<ICluster<Integer>> GetClusters(int numberOfClusters)
     {
-        // initialize clustering
-        if (numberOfClusters < 2)
+        // initialize centroids
+        List<ICentroid> centroids = InitializeCentroids();
+
+        boolean centroidsUpdated = true;
+        int iterationNumber = 1;
+
+        while ( centroidsUpdated &&
+                (iterationNumber <= maxNumberOfIterations))
         {
-            System.out.println("ERROR: minimum number of clusters is 2.");
+            System.out.println("INFO: executing iteration " + iterationNumber);
+
+            // assign all objects to their closest cluster centroid
+            AssignObjectsToClusters(centroids, iterationNumber);
+
+            // recalculate the centroid of each cluster
+            List<ICentroid> recalculatedCentroids = RecalculateCentroids();
+
+            // check if the centroids have changed, and act accordingly
+            centroidsUpdated = CentroidsUpdated(centroids, recalculatedCentroids);
+            System.out.println("INFO: centroids updated = " + centroidsUpdated);
+
+            // move the newly calculated centroids to be the actual centroids
+            centroids = recalculatedCentroids;
+
+            // update number of remaining iterations
+            iterationNumber++;
         }
-        else
-        {
-            clusters = new ArrayList<ICluster<Integer>>(numberOfClusters);
 
-            // initialize centroids
-            List<ICentroid> centroids = InitializeCentroids();
-
-            boolean centroidsUpdated = true;
-            int iterationNumber = 1;
-
-            while ( centroidsUpdated &&
-                    (iterationNumber <= maxNumberOfIterations))
-            {
-                System.out.println("INFO: executing iteration " + iterationNumber);
-
-                // assign all objects to their closest cluster centroid
-                AssignObjectsToClusters(centroids, iterationNumber);
-
-                // recalculate the centroid of each cluster
-                List<ICentroid> recalculatedCentroids = RecalculateCentroids();
-
-                // check if the centroids have changed, and act accordingly
-                centroidsUpdated = CentroidsUpdated(centroids, recalculatedCentroids);
-                System.out.println("INFO: centroids updated = " + centroidsUpdated);
-
-                // move the newly calculated centroids to be the actual centroids
-                centroids = recalculatedCentroids;
-
-                // update number of remaining iterations
-                iterationNumber++;
-            }
-        }
         return clusters;
     }
 

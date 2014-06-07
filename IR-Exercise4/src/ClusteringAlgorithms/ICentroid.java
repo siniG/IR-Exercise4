@@ -5,7 +5,7 @@ package ClusteringAlgorithms;
  */
 public interface ICentroid
 {
-    double[] GetCoordinates();
+    float[] GetCoordinates();
     double GetDistance(float[] otherVector);
     boolean equals(ICentroid other);
 }

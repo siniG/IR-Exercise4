@@ -9,11 +9,9 @@ import java.util.List;
 
 public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
 {
-    public KMeans(int numberOfClusters, IDocVector distanceMatrix, int maxNumberOfIterations)
+    public KMeans(int numberOfClusters, IDocVector documentsData, int maxNumberOfIterations)
     {
-        super(maxNumberOfIterations);
-        this.documentsVectorData = distanceMatrix;
-        this.numberOfClusters = numberOfClusters;
+        super(numberOfClusters, documentsData, maxNumberOfIterations);
     }
 
     /**
@@ -28,7 +26,7 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
         {
             int indexOfDocumentId = documentsVectorData.getNumberOfDocs() / numberOfClusters * i;
             int documentId = documentsVectorData.getDocIdAtIndex(indexOfDocumentId);
-            double [] randomCentroidCoordinates = utils.floatArrayToDoubleArray(documentsVectorData.getTfIdfVector(documentId));
+            float [] randomCentroidCoordinates = documentsVectorData.getTfIdfVector(documentId);
             ICentroid newCentroid = new Centroid(randomCentroidCoordinates);
             ICluster<Integer> newCluster = new Cluster<Integer>(newCentroid, documentsVectorData);
 

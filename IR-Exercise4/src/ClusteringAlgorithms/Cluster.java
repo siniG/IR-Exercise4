@@ -44,7 +44,7 @@ public class Cluster<T> implements ICluster<T>
             }
             else
             {
-                double [] averageVectorCoordinates = GetAverageVectorCoordinates();
+                float [] averageVectorCoordinates = GetAverageVectorCoordinates();
                 centroid = new Centroid(averageVectorCoordinates);
             }
         }
@@ -52,10 +52,10 @@ public class Cluster<T> implements ICluster<T>
         return centroid;
     }
 
-    private double[] GetAverageVectorCoordinates()
+    private float[] GetAverageVectorCoordinates()
     {
         // initialize the vector
-        double[] result = new double[tfIdfMatrix.getNumberOfTerms()];
+        float[] result = new float[tfIdfMatrix.getNumberOfTerms()];
 
         for (int i = 0; i < result.length; i++)
         {

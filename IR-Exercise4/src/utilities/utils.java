@@ -41,7 +41,7 @@ public class utils {
 		return dArray;
 	}
 
-    public static double cosineSimilarity(double[] vectorA, double[] vectorB)
+    public static double cosineSimilarity(float[] vectorA, float[] vectorB)
     {
         double dotProduct = 0.0;
         double normA = 0.0;

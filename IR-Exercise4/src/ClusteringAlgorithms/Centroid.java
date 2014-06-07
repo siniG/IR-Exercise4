@@ -7,16 +7,16 @@ import utilities.utils;
  */
 public class Centroid implements ICentroid
 {
-    private double coordinates[];
+    private float coordinates[];
 
-    public Centroid(double[] coordinates)
+    public Centroid(float[] coordinates)
     {
         this.coordinates = coordinates;
     }
 
     public Centroid(int numberOfDimensions)
     {
-        coordinates = new double[numberOfDimensions];
+        coordinates = new float[numberOfDimensions];
     }
 
     public double GetDistance(float[] otherVector)
@@ -25,10 +25,10 @@ public class Centroid implements ICentroid
         {
             return Double.NaN;
         }
-        return utils.cosineSimilarity(GetCoordinates(), utils.floatArrayToDoubleArray(otherVector));
+        return utils.cosineSimilarity(GetCoordinates(), otherVector);
     }
 
-    public double[] GetCoordinates()
+    public float[] GetCoordinates()
     {
         return coordinates;
     }
