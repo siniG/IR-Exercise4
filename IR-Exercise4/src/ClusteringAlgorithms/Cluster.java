@@ -3,6 +3,8 @@ package ClusteringAlgorithms;
 import entities.IDocVector;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -95,5 +97,12 @@ public class Cluster<T> implements ICluster<T>
     {
         this.members.clear();
         this.centroid = null;
+    }
+    
+    public Enumeration<T> GetMemberIds()
+    {
+    	return Collections.enumeration(this.members);
+    	
+    	
     }
 }

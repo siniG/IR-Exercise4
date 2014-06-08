@@ -10,15 +10,23 @@ import Program.ParametersEnum;
 import entities.BasicIRDoc;
 import entities.IDocVector;
 import entities.IRDoc;
+import entities.KeyValuePair;
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
 import searchengine.query.TfIdfMatrix;
+import utilities.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 public class ExManager implements IExManager {
 
@@ -28,6 +36,9 @@ public class ExManager implements IExManager {
 	IDocVector matrix;
 	int numOfDocs;
 	IDocumentsLoader docLoader;
+	List<ICluster<Integer>> kmeansClusters;
+	int numberOfClusters;
+	
 	public ExManager(Hashtable<ParametersEnum, String> parameters) throws IOException
 	{
 		irDocs = new ArrayList<IRDoc>();
@@ -39,7 +50,7 @@ public class ExManager implements IExManager {
 	public boolean LoadData()
     {
 		docLoader = new DocumentsLoader(this.params.get(ParametersEnum.DocsFile));
-		
+
 		if(!docLoader.LoadDocuments())
 		{
 			System.out.println("ERROR: document loader couldn't load all documents.");
@@ -94,51 +105,39 @@ public class ExManager implements IExManager {
 		System.out.println("INFO: tf-idf processing time took: " + (dateEnd.getTime() - dateStart.getTime()) + " milliseconds");
 
         String numberOfClusterStr = params.get(ParametersEnum.K);
-        int numberOfClusters = Integer.parseInt(numberOfClusterStr);
+        this.numberOfClusters = Integer.parseInt(numberOfClusterStr);
 
-        IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix, 100);
-        List<ICluster<Integer>> kmeansClusters = kmeans.GetClusters(numberOfClusters);
-		/*
-		for(int i = 0; i < irDocs.size(); i++)
-		{
-			//for every irDoc, run search query matching this document
-			List<SearchResult> results = this.searchEngine.search(irDocs.get(i), numOfDocs);
-			
-			System.out.println("INFO: not of results returned for doc " + irDocs.get(i).getId() + " from search=" + results.size());
-			
-			storeVector(irDocs.get(i).getId(), results);
-			
-			//calculate distance between result and query
-			//CalculateAndStoreDistance(irDocs.get(i).getId(), results);
-		}
-        */
-
-
-
-
+        @SuppressWarnings("unchecked")
+		IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix, 100);
+        this.kmeansClusters = kmeans.GetClusters(numberOfClusters);
         System.out.println("INFO: Done processing data");
 	}
-
-	/*
-	private void storeVector(int id, List<SearchResult> results) {
-		for(int i = 0; i < results.size(); i++)
+	
+	public List<KeyValuePair<Integer, Double>> CalculatePurity()
+	{
+		List<KeyValuePair<Integer, Double>> result = new LinkedList<KeyValuePair<Integer, Double>>();  
+		
+		int clusterId = 0;
+		for(ICluster<Integer> cluster : this.kmeansClusters)
 		{
-			this.matrix.set(id, results.get(i).getDocId(), (double)results.get(i).getScore());
+			clusterId++;
+			int[] maxClusterSize = new int[this.numberOfClusters];
+			Enumeration<Integer> members = cluster.GetMemberIds();
+			
+			while(members.hasMoreElements())
+			{
+				Integer memberId = members.nextElement();
+				int trueDocCluster = this.docLoader.GetDocumentCluster(memberId);
+				maxClusterSize[trueDocCluster - 1]++;
+			}
+			
+			double purity = (1.0/cluster.Size()) * Collections.max(Arrays.asList(ArrayUtils.toObject(maxClusterSize))); 
+			
+			result.add(new KeyValuePair<Integer, Double>(clusterId, purity));
 		}
 		
-	}*/
-
-	/*private void CalculateAndStoreDistance(int id, List<SearchResult> results) {
-		Double distance;
-		Double cosineSimilarity;
-		for(SearchResult result : results)
-		{	
-			if((distance = this.matrix.get(id, result.getDocId())) == null)
-			{
-				cosineSimilarity = this.searchEngine.getCosineSimilarity(id, result.getDocId());
-				distance = utils.CalculateHypotenuseFromOrigin(cosineSimilarity, result.getScore());
-				this.matrix.set(id, result.getDocId(), distance);
-			}
-		}
-	}*/
+		utils.PrintPurity(result);
+		
+		return result;
+	}
 }

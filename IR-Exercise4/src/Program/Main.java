@@ -36,6 +36,7 @@ public class Main {
                     if(exerciseManager.LoadData())
                     {
                     	exerciseManager.ProcessData();
+                    	exerciseManager.CalculatePurity();
                     }
                     	
                 }

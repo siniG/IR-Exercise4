@@ -1,5 +1,9 @@
 package utilities;
 
+import java.util.List;
+
+import entities.KeyValuePair;
+
 public class utils
 {
     public static double cosineSimilarity(float[] vectorA, float[] vectorB)
@@ -13,5 +17,15 @@ public class utils
             normB += (vectorB[i] * vectorB[i]);
         }
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+    }
+    
+
+    public static void PrintPurity(List<KeyValuePair<Integer, Double>> purityList)
+    {
+    	System.out.println("Purity List:============");
+    	for(KeyValuePair<Integer, Double> kvp : purityList)
+    	{
+    		System.out.println("Cluster id: " + kvp.getKey() + " purity: " + kvp.getValue() );
+    	}
     }
 }
