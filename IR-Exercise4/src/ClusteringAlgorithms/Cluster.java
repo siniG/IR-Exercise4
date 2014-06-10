@@ -45,8 +45,7 @@ public class Cluster<T> implements ICluster<T>
             }
             else
             {
-                float [] averageVectorCoordinates = GetAverageVectorCoordinates();
-                centroid = new Centroid(averageVectorCoordinates, this);
+                centroid = new Centroid(GetAverageVectorCoordinates(), this);
             }
         }
 
@@ -102,7 +101,5 @@ public class Cluster<T> implements ICluster<T>
     public Enumeration<T> GetMemberIds()
     {
     	return Collections.enumeration(this.members);
-    	
-    	
     }
 }
