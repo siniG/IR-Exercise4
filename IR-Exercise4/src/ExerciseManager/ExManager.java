@@ -103,19 +103,23 @@ public class ExManager implements IExManager {
 
 		IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix);
         this.kmeansClusters = kmeans.GetClusters(numberOfClusters);
+        List<KeyValuePair<Integer, Double>> kmeansPurity = CalculatePurity(this.kmeansClusters);
+        utils.PrintPurity(kmeansPurity);
 
         IClusteringAlgorithm<Integer> kmeansPlusPlus = new KmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix);
         this.kmeansPlusPlusClusters = kmeansPlusPlus.GetClusters(numberOfClusters);
+        List<KeyValuePair<Integer, Double>> kmeansPlusPlusPurity = CalculatePurity(this.kmeansPlusPlusClusters);
+        utils.PrintPurity(kmeansPlusPlusPurity);
 
         System.out.println("INFO: Done processing data");
 	}
 	
-	public List<KeyValuePair<Integer, Double>> CalculatePurity()
+	public List<KeyValuePair<Integer, Double>> CalculatePurity(List<ICluster<Integer>> clusters)
 	{
 		List<KeyValuePair<Integer, Double>> result = new LinkedList<KeyValuePair<Integer, Double>>();  
 		
 		int clusterId = 0;
-		for(ICluster<Integer> cluster : this.kmeansClusters)
+		for(ICluster<Integer> cluster : clusters)
 		{
 			clusterId++;
 			int[] maxClusterSize = new int[this.numberOfClusters];
@@ -132,9 +136,6 @@ public class ExManager implements IExManager {
 			
 			result.add(new KeyValuePair<Integer, Double>(clusterId, purity));
 		}
-		
-		utils.PrintPurity(result);
-		
 		return result;
 	}
 }

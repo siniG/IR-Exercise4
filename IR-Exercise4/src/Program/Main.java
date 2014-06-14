@@ -6,7 +6,6 @@ import ExerciseManager.IExManager;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
@@ -36,7 +35,6 @@ public class Main {
                     if(exerciseManager.LoadData())
                     {
                     	exerciseManager.ProcessData();
-                    	exerciseManager.CalculatePurity();
                     }
                     	
                 }
