@@ -1,5 +1,6 @@
 package ClusteringAlgorithms.KMeans;
 
+import ClusteringAlgorithms.Cluster;
 import ClusteringAlgorithms.ICentroid;
 import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
@@ -18,14 +19,14 @@ import java.util.concurrent.TimeUnit;
 u */
 public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 {
+    private final int maxNumberOfIterations = 100;
+
     protected IDocVector documentsVectorData;
     protected List<ICluster<Integer>> clusters;
     protected int numberOfClusters;
-    protected int maxNumberOfIterations;
 
-    protected KMeansAbstract(int numberOfClusters, IDocVector documentsData, int maxNumberOfIterations)
+    protected KMeansAbstract(int numberOfClusters, IDocVector documentsData)
     {
-        this.maxNumberOfIterations = maxNumberOfIterations;
         this.documentsVectorData = documentsData;
         this.numberOfClusters = numberOfClusters;
 
@@ -37,6 +38,10 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
         else
         {
             clusters = new ArrayList<ICluster<Integer>>(numberOfClusters);
+            for (int i = 0; i < numberOfClusters; i++)
+            {
+                clusters.add(new Cluster<Integer>(documentsData));
+            }
         }
     }
 
@@ -49,6 +54,8 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
     {
         // initialize centroids
         List<ICentroid> centroids = InitializeCentroids();
+
+        AssignCentroidsToClusters(centroids);
 
         boolean centroidsUpdated = true;
         int iterationNumber = 1;
@@ -72,10 +79,21 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
             centroids = recalculatedCentroids;
 
             // update number of remaining iterations
-            iterationNumber++;
+            if (++iterationNumber >= maxNumberOfIterations)
+            {
+                System.out.println("WARN: maximum number of iterations reached.");
+            }
         }
 
         return clusters;
+    }
+
+    private void AssignCentroidsToClusters(List<ICentroid> centroids)
+    {
+        for (int i = 0; i < numberOfClusters; i++)
+        {
+            centroids.get(i).SetCluster(clusters.get(i));
+        }
     }
 
     protected abstract List<ICentroid> InitializeCentroids();
@@ -145,11 +163,11 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 
         float[] documentVector = documentsVectorData.getTfIdfVector(documentId);
 
-        double closestCentroidDistance = 1 - result.GetDistance(documentVector);
+        double closestCentroidDistance = 1 - result.GetCosineSimilarity(documentVector);
 
         for (int i = 1; i < numberOfClusters; i++)
         {
-            double tempDistance = 1 - centroids.get(i).GetDistance(documentVector);
+            double tempDistance = 1 - centroids.get(i).GetCosineSimilarity(documentVector);
             if (tempDistance < closestCentroidDistance)
             {
                 closestCentroidDistance = tempDistance;

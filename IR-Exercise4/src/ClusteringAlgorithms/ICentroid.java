@@ -6,7 +6,8 @@ package ClusteringAlgorithms;
 public interface ICentroid
 {
     float[] GetCoordinates();
-    double GetDistance(float[] otherVector);
+    double GetCosineSimilarity(float[] otherVector);
     boolean equals(ICentroid other);
     ICluster<Integer> GetCluster();
+    void SetCluster(ICluster cluster);
 }

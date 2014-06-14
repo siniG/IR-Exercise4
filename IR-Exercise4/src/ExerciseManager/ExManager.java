@@ -4,6 +4,7 @@ package ExerciseManager;
 import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
 import ClusteringAlgorithms.KMeans.KMeans;
+import ClusteringAlgorithms.KMeans.KmeansPlusPlus;
 import Program.DocumentsLoader;
 import Program.IDocumentsLoader;
 import Program.ParametersEnum;
@@ -11,22 +12,14 @@ import entities.BasicIRDoc;
 import entities.IDocVector;
 import entities.IRDoc;
 import entities.KeyValuePair;
+import org.apache.commons.lang3.ArrayUtils;
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
 import searchengine.query.TfIdfMatrix;
 import utilities.utils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.commons.lang3.ArrayUtils;
+import java.util.*;
 
 public class ExManager implements IExManager {
 
@@ -37,6 +30,7 @@ public class ExManager implements IExManager {
 	int numOfDocs;
 	IDocumentsLoader docLoader;
 	List<ICluster<Integer>> kmeansClusters;
+    List<ICluster<Integer>> kmeansPlusPlusClusters;
 	int numberOfClusters;
 	
 	public ExManager(Hashtable<ParametersEnum, String> parameters) throws IOException
@@ -107,9 +101,12 @@ public class ExManager implements IExManager {
         String numberOfClusterStr = params.get(ParametersEnum.K);
         this.numberOfClusters = Integer.parseInt(numberOfClusterStr);
 
-        @SuppressWarnings("unchecked")
-		IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix, 100);
+		IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix);
         this.kmeansClusters = kmeans.GetClusters(numberOfClusters);
+
+        IClusteringAlgorithm<Integer> kmeansPlusPlus = new KmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix);
+        this.kmeansPlusPlusClusters = kmeansPlusPlus.GetClusters(numberOfClusters);
+
         System.out.println("INFO: Done processing data");
 	}
 	

@@ -15,6 +15,10 @@ public class Centroid implements ICentroid
      */
     private final double finesse = 0.0000003;
 
+    public Centroid(float[] coordinates)
+    {
+        this.coordinates = coordinates;
+    }
 
     public Centroid(float[] coordinates, ICluster cluster)
     {
@@ -28,7 +32,7 @@ public class Centroid implements ICentroid
         this.cluster = cluster;
     }
 
-    public double GetDistance(float[] otherVector)
+    public double GetCosineSimilarity(float[] otherVector)
     {
         if (this.coordinates.length != otherVector.length)
         {
@@ -45,6 +49,11 @@ public class Centroid implements ICentroid
     public ICluster<Integer> GetCluster()
     {
         return this.cluster;
+    }
+
+    public void SetCluster(ICluster cluster)
+    {
+        this.cluster = cluster;
     }
 
     public final boolean equals (ICentroid other)

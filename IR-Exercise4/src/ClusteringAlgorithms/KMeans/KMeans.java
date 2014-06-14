@@ -8,9 +8,9 @@ import java.util.List;
 
 public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
 {
-    public KMeans(int numberOfClusters, IDocVector documentsData, int maxNumberOfIterations)
+    public KMeans(int numberOfClusters, IDocVector documentsData)
     {
-        super(numberOfClusters, documentsData, maxNumberOfIterations);
+        super(numberOfClusters, documentsData);
     }
 
     /**
@@ -27,14 +27,9 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
             int documentId = documentsVectorData.getDocIdAtIndex(indexOfDocumentId);
             float [] randomCentroidCoordinates = documentsVectorData.getTfIdfVector(documentId);
 
-            ICluster<Integer> newCluster = new Cluster<Integer>(documentsVectorData);
-            // add some initial documents in the cluster.
-            newCluster.AddMember(documentId);
-
-            ICentroid newCentroid = new Centroid(randomCentroidCoordinates, newCluster);
+            ICentroid newCentroid = new Centroid(randomCentroidCoordinates);
 
             // update the clusters structure
-            clusters.add(newCluster);
             result.add(newCentroid);
         }
         return result;
