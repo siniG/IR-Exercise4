@@ -31,18 +31,22 @@ public class ResultsWrapper implements IResultsWrapper {
 
     public boolean areBetterThan(IResultsWrapper otherResultsWrapper)
     {
-        List<KeyValuePair<Integer, Double>> clusterPurity  = utils.CalculatePurity(originalClusters, originalClusters.size(), documentsLoader);
+        boolean result = true;
 
-        Iterator<KeyValuePair<Integer, Double>> clustePurityIterator = clusterPurity.iterator();
+        double thisAveragePurity = this.calculateAvgPurity();
+        double thisRandIndex = this.calculateRandIndex();
 
-        while (clustePurityIterator.hasNext())
+        double otherAveragePurity = otherResultsWrapper.calculateAvgPurity();
+        double otherRandIndex = otherResultsWrapper.calculateRandIndex();
+
+        // this is the core of the comparison between the two result clusters.
+        // this comparison can be changed if a boost is needed to one of the parameters.
+        if ((otherAveragePurity + otherRandIndex) > (thisAveragePurity + thisRandIndex))
         {
-            double currentClusterPurity = clustePurityIterator.next().getValue();
+            result = false;
         }
 
-        double randIndex = utils.CalculateRandIndex(this, otherResultsWrapper);
-
-        throw new NotImplementedException();
+        return result;
     }
 
     public List<ICluster<Integer>> GetResults()
