@@ -32,11 +32,19 @@ public class Main {
                 try
                 {
                     IExManager exerciseManager = new ExManager(parameters);
-                    if(exerciseManager.LoadData())
+                    if(!exerciseManager.LoadData())
                     {
-                    	exerciseManager.ProcessData();
+                        System.out.println("ERROR: Unable to load exercise data.");
                     }
-                    	
+                    else if (!exerciseManager.ProcessData())
+                    {
+                        System.out.println("ERROR: Unable to complete the data process.");
+                    }
+                    else
+                    {
+                        exerciseManager.DisplayResults();
+                    }
+
                 }
                 catch (Exception e)
                 {

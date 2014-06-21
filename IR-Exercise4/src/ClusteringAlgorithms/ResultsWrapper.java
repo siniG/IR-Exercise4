@@ -1,5 +1,9 @@
 package ClusteringAlgorithms;
 
+import Program.IDocumentsLoader;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import utilities.utils;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
@@ -7,18 +11,34 @@ import java.util.List;
 public class ResultsWrapper implements IResultsWrapper {
 	
 	private Hashtable<Integer, Integer> documentClusterIdByDocumentId;
-	
-	public ResultsWrapper(List<ICluster<Integer>> clusters)
+	private List<ICluster<Integer>> originalClusters;
+    private IDocumentsLoader documentsLoader;
+
+	public ResultsWrapper(List<ICluster<Integer>> clusters, IDocumentsLoader documentsLoader)
 	{
 		this.documentClusterIdByDocumentId = clusterListToHash(clusters);
+        this.originalClusters = clusters;
+        this.documentsLoader = documentsLoader;
 	}
 
 	public ResultsWrapper(Hashtable<Integer, Integer> documentClusters)
 	{
 		this.documentClusterIdByDocumentId = documentClusters;
 	}
-	
-	private Hashtable<Integer, Integer> clusterListToHash(List<ICluster<Integer>> clusters) 
+
+    public boolean areBetterThan(IResultsWrapper otherResultsWrapper)
+    {
+        utils.CalculatePurity(originalClusters, originalClusters.size(), documentsLoader);
+
+        throw new NotImplementedException();
+    }
+
+    public List<ICluster<Integer>> GetResults()
+    {
+        return originalClusters;
+    }
+
+    private Hashtable<Integer, Integer> clusterListToHash(List<ICluster<Integer>> clusters)
 	{
 		Hashtable<Integer, Integer> hashTable = new Hashtable<Integer, Integer>();
 		
@@ -60,4 +80,5 @@ public class ResultsWrapper implements IResultsWrapper {
 	{
 		return this.documentClusterIdByDocumentId.keys();
 	}
+
 }
