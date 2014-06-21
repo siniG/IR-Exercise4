@@ -129,7 +129,19 @@ public class ResultsWrapper implements IResultsWrapper {
     }
     public double calculateAvgPurity()
     {
-    	return 0.0;
+    	double result = 0.0;
+    	
+    	List<KeyValuePair<Integer, Double>> purityList = this.calculatePurity();
+    	
+    	double sum = 0.0;
+    	for(KeyValuePair<Integer, Double> kvp : purityList)
+    	{
+    		sum += kvp.getValue();
+    	}
+    	
+    	result = sum / purityList.size();
+    	
+    	return result;
     }
     
     public double calculateRandIndex()
