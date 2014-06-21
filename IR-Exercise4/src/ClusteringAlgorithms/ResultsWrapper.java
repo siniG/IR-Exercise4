@@ -1,6 +1,8 @@
 package ClusteringAlgorithms;
 
 import Program.IDocumentsLoader;
+import entities.KeyValuePair;
+import org.apache.pdfbox.pdmodel.graphics.predictor.Average;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import utilities.utils;
 
@@ -9,6 +11,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -30,6 +33,7 @@ public class ResultsWrapper implements IResultsWrapper {
 
     public boolean areBetterThan(IResultsWrapper otherResultsWrapper)
     {
+
         throw new NotImplementedException();
     }
 
