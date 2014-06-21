@@ -2,6 +2,8 @@ package ClusteringAlgorithms;
 
 import Program.IDocumentsLoader;
 import entities.KeyValuePair;
+import entities.RandIndexEnum;
+
 import org.apache.pdfbox.pdmodel.graphics.predictor.Average;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import utilities.utils;
@@ -15,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
+
+import com.google.common.collect.Lists;
 
 import entities.KeyValuePair;
 
@@ -74,12 +78,12 @@ public class ResultsWrapper implements IResultsWrapper {
 		return hashTable;
 	}
 	
-	public boolean isSameCluster(int docId1, int docId2)
+	private boolean isSameCluster(Hashtable<Integer, Integer> table, int docId1, int docId2)
 	{
 		boolean result = false;
 		
-		Integer doc1Cluster = this.documentClusterIdByDocumentId.get(docId1);
-		Integer doc2Cluster = this.documentClusterIdByDocumentId.get(docId2);
+		Integer doc1Cluster = table.get(docId1);
+		Integer doc2Cluster = table.get(docId2);
 		
 		if(doc1Cluster == null || doc2Cluster == null)
 		{
@@ -89,7 +93,6 @@ public class ResultsWrapper implements IResultsWrapper {
 		{
 			result = true;
 		}
-		
 		
 		return result;
 	}
@@ -128,9 +131,64 @@ public class ResultsWrapper implements IResultsWrapper {
     {
     	return 0.0;
     }
+    
     public double calculateRandIndex()
     {
-    	return 0.0;
+
+    	double result = 0.0;
+    	
+    	List<Integer> memberList = Lists.newArrayList(this.documentsLoader.GetDocumentIterator());
+    	
+    	Integer member1, member2, counter;
+    	RandIndexEnum randIndexGroup;
+    	Hashtable<Integer, Integer> groupsCounterMap = new Hashtable<Integer,Integer>();
+    	
+    	for(int i = 0; i < memberList.size(); i++)
+    	{
+    		member1 =  memberList.get(i);
+    		
+    		for(int j = i+1; j < memberList.size(); j++)
+    		{
+    			member2 = memberList.get(j);
+    			randIndexGroup = getRandIndexGroup(member1, member2);
+    			
+    			counter = groupsCounterMap.get(randIndexGroup.ordinal());
+    			counter = (counter == null) ? 1 : counter + 1;
+    			
+    			groupsCounterMap.put(randIndexGroup.ordinal(), counter);
+    		}
+    	}
+    	
+    	double bothInSameClusters = (groupsCounterMap.get(RandIndexEnum.SameInBothClusters.ordinal()) == null) ? 0  : groupsCounterMap.get(RandIndexEnum.SameInBothClusters.ordinal());
+    	double bothInDifferentClusters = (groupsCounterMap.get(RandIndexEnum.DifferentInBothClusters.ordinal()) == null) ? 0  : groupsCounterMap.get(RandIndexEnum.DifferentInBothClusters.ordinal());
+    	double disSimilarClusters = (groupsCounterMap.get(RandIndexEnum.SameInOneButDiffInOther.ordinal()) == null) ? 0  : groupsCounterMap.get(RandIndexEnum.SameInOneButDiffInOther.ordinal());
+    	
+    	double temp = bothInSameClusters + bothInDifferentClusters;
+    	result = temp / (temp + disSimilarClusters);
+    	
+    	return result;
+    }
+    
+    private RandIndexEnum getRandIndexGroup(int docId1, int docId2)
+    {
+    	RandIndexEnum result;
+    	boolean isSameClusterWrapper1 = isSameCluster(this.documentsLoader.getDocumentClusterIdsByDocumentId(), docId1, docId2);
+    	boolean isSameClusterWrapper2 = isSameCluster(this.documentClusterIdByDocumentId, docId1, docId2);
+    	
+    	if(isSameClusterWrapper1 && isSameClusterWrapper2)
+    	{
+    		result = RandIndexEnum.SameInBothClusters;
+    	}
+    	else if(!isSameClusterWrapper1 && !isSameClusterWrapper2)
+    	{
+    		result = RandIndexEnum.DifferentInBothClusters;
+    	}
+    	else
+    	{
+    		result = RandIndexEnum.SameInOneButDiffInOther;
+    	}
+    	
+    	return result;
     }
 
 }
