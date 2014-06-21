@@ -3,8 +3,11 @@ package ExerciseManager;
 
 import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
+import ClusteringAlgorithms.IResultsWrapper;
+import ClusteringAlgorithms.KMeans.ImprovedKmeansPlusPlus;
 import ClusteringAlgorithms.KMeans.KMeans;
 import ClusteringAlgorithms.KMeans.KmeansPlusPlus;
+import ClusteringAlgorithms.ResultsWrapper;
 import Program.DocumentsLoader;
 import Program.IDocumentsLoader;
 import Program.ParametersEnum;
@@ -28,8 +31,9 @@ public class ExManager implements IExManager {
 	IDocVector matrix;
 	int numOfDocs;
 	IDocumentsLoader docLoader;
-	List<ICluster<Integer>> kmeansClusters;
-    List<ICluster<Integer>> kmeansPlusPlusClusters;
+	IResultsWrapper kmeansResults;
+    IResultsWrapper kmeansPlusPlusResults;
+    IResultsWrapper improvedKmeansPlusPlusResults;
 	int numberOfClusters;
 	
 	public ExManager(Hashtable<ParametersEnum, String> parameters) throws IOException
@@ -101,14 +105,14 @@ public class ExManager implements IExManager {
         this.numberOfClusters = Integer.parseInt(numberOfClusterStr);
 
 		IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix);
-        this.kmeansClusters = kmeans.GetClusters();
-        List<KeyValuePair<Integer, Double>> kmeansPurity = utils.CalculatePurity(this.kmeansClusters, numberOfClusters, this.docLoader);
-        utils.PrintPurity(kmeansPurity);
+        this.kmeansResults = new ResultsWrapper(kmeans.GetClusters(), this.docLoader);
 
         IClusteringAlgorithm<Integer> kmeansPlusPlus = new KmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix);
-        this.kmeansPlusPlusClusters = kmeansPlusPlus.GetClusters();
-        List<KeyValuePair<Integer, Double>> kmeansPlusPlusPurity = utils.CalculatePurity(this.kmeansPlusPlusClusters, numberOfClusters, this.docLoader);
-        utils.PrintPurity(kmeansPlusPlusPurity);
+        this.kmeansPlusPlusResults = new ResultsWrapper(kmeansPlusPlus.GetClusters(), this.docLoader);
+
+        IClusteringAlgorithm<Integer> improvedKmeansPlusPlus = new ImprovedKmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix, this.docLoader);
+        this.improvedKmeansPlusPlusResults = new ResultsWrapper(improvedKmeansPlusPlus.GetClusters(), this.docLoader);
+
 
         System.out.println("INFO: Done processing data");
 	}
