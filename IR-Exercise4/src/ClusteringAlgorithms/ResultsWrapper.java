@@ -1,5 +1,7 @@
 package ClusteringAlgorithms;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
@@ -7,18 +9,30 @@ import java.util.List;
 public class ResultsWrapper implements IResultsWrapper {
 	
 	private Hashtable<Integer, Integer> documentClusterIdByDocumentId;
-	
+	private List<ICluster<Integer>> originalClusters;
+
 	public ResultsWrapper(List<ICluster<Integer>> clusters)
 	{
 		this.documentClusterIdByDocumentId = clusterListToHash(clusters);
+        this.originalClusters = clusters;
 	}
 
 	public ResultsWrapper(Hashtable<Integer, Integer> documentClusters)
 	{
 		this.documentClusterIdByDocumentId = documentClusters;
 	}
-	
-	private Hashtable<Integer, Integer> clusterListToHash(List<ICluster<Integer>> clusters) 
+
+    public boolean areBetterThan(IResultsWrapper otherResultsWrapper)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<ICluster<Integer>> GetResults()
+    {
+        return originalClusters;
+    }
+
+    private Hashtable<Integer, Integer> clusterListToHash(List<ICluster<Integer>> clusters)
 	{
 		Hashtable<Integer, Integer> hashTable = new Hashtable<Integer, Integer>();
 		
