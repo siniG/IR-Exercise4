@@ -1,11 +1,14 @@
 package ClusteringAlgorithms;
 
 import Program.IDocumentsLoader;
+import entities.KeyValuePair;
+import org.apache.pdfbox.pdmodel.graphics.predictor.Average;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import utilities.utils;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
 public class ResultsWrapper implements IResultsWrapper {
@@ -28,7 +31,16 @@ public class ResultsWrapper implements IResultsWrapper {
 
     public boolean areBetterThan(IResultsWrapper otherResultsWrapper)
     {
-        utils.CalculatePurity(originalClusters, originalClusters.size(), documentsLoader);
+        List<KeyValuePair<Integer, Double>> clusterPurity  = utils.CalculatePurity(originalClusters, originalClusters.size(), documentsLoader);
+
+        Iterator<KeyValuePair<Integer, Double>> clustePurityIterator = clusterPurity.iterator();
+
+        while (clustePurityIterator.hasNext())
+        {
+            double currentClusterPurity = clustePurityIterator.next().getValue();
+        }
+
+        double randIndex = utils.CalculateRandIndex(this, otherResultsWrapper);
 
         throw new NotImplementedException();
     }
