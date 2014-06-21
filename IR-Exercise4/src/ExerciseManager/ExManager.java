@@ -136,16 +136,16 @@ public class ExManager implements IExManager {
     public void DisplayResults()
     {
         System.out.println("---------------------------------" + System.getProperty("line.separator"));
-        System.out.println("Algorithm used: " + params.get(ParametersEnum.ClusteringAlgorithm).toUpperCase());
+        System.out.println("Algorithm used: " + params.get(ParametersEnum.ClusteringAlgorithm).toUpperCase() + System.getProperty("line.separator"));
         System.out.println("Purity of results:");
 
         for(KeyValuePair<Integer, Double> kvp : clusteringAlgorithmResults.calculatePurity())
         {
-            System.out.println("    Cluster id: " + kvp.getKey() + " purity: " + kvp.getValue() );
+            System.out.println("    Cluster id: " + kvp.getKey() + " purity: " + String.format("%.3f", kvp.getValue()));
         }
-
-        System.out.println("Average purity of results: " + clusteringAlgorithmResults.calculateAvgPurity());
-        System.out.println("Rand Index value of results: " + clusteringAlgorithmResults.calculateRandIndex());
+        System.out.println(System.getProperty("line.separator"));
+        System.out.println(String.format("Average purity of results: %.3f", clusteringAlgorithmResults.calculateAvgPurity()));
+        System.out.println(String.format("Rand Index value of results: %.3f", clusteringAlgorithmResults.calculateRandIndex()));
     }
 	
 }
