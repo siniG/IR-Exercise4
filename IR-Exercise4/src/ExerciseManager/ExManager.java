@@ -102,12 +102,12 @@ public class ExManager implements IExManager {
         this.numberOfClusters = Integer.parseInt(numberOfClusterStr);
 
 		IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix);
-        this.kmeansClusters = kmeans.GetClusters(numberOfClusters);
+        this.kmeansClusters = kmeans.GetClusters();
         List<KeyValuePair<Integer, Double>> kmeansPurity = utils.CalculatePurity(this.kmeansClusters, numberOfClusters, this.docLoader);
         utils.PrintPurity(kmeansPurity);
 
         IClusteringAlgorithm<Integer> kmeansPlusPlus = new KmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix);
-        this.kmeansPlusPlusClusters = kmeansPlusPlus.GetClusters(numberOfClusters);
+        this.kmeansPlusPlusClusters = kmeansPlusPlus.GetClusters();
         List<KeyValuePair<Integer, Double>> kmeansPlusPlusPurity = utils.CalculatePurity(this.kmeansPlusPlusClusters, numberOfClusters, this.docLoader);
         utils.PrintPurity(kmeansPlusPlusPurity);
 

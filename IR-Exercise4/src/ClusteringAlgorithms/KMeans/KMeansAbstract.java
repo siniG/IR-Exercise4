@@ -47,10 +47,9 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
 
     /**
      * calculates which document belongs to which cluster, according to the number of given clusters.
-     * @param numberOfClusters
      * @return
      */
-    public List<ICluster<Integer>> GetClusters(int numberOfClusters)
+    public List<ICluster<Integer>> GetClusters()
     {
         // initialize centroids
         List<ICentroid> centroids = InitializeCentroids();

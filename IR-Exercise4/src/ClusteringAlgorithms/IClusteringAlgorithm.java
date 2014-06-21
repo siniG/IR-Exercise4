@@ -7,5 +7,5 @@ import java.util.List;
  */
 public interface IClusteringAlgorithm<T>
 {
-    List<ICluster<Integer>> GetClusters(int numberOfClusters);
+    List<ICluster<Integer>> GetClusters();
 }
