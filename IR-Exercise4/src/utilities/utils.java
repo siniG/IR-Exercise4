@@ -25,4 +25,6 @@ public class utils
         }
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
     }
+
+    public static String NewLineCharacter = System.getProperty("line.separator");
 }

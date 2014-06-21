@@ -19,7 +19,6 @@ import entities.KeyValuePair;
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
 import searchengine.query.TfIdfMatrix;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import utilities.utils;
 
 import java.io.IOException;
@@ -128,22 +127,22 @@ public class ExManager implements IExManager {
             System.out.println("ERROR: Unknown clustering algorithm requested.");
         }
 
-        if (result) System.out.println("INFO: Done processing data" + System.getProperty("line.separator"));
+        if (result) System.out.println("INFO: Done processing data" + utils.NewLineCharacter);
 
         return result;
 	}
 
     public void DisplayResults()
     {
-        System.out.println("---------------------------------" + System.getProperty("line.separator"));
-        System.out.println("Algorithm used: " + params.get(ParametersEnum.ClusteringAlgorithm).toUpperCase() + System.getProperty("line.separator"));
+        System.out.println("---------------------------------" + utils.NewLineCharacter + "   FINAL RESULTS" + utils.NewLineCharacter);
+        System.out.println("Algorithm used: " + params.get(ParametersEnum.ClusteringAlgorithm).toUpperCase() + utils.NewLineCharacter);
         System.out.println("Purity of results:");
 
         for(KeyValuePair<Integer, Double> kvp : clusteringAlgorithmResults.calculatePurity())
         {
             System.out.println("    Cluster id: " + kvp.getKey() + " purity: " + String.format("%.3f", kvp.getValue()));
         }
-        System.out.println(System.getProperty("line.separator"));
+        System.out.println(utils.NewLineCharacter);
         System.out.println(String.format("Average purity of results: %.3f", clusteringAlgorithmResults.calculateAvgPurity()));
         System.out.println(String.format("Rand Index value of results: %.3f", clusteringAlgorithmResults.calculateRandIndex()));
     }
