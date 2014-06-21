@@ -25,14 +25,4 @@ public class utils
         }
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
     }
-    
-
-    public static void PrintPurity(List<KeyValuePair<Integer, Double>> purityList)
-    {
-    	System.out.println("Purity List:============");
-    	for(KeyValuePair<Integer, Double> kvp : purityList)
-    	{
-    		System.out.println("Cluster id: " + kvp.getKey() + " purity: " + kvp.getValue() );
-    	}
-    }
 }
