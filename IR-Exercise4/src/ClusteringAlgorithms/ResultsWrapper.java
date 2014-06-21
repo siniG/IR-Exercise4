@@ -12,11 +12,13 @@ public class ResultsWrapper implements IResultsWrapper {
 	
 	private Hashtable<Integer, Integer> documentClusterIdByDocumentId;
 	private List<ICluster<Integer>> originalClusters;
+    private IDocumentsLoader documentsLoader;
 
-	public ResultsWrapper(List<ICluster<Integer>> clusters)
+	public ResultsWrapper(List<ICluster<Integer>> clusters, IDocumentsLoader documentsLoader)
 	{
 		this.documentClusterIdByDocumentId = clusterListToHash(clusters);
         this.originalClusters = clusters;
+        this.documentsLoader = documentsLoader;
 	}
 
 	public ResultsWrapper(Hashtable<Integer, Integer> documentClusters)
@@ -26,6 +28,8 @@ public class ResultsWrapper implements IResultsWrapper {
 
     public boolean areBetterThan(IResultsWrapper otherResultsWrapper)
     {
+        utils.CalculatePurity(originalClusters, originalClusters.size(), documentsLoader);
+
         throw new NotImplementedException();
     }
 
