@@ -15,13 +15,11 @@ public class ResultsWrapper implements IResultsWrapper {
 	
 	private Hashtable<Integer, Integer> documentClusterIdByDocumentId;
 	private List<ICluster<Integer>> originalClusters;
-    private IDocumentsLoader documentsLoader;
 
-	public ResultsWrapper(List<ICluster<Integer>> clusters, IDocumentsLoader documentsLoader)
+	public ResultsWrapper(List<ICluster<Integer>> clusters)
 	{
 		this.documentClusterIdByDocumentId = clusterListToHash(clusters);
         this.originalClusters = clusters;
-        this.documentsLoader = documentsLoader;
 	}
 
 	public ResultsWrapper(Hashtable<Integer, Integer> documentClusters)
@@ -92,5 +90,18 @@ public class ResultsWrapper implements IResultsWrapper {
 	{
 		return this.documentClusterIdByDocumentId.keys();
 	}
+	
+    public double calculatePurity(IResultsWrapper otherResultsWrapper)
+    {
+    	return 0.0;
+    }
+    public double calculateAvgPurity(IResultsWrapper otherResultsWrapper)
+    {
+    	return 0.0;
+    }
+    public double calculateRandIndex(IResultsWrapper otherResultsWrapper)
+    {
+    	return 0.0;
+    }
 
 }
