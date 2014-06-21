@@ -11,7 +11,7 @@ public interface IResultsWrapper {
 	Enumeration<Integer> getMemberList();
     boolean areBetterThan(IResultsWrapper otherResultsWrapper);
     List<ICluster<Integer>> GetResults();
-    List<KeyValuePair<Integer, Double>> calculatePurity(IResultsWrapper otherResultsWrapper);
+    List<KeyValuePair<Integer, Double>> calculatePurity();
     double calculateAvgPurity();
     double calculateRandIndex();
 }

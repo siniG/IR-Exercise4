@@ -85,7 +85,7 @@ public class ResultsWrapper implements IResultsWrapper {
 		return this.documentClusterIdByDocumentId.keys();
 	}
 	
-    public List<KeyValuePair<Integer, Double>> calculatePurity(IResultsWrapper otherResultsWrapper)
+    public List<KeyValuePair<Integer, Double>> calculatePurity()
     {
     	 List<KeyValuePair<Integer, Double>> result = new LinkedList<KeyValuePair<Integer, Double>>();
 
