@@ -4,9 +4,16 @@ import Program.IDocumentsLoader;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import utilities.utils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
+
+import entities.KeyValuePair;
 
 public class ResultsWrapper implements IResultsWrapper {
 	
@@ -21,15 +28,8 @@ public class ResultsWrapper implements IResultsWrapper {
         this.documentsLoader = documentsLoader;
 	}
 
-	public ResultsWrapper(Hashtable<Integer, Integer> documentClusters)
-	{
-		this.documentClusterIdByDocumentId = documentClusters;
-	}
-
     public boolean areBetterThan(IResultsWrapper otherResultsWrapper)
     {
-        utils.CalculatePurity(originalClusters, originalClusters.size(), documentsLoader);
-
         throw new NotImplementedException();
     }
 
@@ -81,15 +81,36 @@ public class ResultsWrapper implements IResultsWrapper {
 		return this.documentClusterIdByDocumentId.keys();
 	}
 	
-    public double calculatePurity(IResultsWrapper otherResultsWrapper)
+    public List<KeyValuePair<Integer, Double>> calculatePurity(IResultsWrapper otherResultsWrapper)
+    {
+    	 List<KeyValuePair<Integer, Double>> result = new LinkedList<KeyValuePair<Integer, Double>>();
+
+         int clusterId = 0;
+         for(ICluster<Integer> cluster : this.originalClusters)
+         {
+             clusterId++;
+             int[] maxClusterSize = new int[this.originalClusters.size()];
+             Enumeration<Integer> members = cluster.GetMemberIds();
+
+             while(members.hasMoreElements())
+             {
+                 Integer memberId = members.nextElement();
+                 int trueDocCluster = documentsLoader.GetDocumentCluster(memberId);
+                 maxClusterSize[trueDocCluster - 1]++;
+             }
+
+             double purity = (1.0/cluster.Size()) * Collections.max(Arrays.asList(ArrayUtils.toObject(maxClusterSize)));
+
+             result.add(new KeyValuePair<Integer, Double>(clusterId, purity));
+         }
+         
+         return result;
+    }
+    public double calculateAvgPurity()
     {
     	return 0.0;
     }
-    public double calculateAvgPurity(IResultsWrapper otherResultsWrapper)
-    {
-    	return 0.0;
-    }
-    public double calculateRandIndex(IResultsWrapper otherResultsWrapper)
+    public double calculateRandIndex()
     {
     	return 0.0;
     }
