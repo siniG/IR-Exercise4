@@ -1,8 +1,12 @@
 package utilities;
 
-import java.util.List;
+import java.util.*;
 
+import ClusteringAlgorithms.ICluster;
+import Program.IDocumentsLoader;
+import entities.IDocVector;
 import entities.KeyValuePair;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class utils
 {
@@ -28,4 +32,30 @@ public class utils
     		System.out.println("Cluster id: " + kvp.getKey() + " purity: " + kvp.getValue() );
     	}
     }
+
+    public static List<KeyValuePair<Integer, Double>> CalculatePurity(List<ICluster<Integer>> clusters, int numberOfClusters, IDocumentsLoader documentsLoader)
+    {
+        List<KeyValuePair<Integer, Double>> result = new LinkedList<KeyValuePair<Integer, Double>>();
+
+        int clusterId = 0;
+        for(ICluster<Integer> cluster : clusters)
+        {
+            clusterId++;
+            int[] maxClusterSize = new int[numberOfClusters];
+            Enumeration<Integer> members = cluster.GetMemberIds();
+
+            while(members.hasMoreElements())
+            {
+                Integer memberId = members.nextElement();
+                int trueDocCluster = documentsLoader.GetDocumentCluster(memberId);
+                maxClusterSize[trueDocCluster - 1]++;
+            }
+
+            double purity = (1.0/cluster.Size()) * Collections.max(Arrays.asList(ArrayUtils.toObject(maxClusterSize)));
+
+            result.add(new KeyValuePair<Integer, Double>(clusterId, purity));
+        }
+        return result;
+    }
+
 }

@@ -103,39 +103,15 @@ public class ExManager implements IExManager {
 
 		IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix);
         this.kmeansClusters = kmeans.GetClusters(numberOfClusters);
-        List<KeyValuePair<Integer, Double>> kmeansPurity = CalculatePurity(this.kmeansClusters);
+        List<KeyValuePair<Integer, Double>> kmeansPurity = utils.CalculatePurity(this.kmeansClusters, numberOfClusters, this.docLoader);
         utils.PrintPurity(kmeansPurity);
 
         IClusteringAlgorithm<Integer> kmeansPlusPlus = new KmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix);
         this.kmeansPlusPlusClusters = kmeansPlusPlus.GetClusters(numberOfClusters);
-        List<KeyValuePair<Integer, Double>> kmeansPlusPlusPurity = CalculatePurity(this.kmeansPlusPlusClusters);
+        List<KeyValuePair<Integer, Double>> kmeansPlusPlusPurity = utils.CalculatePurity(this.kmeansPlusPlusClusters, numberOfClusters, this.docLoader);
         utils.PrintPurity(kmeansPlusPlusPurity);
 
         System.out.println("INFO: Done processing data");
 	}
 	
-	public List<KeyValuePair<Integer, Double>> CalculatePurity(List<ICluster<Integer>> clusters)
-	{
-		List<KeyValuePair<Integer, Double>> result = new LinkedList<KeyValuePair<Integer, Double>>();  
-		
-		int clusterId = 0;
-		for(ICluster<Integer> cluster : clusters)
-		{
-			clusterId++;
-			int[] maxClusterSize = new int[this.numberOfClusters];
-			Enumeration<Integer> members = cluster.GetMemberIds();
-			
-			while(members.hasMoreElements())
-			{
-				Integer memberId = members.nextElement();
-				int trueDocCluster = this.docLoader.GetDocumentCluster(memberId);
-				maxClusterSize[trueDocCluster - 1]++;
-			}
-			
-			double purity = (1.0/cluster.Size()) * Collections.max(Arrays.asList(ArrayUtils.toObject(maxClusterSize))); 
-			
-			result.add(new KeyValuePair<Integer, Double>(clusterId, purity));
-		}
-		return result;
-	}
 }

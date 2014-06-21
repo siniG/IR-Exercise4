@@ -41,7 +41,7 @@ public class BasicSearchEngine implements ISearchEngine {
 		this.stopwords = null;
 	}
 	
-    protected synchronized BasicIndexer getIndexWriter() {
+    protected BasicIndexer getIndexWriter() {
 
 	if (this.indexer == null) {
 	    BasicIndexer indexer = new ImprovedIndexer(this.luceneDir);
@@ -131,7 +131,7 @@ public class BasicSearchEngine implements ISearchEngine {
     	return result;
     }
     
-    protected synchronized BasicSearchQuery getSearcher() {
+    protected BasicSearchQuery getSearcher() {
 	if (this.searcher == null || this.indexChanged) {
 	    try {
 		if (this.searcher != null) {

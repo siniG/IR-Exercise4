@@ -178,7 +178,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
         return result;
     }
 
-    private synchronized List<ICentroid> RecalculateCentroids()
+    private List<ICentroid> RecalculateCentroids()
     {
         List<ICentroid> result = new ArrayList<ICentroid>();
 
@@ -191,7 +191,7 @@ public abstract class KMeansAbstract<T> implements IClusteringAlgorithm<T>
         return result;
     }
 
-    private synchronized boolean CentroidsUpdated(List<ICentroid> centroidsBeforeCalculation, List<ICentroid> centroidsAfterCalculation)
+    private boolean CentroidsUpdated(List<ICentroid> centroidsBeforeCalculation, List<ICentroid> centroidsAfterCalculation)
     {
         boolean result = false;
 
