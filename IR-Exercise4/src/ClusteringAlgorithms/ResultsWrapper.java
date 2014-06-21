@@ -80,5 +80,18 @@ public class ResultsWrapper implements IResultsWrapper {
 	{
 		return this.documentClusterIdByDocumentId.keys();
 	}
+	
+    public double calculatePurity(IResultsWrapper otherResultsWrapper)
+    {
+    	return 0.0;
+    }
+    public double calculateAvgPurity(IResultsWrapper otherResultsWrapper)
+    {
+    	return 0.0;
+    }
+    public double calculateRandIndex(IResultsWrapper otherResultsWrapper)
+    {
+    	return 0.0;
+    }
 
 }

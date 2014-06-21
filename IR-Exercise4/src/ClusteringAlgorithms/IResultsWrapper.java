@@ -9,4 +9,7 @@ public interface IResultsWrapper {
 	Enumeration<Integer> getMemberList();
     boolean areBetterThan(IResultsWrapper otherResultsWrapper);
     List<ICluster<Integer>> GetResults();
+    double calculatePurity(IResultsWrapper otherResultsWrapper);
+    double calculateAvgPurity(IResultsWrapper otherResultsWrapper);
+    double calculateRandIndex(IResultsWrapper otherResultsWrapper);
 }
