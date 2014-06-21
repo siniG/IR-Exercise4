@@ -8,6 +8,7 @@ import ClusteringAlgorithms.KMeans.ImprovedKmeansPlusPlus;
 import ClusteringAlgorithms.KMeans.KMeans;
 import ClusteringAlgorithms.KMeans.KmeansPlusPlus;
 import ClusteringAlgorithms.ResultsWrapper;
+import Program.ClusteringAlgorithmEnum;
 import Program.DocumentsLoader;
 import Program.IDocumentsLoader;
 import Program.ParametersEnum;
@@ -18,6 +19,7 @@ import entities.KeyValuePair;
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
 import searchengine.query.TfIdfMatrix;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import utilities.utils;
 
 import java.io.IOException;
@@ -31,9 +33,7 @@ public class ExManager implements IExManager {
 	IDocVector matrix;
 	int numOfDocs;
 	IDocumentsLoader docLoader;
-	IResultsWrapper kmeansResults;
-    IResultsWrapper kmeansPlusPlusResults;
-    IResultsWrapper improvedKmeansPlusPlusResults;
+	IResultsWrapper clusteringAlgorithmResults;
 	int numberOfClusters;
 	
 	public ExManager(Hashtable<ParametersEnum, String> parameters) throws IOException
@@ -88,8 +88,9 @@ public class ExManager implements IExManager {
 		return true;
 	}
 	
-	public void ProcessData() throws Exception 
+	public boolean ProcessData() throws Exception
 	{
+        boolean result = false;
 		//this.matrix = new VectorMatrixTest(numOfDocs+1, numOfDocs+1);
 		//this.matrix.init();
 		
@@ -104,17 +105,37 @@ public class ExManager implements IExManager {
         String numberOfClusterStr = params.get(ParametersEnum.K);
         this.numberOfClusters = Integer.parseInt(numberOfClusterStr);
 
-		IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix);
-        this.kmeansResults = new ResultsWrapper(kmeans.GetClusters(), this.docLoader);
+        if (params.get(ParametersEnum.ClusteringAlgorithm).toLowerCase().equals(ClusteringAlgorithmEnum.Basic.toString().toLowerCase()))
+        {
+            IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix);
+            this.clusteringAlgorithmResults = new ResultsWrapper(kmeans.GetClusters(), this.docLoader);
+            result = true;
+        }
+        else if (params.get(ParametersEnum.ClusteringAlgorithm).toLowerCase().equals(ClusteringAlgorithmEnum.BasicPlusPlus.toString().toLowerCase()))
+        {
+            IClusteringAlgorithm<Integer> kmeansPlusPlus = new KmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix);
+            this.clusteringAlgorithmResults = new ResultsWrapper(kmeansPlusPlus.GetClusters(), this.docLoader);
+            result = true;
+        }
+        else if (params.get(ParametersEnum.ClusteringAlgorithm).toLowerCase().equals(ClusteringAlgorithmEnum.Improved.toString().toLowerCase()))
+        {
+            IClusteringAlgorithm<Integer> improvedKmeansPlusPlus = new ImprovedKmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix, this.docLoader);
+            this.clusteringAlgorithmResults = new ResultsWrapper(improvedKmeansPlusPlus.GetClusters(), this.docLoader);
+            result = true;
+        }
+        else
+        {
+            System.out.println("ERROR: Unknown clustering algorithm requested.");
+        }
 
-        IClusteringAlgorithm<Integer> kmeansPlusPlus = new KmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix);
-        this.kmeansPlusPlusResults = new ResultsWrapper(kmeansPlusPlus.GetClusters(), this.docLoader);
+        if (result) System.out.println("INFO: Done processing data" + System.getProperty("line.separator"));
 
-        IClusteringAlgorithm<Integer> improvedKmeansPlusPlus = new ImprovedKmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix, this.docLoader);
-        this.improvedKmeansPlusPlusResults = new ResultsWrapper(improvedKmeansPlusPlus.GetClusters(), this.docLoader);
-
-
-        System.out.println("INFO: Done processing data");
+        return result;
 	}
+
+    public void DisplayResults()
+    {
+        throw new NotImplementedException();
+    }
 	
 }
