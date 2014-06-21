@@ -1,5 +1,6 @@
 package Program;
 
+import java.util.Hashtable;
 import java.util.Iterator;
 
 public interface IDocumentsLoader
@@ -11,4 +12,5 @@ public interface IDocumentsLoader
     String GetDocument(int documentId);
     int GetDocumentsCount();
     Iterator<Integer> GetDocumentIterator();
+    Hashtable<Integer, Integer> getDocumentClusterIdsByDocumentId();
 }

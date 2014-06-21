@@ -274,4 +274,9 @@ public class DocumentsLoader implements IDocumentsLoader
     {
         return rawDocumentByDocumentId.keySet().iterator();
     }
+    
+    public Hashtable<Integer, Integer> getDocumentClusterIdsByDocumentId()
+    {
+    	return this.documentClusterIdByDocumentId;
+    }
 }

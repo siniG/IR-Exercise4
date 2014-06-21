@@ -3,6 +3,7 @@ package ExerciseManager;
 
 import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
+import ClusteringAlgorithms.*;
 import ClusteringAlgorithms.KMeans.KMeans;
 import ClusteringAlgorithms.KMeans.KmeansPlusPlus;
 import Program.DocumentsLoader;
@@ -99,17 +100,29 @@ public class ExManager implements IExManager {
 
         String numberOfClusterStr = params.get(ParametersEnum.K);
         this.numberOfClusters = Integer.parseInt(numberOfClusterStr);
+        
 
 		IClusteringAlgorithm<Integer> kmeans = new KMeans<Integer>(numberOfClusters, tfIdfMatrix);
         this.kmeansClusters = kmeans.GetClusters(numberOfClusters);
         List<KeyValuePair<Integer, Double>> kmeansPurity = utils.CalculatePurity(this.kmeansClusters, numberOfClusters, this.docLoader);
         utils.PrintPurity(kmeansPurity);
+        
+        IResultsWrapper goldResultsWrapper = new ResultsWrapper(this.docLoader.getDocumentClusterIdsByDocumentId());
+        IResultsWrapper kmeansResultWrapper = new ResultsWrapper(this.kmeansClusters);
+        
+        double kmeanRandIndex = utils.CalculateRandIndex(goldResultsWrapper, kmeansResultWrapper);
+        
+        System.out.println("INFO: kmean RandIndex= " + kmeanRandIndex);
 
         IClusteringAlgorithm<Integer> kmeansPlusPlus = new KmeansPlusPlus<Integer>(numberOfClusters, tfIdfMatrix);
         this.kmeansPlusPlusClusters = kmeansPlusPlus.GetClusters(numberOfClusters);
         List<KeyValuePair<Integer, Double>> kmeansPlusPlusPurity = utils.CalculatePurity(this.kmeansPlusPlusClusters, numberOfClusters, this.docLoader);
         utils.PrintPurity(kmeansPlusPlusPurity);
-
+        
+        IResultsWrapper kmeansPlusPlusResultWrapper = new ResultsWrapper(this.kmeansPlusPlusClusters);
+        double kmeanPlusPlsRandIndex = utils.CalculateRandIndex(goldResultsWrapper, kmeansPlusPlusResultWrapper);
+        System.out.println("INFO: kmean++ RandIndex= " + kmeanPlusPlsRandIndex);
+        
         System.out.println("INFO: Done processing data");
 	}
 	
