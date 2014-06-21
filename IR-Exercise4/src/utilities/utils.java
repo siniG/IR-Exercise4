@@ -3,6 +3,7 @@ package utilities;
 import java.util.*;
 
 import ClusteringAlgorithms.ICluster;
+import ClusteringAlgorithms.IResultsWrapper;
 import Program.IDocumentsLoader;
 import entities.IDocVector;
 import entities.KeyValuePair;
@@ -56,6 +57,30 @@ public class utils
             result.add(new KeyValuePair<Integer, Double>(clusterId, purity));
         }
         return result;
+    }
+    
+    public static double CalculateRandIndex(IResultsWrapper wrapper1, IResultsWrapper wrapper2)
+    {
+    	double result = 0.0;
+    	
+    	List<Integer> memberList = java.util.Collections.list(wrapper1.getMemberList());
+    	
+    	Integer member1, member2;
+    	for(int i = 0; i < memberList.size(); i++)
+    	{
+    		member1 =  memberList.get(i);
+    		
+    		for(int j = i+1; j < memberList.size(); j++)
+    		{
+    			member2 = memberList.get(j);
+    			
+    			
+    		}
+    	}
+    	
+    	
+    	
+    	return result;
     }
 
 }

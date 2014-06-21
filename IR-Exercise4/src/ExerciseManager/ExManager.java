@@ -12,7 +12,6 @@ import entities.BasicIRDoc;
 import entities.IDocVector;
 import entities.IRDoc;
 import entities.KeyValuePair;
-import org.apache.commons.lang3.ArrayUtils;
 import searchengine.BasicSearchEngine;
 import searchengine.ISearchEngine;
 import searchengine.query.TfIdfMatrix;
