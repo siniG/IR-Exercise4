@@ -2,12 +2,10 @@ package searchengine;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -18,7 +16,6 @@ import searchengine.query.ImprovedSearchQuery;
 import searchengine.query.TfIdfMatrix;
 
 import entities.IRDoc;
-import entities.SearchResult;
 
 public class BasicSearchEngine implements ISearchEngine {
 
@@ -85,52 +82,7 @@ public class BasicSearchEngine implements ISearchEngine {
 
 	return documents.size() == indexedDocsCount;
     }
-    
-    @Override
-    public List<SearchResult> search(IRDoc irDoc, int retSize) throws Exception {
-	List<SearchResult> result = new LinkedList<SearchResult>();
-	BasicSearchQuery searcher = getSearcher();
 
-	if (searcher != null) {
-	    try {
-	    
-	    //run query and calculate cosine similarity between query and results received
-		List<ScoreDoc> docs = searcher.query(irDoc, retSize);
-		String id;
-		//double cosineSim;
-		for (ScoreDoc doc : docs) {
-		    Document tempDoc = searcher.getDoc(doc.doc);
-		    id = tempDoc.get("docid");
-		    //cosineSim = this.searcher.getCosineSimilarity(luceneDocId, doc.doc);
-		    
-			result.add(new SearchResult(Integer.valueOf(id), doc.score));
-		}
-
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	}
-
-	return result;
-    }
-    
-    public Double getCosineSimilarity(int docId1, int docId2)
-    {
-    	Double result = null;
-    	Integer luceneDocId1 = this.searcher.getLuceneDocIdByForeignId(docId1);
-    	Integer luceneDocId2 = this.searcher.getLuceneDocIdByForeignId(docId2);
-    	
-    	if(luceneDocId1 == null || luceneDocId2 == null)
-    	{
-    		System.out.println("ERROR: could not find documents in lucene with following ids: " + docId1 + ", " + docId2 );
-    		return result;
-    	}
-    	
-    	result = this.searcher.getCosineSimilarity(luceneDocId1, luceneDocId2);
-    	
-    	return result;
-    }
-    
     protected BasicSearchQuery getSearcher() {
 	if (this.searcher == null || this.indexChanged) {
 	    try {
@@ -159,10 +111,5 @@ public class BasicSearchEngine implements ISearchEngine {
     		this.getSearcher();
     	
     	return this.searcher.getTfIdfMatrix();
-    }
-    
-    @Override
-    public void setStopwords(List<String> stopwords) {
-	//this.stopwords = stopwords;
     }
 }

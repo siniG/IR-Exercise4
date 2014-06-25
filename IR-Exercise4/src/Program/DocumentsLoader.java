@@ -221,28 +221,6 @@ public class DocumentsLoader implements IDocumentsLoader
         }
     }
 
-    public int GetDocumentId(String documentName) {
-        int result = Integer.MIN_VALUE;
-
-        if (documentIdByDocumentName.containsKey(documentName))
-        {
-            result = documentIdByDocumentName.get(documentName);
-        }
-
-        return result;
-    }
-
-    public String GetDocumentName(int documentId) {
-        String result = null;
-
-        if (documentNameByDocumentId.containsKey(documentId))
-        {
-            result = documentNameByDocumentId.get(documentId);
-        }
-
-        return result;
-    }
-
     public int GetDocumentCluster(int documentId) {
         int result = Integer.MIN_VALUE;
 

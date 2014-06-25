@@ -15,7 +15,6 @@ public class KMeans<T> extends KMeansAbstract implements IClusteringAlgorithm
 
     /**
      * simple pick of the first documents as seed centroids. no calculations are done.
-     * @return
      */
     protected List<ICentroid> InitializeCentroids()
     {

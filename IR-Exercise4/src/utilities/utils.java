@@ -1,16 +1,5 @@
 package utilities;
 
-import java.util.*;
-
-import ClusteringAlgorithms.ICluster;
-import ClusteringAlgorithms.IResultsWrapper;
-import Program.IDocumentsLoader;
-import entities.IDocVector;
-import entities.KeyValuePair;
-import entities.RandIndexEnum;
-
-import org.apache.commons.lang3.ArrayUtils;
-
 public class utils
 {
     public static double cosineSimilarity(float[] vectorA, float[] vectorB)

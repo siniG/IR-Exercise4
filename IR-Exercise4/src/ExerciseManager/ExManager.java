@@ -1,7 +1,6 @@
 
 package ExerciseManager;
 
-import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
 import ClusteringAlgorithms.IResultsWrapper;
 import ClusteringAlgorithms.KMeans.ImprovedKmeansPlusPlus;

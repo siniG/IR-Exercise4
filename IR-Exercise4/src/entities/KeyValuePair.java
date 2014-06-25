@@ -11,12 +11,6 @@ public class KeyValuePair<T, U> {
 		this.value = value;
 	}
 	
-	public KeyValuePair()
-	{
-		this.key = null;
-		this.value = null;
-	}
-	
 	public T getKey()
 	{
 		return this.key;

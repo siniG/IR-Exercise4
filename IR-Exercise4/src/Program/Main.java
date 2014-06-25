@@ -11,6 +11,8 @@ import java.util.StringTokenizer;
 
 public class Main {
 
+    public static final String docsFileName = "docs.txt";
+
 	public static void main(String[] args) throws IOException
 	{		
         // check the parameter file is given to the program.
@@ -80,6 +82,9 @@ public class Main {
                 ProcessParameterLine(line, parametersHashtable);
             }
 
+            // add the documents file manually
+            parametersHashtable.put(ParametersEnum.DocsFile, docsFileName);
+
             // check we have all the parameters.
             if (parametersHashtable.size() == ParametersEnum.values().length)
             {
@@ -111,13 +116,7 @@ public class Main {
         {
             String parameterName = stringTokenizer.nextToken().toLowerCase();
 
-            if (parameterName.toLowerCase().equals(ParametersEnum.DocsFile.name().toLowerCase()))
-            {
-                String docsFileParameter = stringTokenizer.nextToken();
-                parametersHashtable.put(ParametersEnum.DocsFile, docsFileParameter);
-                System.out.println("INFO: Added parameter for documet file name: \"" + docsFileParameter + "\".");
-            }
-            else if (parameterName.toLowerCase().equals(ParametersEnum.OutputFile.name().toLowerCase()))
+            if (parameterName.toLowerCase().equals(ParametersEnum.OutputFile.name().toLowerCase()))
             {
                 String outputFileParameter = stringTokenizer.nextToken();
                 parametersHashtable.put(ParametersEnum.OutputFile, outputFileParameter);

@@ -54,6 +54,6 @@ public class CosineDocumentSimilarity {
             int value = map.containsKey(term) ? map.get(term) : 0;
             vector.setEntry(i++, value);
         }
-        return (RealVector) vector.mapDivide(vector.getL1Norm());
+        return vector.mapDivide(vector.getL1Norm());
     }
 }

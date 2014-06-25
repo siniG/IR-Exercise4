@@ -5,9 +5,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.IntField;
 
-import utilities.HtmlStripper;
-import utilities.IHtmlStripper;
-
+import org.jsoup.Jsoup;
 
 public class BasicIRDoc implements IRDoc {
 	
@@ -27,8 +25,6 @@ public class BasicIRDoc implements IRDoc {
 	return new BasicIRDoc(docId, content);
     }
 
-    private static IHtmlStripper stripper = new HtmlStripper();
-
     private final int id;
 
     private final String rawContent;
@@ -46,18 +42,12 @@ public class BasicIRDoc implements IRDoc {
     }
 
     @Override
-    public BasicIRDoc Clone() {
-	BasicIRDoc newDoc = new BasicIRDoc(this.getId(), this.getContent());
-	return newDoc;
-    }
-
-    @Override
     public Document createDocument() {
 	Document newDoc = new Document();
 	
 	Field f;
 
-	this.content = stripper.GetHtmlBody(this.rawContent).replaceAll("\\s+", " ").replaceAll("\n", " ");
+	this.content = Jsoup.parse(this.rawContent).text().replaceAll("\\s+", " ").replaceAll("\n", " ");
 	f = new Field("content", this.content, TYPE_STORED);	
 	newDoc.add(f);
 
@@ -67,26 +57,4 @@ public class BasicIRDoc implements IRDoc {
 	return newDoc;
 
     }
-
-    @Override
-    public String getContent() {
-	return this.content;
-    }
-
-    @Override
-    public int getId() {
-	return this.id;
-    }
-
-    @Override
-    public void setDocBoost(float boost) {
-	this.boost = boost;
-    }
-    
-    @Override
-    public String getRawContent()
-    {
-    	return this.rawContent;
-    }
-
 }

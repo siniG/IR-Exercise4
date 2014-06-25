@@ -6,8 +6,6 @@ import java.util.Iterator;
 public interface IDocumentsLoader
 {
     boolean LoadDocuments();
-    int GetDocumentId(String documentName);
-    String GetDocumentName(int documentId);
     int GetDocumentCluster(int documentId);
     String GetDocument(int documentId);
     int GetDocumentsCount();

@@ -70,32 +70,4 @@ public class BasicIndexer {
 
 	return initResult;
     }
-
-    public void setStopWords(List<String> stopWords) {
-	this.stopwords = stopWords;
-    }
-
-    public void TestAnalyzer() {
-	try {
-	    Analyzer analyzer = createAnalzyer();
-	    TokenStream stream = analyzer.tokenStream("myfield", new StringReader(
-		    "hello there three word should not be present"));
-
-	    CharTermAttribute termAtt = stream.addAttribute(CharTermAttribute.class);
-
-	    try {
-		stream.reset();
-
-		while (stream.incrementToken()) {
-		    System.out.println(termAtt.toString());
-		}
-
-		stream.end();
-	    } finally {
-		stream.close();
-	    }
-	} catch (Exception ex) {
-
-	}
-    }
 }
