@@ -1,6 +1,7 @@
 
 package ExerciseManager;
 
+import ClusteringAlgorithms.ICluster;
 import ClusteringAlgorithms.IClusteringAlgorithm;
 import ClusteringAlgorithms.IResultsWrapper;
 import ClusteringAlgorithms.KMeans.ImprovedKmeansPlusPlus;
@@ -20,8 +21,14 @@ import searchengine.ISearchEngine;
 import searchengine.query.TfIdfMatrix;
 import utilities.utils;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+
+import com.sun.tools.javac.resources.javac;
 
 public class ExManager implements IExManager {
 
@@ -144,6 +151,51 @@ public class ExManager implements IExManager {
         System.out.println(utils.NewLineCharacter);
         System.out.println(String.format("Average purity of results: %.3f", clusteringAlgorithmResults.calculateAvgPurity()));
         System.out.println(String.format("Rand Index value of results: %.3f", clusteringAlgorithmResults.calculateRandIndex()));
+    }
+    
+    public void WriteToOutputFile()
+    {
+    	Hashtable<Integer, Integer> table = new Hashtable<Integer,Integer>(); 
+    	List<ICluster<Integer>> clusters = clusteringAlgorithmResults.GetResults();
+    	
+    	Integer member;
+    	Enumeration<Integer> clusterMembers;
+    	int i = 1;
+    	List<Integer> members = new ArrayList<Integer>();
+    	
+    	for(ICluster<Integer> cluster : clusters)
+    	{
+    		clusterMembers = cluster.GetMemberIds();
+    				
+    		while(clusterMembers.hasMoreElements())
+    		{
+    			member = clusterMembers.nextElement();
+    			members.add(member);
+    			table.put(member, i);
+    		}
+    		
+    		i++;
+    	}
+    	
+    	java.util.Collections.sort(members);
+    	
+    	FileWriter outputFileWriter;
+        BufferedWriter outputFileBufferedWriter;
+        
+        try
+        {
+        	outputFileWriter = new FileWriter(this.params.get(ParametersEnum.OutputFile));
+        	outputFileBufferedWriter = new BufferedWriter(outputFileWriter);
+        	
+        	for(int k = 0; k < members.size(); k++)
+        	{
+        		outputFileBufferedWriter.write(members.get(k) + "," + table.get(members.get(k)) + "\n");
+        	}
+        	
+        }catch(Exception ex)
+        {
+        	
+        }
     }
 	
 }

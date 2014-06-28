@@ -33,14 +33,16 @@ public class ResultsWrapper implements IResultsWrapper {
         boolean result = true;
 
         double thisAveragePurity = this.calculateAvgPurity();
-        double thisRandIndex = this.calculateRandIndex();
+        //double thisRandIndex = this.calculateRandIndex();
 
         double otherAveragePurity = otherResultsWrapper.calculateAvgPurity();
-        double otherRandIndex = otherResultsWrapper.calculateRandIndex();
+        //double otherRandIndex = otherResultsWrapper.calculateRandIndex();
 
         // this is the core of the comparison between the two result clusters.
         // this comparison can be changed if a boost is needed to one of the parameters.
-        if ((otherAveragePurity + otherRandIndex) > (thisAveragePurity + thisRandIndex))
+        //if ((otherAveragePurity + otherRandIndex) > (thisAveragePurity + thisRandIndex))
+        //if(otherRandIndex > thisRandIndex)
+        if(otherAveragePurity > thisAveragePurity)
         {
             result = false;
         }
