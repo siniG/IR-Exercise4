@@ -43,6 +43,7 @@ public class Main {
                     else
                     {
                         exerciseManager.DisplayResults();
+                        exerciseManager.WriteToOutputFile();
                     }
 
                 }

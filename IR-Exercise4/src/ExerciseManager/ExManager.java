@@ -23,9 +23,11 @@ import utilities.utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import com.sun.tools.javac.resources.javac;
@@ -178,23 +180,29 @@ public class ExManager implements IExManager {
     	}
     	
     	java.util.Collections.sort(members);
-    	
-    	FileWriter outputFileWriter;
-        BufferedWriter outputFileBufferedWriter;
-        
+
+    	PrintWriter printwriter = null;
         try
         {
-        	outputFileWriter = new FileWriter(this.params.get(ParametersEnum.OutputFile));
-        	outputFileBufferedWriter = new BufferedWriter(outputFileWriter);
-        	
+        	File file = new File(this.params.get(ParametersEnum.OutputFile));
+        	printwriter = new PrintWriter(file); 
+
         	for(int k = 0; k < members.size(); k++)
         	{
-        		outputFileBufferedWriter.write(members.get(k) + "," + table.get(members.get(k)) + "\n");
+        		printwriter.println(members.get(k) + "," + table.get(members.get(k)));
         	}
         	
         }catch(Exception ex)
         {
-        	
+        	System.out.println(ex.getMessage());
+        }
+        finally
+        {
+        	if(printwriter != null)
+        	{
+        		printwriter.flush();
+        		printwriter.close();
+        	}
         }
     }
 	
