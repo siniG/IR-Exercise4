@@ -1,3 +1,4 @@
+docsfile=docs.txt
 outputFile=output.txt
-clusteringAlgorithm=basic
+clusteringAlgorithm=improved
 k=7
