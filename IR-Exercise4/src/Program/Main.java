@@ -11,8 +11,6 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    public static final String docsFileName = "docs.txt";
-
 	public static void main(String[] args) throws IOException
 	{		
         // check the parameter file is given to the program.
@@ -82,9 +80,6 @@ public class Main {
                 ProcessParameterLine(line, parametersHashtable);
             }
 
-            // add the documents file manually
-            parametersHashtable.put(ParametersEnum.DocsFile, docsFileName);
-
             // check we have all the parameters.
             if (parametersHashtable.size() == ParametersEnum.values().length)
             {
@@ -127,6 +122,12 @@ public class Main {
                 String kNumberOfClusters = stringTokenizer.nextToken();
                 parametersHashtable.put(ParametersEnum.K, kNumberOfClusters);
                 System.out.println("INFO: Added parameter for k number of clusters: \"" + kNumberOfClusters + "\".");
+            }
+            else if (parameterName.toLowerCase().equals(ParametersEnum.DocsFile.name().toLowerCase()))
+            {
+                String docsFile = stringTokenizer.nextToken();
+                parametersHashtable.put(ParametersEnum.DocsFile, docsFile);
+                System.out.println("INFO: Added parameter for docs file name: \"" + docsFile + "\".");
             }
             else if (parameterName.toLowerCase().equals(ParametersEnum.ClusteringAlgorithm.name().toLowerCase()))
             {
